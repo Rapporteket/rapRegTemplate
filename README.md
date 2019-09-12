@@ -32,8 +32,8 @@ Denne delen er satt som valgfri men kan likevel være relevant, særlig om det e
 1. Kopier inn alle filer fra katalogene "inst/" og "R/" i "rapRegTemplate" og legg disse i tilsvarende kataloger i den nye pakken
 1. I toppen av "server.ui" endre avhengigheten til R-pakken "rapRegTemplate" til din egen R-pakke
 1. Endre DESCRIPTION-fila slik at den blir nogenlunde tilssvarende den som finnes i "rapRegTemplate", særlig det som er gitt under "Depends:", "Imports:" og "Remotes:"
-1. Bygg, installÃ©r og last pakken i R
-1. Test gjerne at innebygget Shiny-applikasjon fungerer pÃ¥ samme vis som i prosjektet "rapRegTemplate"
+1. Bygg, installer og last pakken i R
+1. Test gjerne at innebygget Shiny-applikasjon fungerer på samme vis som i prosjektet "rapRegTemplate"
 
 ## Last registerdata
 ### Alternativ 1: med Docker for Rapporteket
@@ -41,7 +41,7 @@ Denne delen er satt som valgfri men kan likevel være relevant, særlig om det e
 1. Se på de tre delene av funksjonen som definerer registernavn og sql-spørringen samt den som bruker de to forrige til å hente data (og som returnerer ei dataramme fra funksjonen)
 1. Sjekk at egen konfigurasjon (i fila /home/rstudio/rap_config) er i henhold til det datagrunnlaget som er gjort tilgjengelig
 1. Endre i SQL-spørringen slik at den er i henhold til datagrunnlaget som ønskes benyttet
-1. PrÃ¸v funksjonen fra kommandolinja (Console i RStudio), _e.g._ `df <- getRegData("navn_på_register")`
+1. Prøv funksjonen fra kommandolinja (Console i RStudio), _e.g._ `df <- getRegData("navn_på_register")`
 1. Sjekk at du får returnert ei dataramme med X observasjoner for Y variabler, _e.g._ `attributes(df)`
 
 ### Alternativ 2: uten Docker for Rapporteket
