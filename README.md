@@ -17,10 +17,10 @@ Beskrivelsen under er ikke nødvendigvis utfyllende og forutsetter kjennskap til
 
 
 ## Prøv templatet
-1. Installer pakken [rapRegTemplate](https://github.com/Rapporteket/rapRegTemplate) i RStudio (`devtools::install_github("Rapporteket/rapRegTemplate")`)
+1. Installér pakken [rapRegTemplate](https://github.com/Rapporteket/rapRegTemplate) i RStudio (`devtools::install_github("Rapporteket/rapRegTemplate")`)
 1. Hent ned prosjektet [rapRegTemplate](https://github.com/Rapporteket/rapRegTemplate) til RStudio (for mer info, se [her](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects))
 1. Åpne fila inst/shinyApps/app1/ui.R og start Shiny-applikasjonen ("Run App")
-1. Naviger i applikasjonen for å se på struktur og farger (innhold mangler)
+1. Navigér i applikasjonen for å se på struktur og farger (innhold mangler)
 
 ## Valgfritt: lag ditt eget prosjekt basert på templatet
 Denne delen er satt som valgfri men kan likevel være relevant, særlig om det er ønskelig å benytte templatetet som utgangspunkt for etablering av nye registre på Rapporteket.
@@ -32,7 +32,7 @@ Denne delen er satt som valgfri men kan likevel være relevant, særlig om det e
 1. Kopier inn alle filer fra katalogene "inst/" og "R/" i "rapRegTemplate" og legg disse i tilsvarende kataloger i den nye pakken
 1. I toppen av "server.ui" endre avhengigheten til R-pakken "rapRegTemplate" til din egen R-pakke
 1. Endre DESCRIPTION-fila slik at den blir nogenlunde tilssvarende den som finnes i "rapRegTemplate", særlig det som er gitt under "Depends:", "Imports:" og "Remotes:"
-1. Bygg, installer og last pakken i R
+1. Bygg, installér og last pakken i R
 1. Test gjerne at innebygget Shiny-applikasjon fungerer på samme vis som i prosjektet "rapRegTemplate"
 
 ## Last registerdata
