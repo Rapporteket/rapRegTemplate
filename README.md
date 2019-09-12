@@ -7,6 +7,10 @@ output:
     keep_md: yes
 ---
 
+<!-- badges: start -->
+[![Travis build status](https://travis-ci.org/Rapporteket/rapRegTemplate.svg?branch=master)](https://travis-ci.org/Rapporteket/rapRegTemplate)
+<!-- badges: end -->
+  
 # Lag et register i Rapporteket
 Beskrivelsen under er ikke nødvendigvis utfyllende og forutsetter kjennskap til RStudio og bruk av git og GitHub. Som en ekstra støtte anbefales [R pacakges](http://r-pkgs.had.co.nz/) av Hadley Wickham og spesielt [beskrivelsen av git og GitHub](http://r-pkgs.had.co.nz/git.html#git-rstudio).
 
