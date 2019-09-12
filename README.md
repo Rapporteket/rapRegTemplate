@@ -12,8 +12,9 @@ output:
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/Rapporteket/rapRegTemplate?branch=master&svg=true)](https://ci.appveyor.com/project/Rapporteket/rapRegTemplate)
 <!-- badges: end -->
   
-# Lag et register i Rapporteket
+# Lag et register i Rapporteket <img src="man/figures/logo.svg" align="right" height="150" />
 Beskrivelsen under er ikke nÃ¸dvendigvis utfyllende og forutsetter kjennskap til RStudio og bruk av git og GitHub. Som en ekstra støtte anbefales [R pacakges](http://r-pkgs.had.co.nz/) av Hadley Wickham og spesielt [beskrivelsen av git og GitHub](http://r-pkgs.had.co.nz/git.html#git-rstudio).
+
 
 ## Prøv templatet
 1. InstallÃ©r pakken [rapRegTemplate](https://github.com/Rapporteket/rapRegTemplate) i RStudio (`devtools::install_github("Rapporteket/rapRegTemplate")`)
