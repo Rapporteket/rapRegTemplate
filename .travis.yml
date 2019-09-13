@@ -3,12 +3,7 @@
 language: R
 cache: packages
 
-
-<<<<<<< HEAD
 before_cache: Rscript -e 'remotes::install_cran("pkgdown")'
-=======
->>>>>>> c33af08721de4bb77586b17a892006566c576207
-
 deploy:
   provider: script
   script: Rscript -e 'pkgdown::deploy_site_github()'
