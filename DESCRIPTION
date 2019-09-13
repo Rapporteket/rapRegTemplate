@@ -7,8 +7,7 @@ Maintainer: The package maintainer <yourself@somewhere.net>
 Description: More about what it does (maybe more than one line)
     Use four spaces when indenting paragraphs within the Description.
 Depends:
-  R (>= 3.5.0),
-  rapbase (>= 1.8.0)
+  R (>= 3.5.0)
 Imports:
   DT,
   kableExtra,
@@ -16,8 +15,6 @@ Imports:
   rapbase,
   rmarkdown,
   shiny
-Remotes:
-  Rapporteket/rapbase
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
