@@ -33,14 +33,14 @@ server <- function(input, output, session) {
 
   # Figur og tabell
   ## Figur
-  # output$distPlot <- renderPlot({
-  #   makeHist(df = regData, var = input$var, bins = input$bins)
-  # })
+  #output$distPlot <- renderPlot({
+  #  makeHist(df = regData, var = input$var, bins = input$bins)
+  #})
 
   ## Tabell
-  # output$distTable <- renderTable({
-  #   makeHist(df = regData, var = input$var, bins = input$bins, makeTable = TRUE)
-  # })
+  #output$distTable <- renderTable({
+  #  makeHist(df = regData, var = input$var, bins = input$bins, makeTable = TRUE)
+  #})
 
 
   # Samlerapport
@@ -81,17 +81,19 @@ server <- function(input, output, session) {
   ## lag tabell over gjeldende status for abonnement
   output$activeSubscriptions <- DT::renderDataTable(
     rv$subscriptionTab, server = FALSE, escape = FALSE, selection = 'none',
-    options = list(dom = 't')
+    options = list(dom = 'tp', ordning = FALSE), rownames = FALSE
   )
 
   ## lag side som viser status for abonnement, også når det ikke finnes noen
   output$subscriptionContent <- renderUI({
-    userName <- rapbase::getUserName(session)
+    userFullName <- rapbase::getUserFullName(session)
+    userEmail <- rapbase::getUserEmail(session)
     if (length(rv$subscriptionTab) == 0) {
-      p(paste("Ingen aktive abonnement for", userName))
+      p(paste("Ingen aktive abonnement for", userFullName))
     } else {
       tagList(
-        p(paste0("Aktive abonnement som sendes per epost til ", userName, ":")),
+        p(paste0("Aktive abonnement som sendes per epost til ", userFullName,
+                 "(",userEmail, "):")),
         DT::dataTableOutput("activeSubscriptions")
       )
     }
@@ -101,10 +103,14 @@ server <- function(input, output, session) {
   observeEvent (input$subscribe, {
     package <- "rapRegTemplate"
     owner <- getUserName(session)
+    interval <- strsplit(input$subscriptionFreq, "-")[[1]][2]
+    intervalName <- strsplit(input$subscriptionFreq, "-")[[1]][1]
     runDayOfYear <- rapbase::makeRunDayOfYearSequence(
-      interval = input$subscriptionFreq
-    )
-    email <- "test@test.no" # need new function i rapbase
+      interval = interval)
+
+    rapbase::getUserEmail(session)
+    organization <- rapbase::getUserReshId(session)
+
     if (input$subscriptionRep == "Samlerapport1") {
       synopsis <- "Automatisk samlerapport1"
       fun <- "samlerapport1Fun"
@@ -121,7 +127,9 @@ server <- function(input, output, session) {
     rapbase::createAutoReport(synopsis = synopsis, package = package,
                               fun = fun, paramNames = paramNames,
                               paramValues = paramValues, owner = owner,
-                              email = email, runDayOfYear = runDayOfYear)
+                              email = email, organization = organization,
+                              runDayOfYear = runDayOfYear,
+                              interval = interval, intervalName = intervalName)
     rv$subscriptionTab <- rapbase::makeUserSubscriptionTab(session)
   })
 
@@ -131,4 +139,7 @@ server <- function(input, output, session) {
     rapbase::deleteAutoReport(selectedRepId)
     rv$subscriptionTab <- rapbase::makeUserSubscriptionTab(session)
   })
+
+
+
 }
