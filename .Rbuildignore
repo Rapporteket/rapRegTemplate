@@ -7,4 +7,5 @@
 ^pkgdown$
 ^LICENSE\.md$
 ^Rprofile.site$
+^Dockerfile$
 
