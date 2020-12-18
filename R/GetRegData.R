@@ -8,8 +8,6 @@
 
 getRegData <- function(registryName) {
 
-  dbType <- "mysql"
-
   query <- "
 SELECT
   AvdRESH AS Avdeling,
@@ -20,7 +18,6 @@ GROUP BY
   AvdRESH;
 "
 
-  regData <- rapbase::LoadRegData(registryName, query, dbType)
+  rapbase::loadRegData(registryName, query)
 
-  return(regData)
 }

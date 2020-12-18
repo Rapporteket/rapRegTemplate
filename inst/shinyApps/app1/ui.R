@@ -1,4 +1,5 @@
 library(shiny)
+library(shinyalert)
 library(rapbase)
 
 addResourcePath('rap', system.file('www', package='rapbase'))
@@ -6,16 +7,20 @@ regTitle = "rapRegTemplate"
 
 ui <- tagList(
   navbarPage(
-    title = div(img(src="rap/logo.svg", alt="Rapporteket", height="26px"),
+    title = div(a(includeHTML(system.file("www/logo.svg",
+                                          package = "rapbase"))),
                 regTitle),
     windowTitle = regTitle,
     theme = "rap/bootstrap.css",
+    id = "tabs",
 
     tabPanel("Veiledning",
       mainPanel(width = 12,
         htmlOutput("veiledning", inline = TRUE),
+        useShinyalert(),
         appNavbarUserWidget(user = uiOutput("appUserName"),
-                            organization = uiOutput("appOrgName"))
+                            organization = uiOutput("appOrgName"),
+                            addUserInfo = TRUE)
       )
     ),
     tabPanel("Figur og tabell"

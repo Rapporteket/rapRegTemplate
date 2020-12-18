@@ -20,10 +20,18 @@ server <- function(input, output, session) {
       shiny::HTML()
   }
 
-  # widget
-  output$appUserName <- renderText(getUserName(session))
+  # Brukerinformasjon i menylinja (navbar)
+  output$appUserName <- renderText(paste(getUserFullName(session),
+                                         getUserRole(session), sep = ", "))
   output$appOrgName <- renderText(getUserReshId(session))
-
+  userInfo <- rapbase::howWeDealWithPersonalData(session,
+                                                 callerPkg = "rapRegTemplate")
+  observeEvent(input$userInfo, {
+    shinyalert("Dette vet Rapporteket om deg:", userInfo,
+               type = "", imageUrl = "rap/logo.svg",
+               closeOnEsc = TRUE, closeOnClickOutside = TRUE,
+               html = TRUE, confirmButtonText = rapbase::noOptOutOk())
+  })
 
   # Veiledning
   output$veiledning <- renderUI({
