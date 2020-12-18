@@ -79,6 +79,30 @@ ui <- tagList(
       #     uiOutput("subscriptionContent")
       #   )
       # )
+    ),
+    tabPanel("Utsending"
+      # ,
+      # sidebarLayout(
+      #   sidebarPanel(width = 3,
+      #     selectInput("dispatchmentRep", "Rapport:",
+      #                 c("Samlerapport1", "Samlerapport2")),
+      #     selectInput("dispatchmentFreq", "Frekvens:",
+      #                 list(Årlig = "Årlig-year",
+      #                      Kvartalsvis = "Kvartalsvis-quarter",
+      #                      Månedlig = "Månedlig-month",
+      #                      Ukentlig = "Ukentlig-week",
+      #                      Daglig = "Daglig-DSTday"),
+      #                 selected = "Månedlig-month"),
+      #     textInput("email", "Epostmottakere:"),
+      #     uiOutput("handleEmailControls"),
+      #     htmlOutput("recipients"),
+      #     tags$hr(),
+      #     actionButton("dispatch", "Lag utsending!")
+      #   ),
+      #   mainPanel(
+      #     uiOutput("dispatchmentContent")
+      #   )
+      # )
     )
 
   ) # navbarPage
