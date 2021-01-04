@@ -97,7 +97,8 @@ ui <- tagList(
       #     uiOutput("handleEmailControls"),
       #     htmlOutput("recipients"),
       #     tags$hr(),
-      #     actionButton("dispatch", "Lag utsending!")
+      #     actionButton("dispatch", "Lag utsending!",
+      #                  icon = shiny::icon("pencil"))
       #   ),
       #   mainPanel(
       #     uiOutput("dispatchmentContent")
