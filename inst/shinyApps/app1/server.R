@@ -147,16 +147,18 @@ server <- function(input, output, session) {
   ## reaktive verdier for å holde rede på endringer som skjer mens
   ## applikasjonen kjører
   dispatchment <- reactiveValues(
-    tab = rapbase::makeRegDispatchmentTab(session = session)
+    tab = rapbase::makeRegDispatchmentTab(session = session),
+    freq = "Månedlig-month",
+    email = vector()
   )
-  sendTo <- reactiveValues(email = vector())
 
   ## observér og foreta endringer mens applikasjonen kjører
-  observeEvent(input$doAddEmail, {
-    sendTo$email <- c(sendTo$email, input$email)
+  observeEvent(input$addEmail, {
+    dispatchment$email <- c(dispatchment$email, input$email)
   })
-  observeEvent(input$doDelEmail, {
-    sendTo$email <- sendTo$email[!sendTo$email == input$email]
+  observeEvent(input$delEmail, {
+    dispatchment$email <-
+      dispatchment$email[!dispatchment$email == input$email]
   })
   observeEvent (input$dispatch, {
     package <- "rapRegTemplate"
@@ -167,7 +169,7 @@ server <- function(input, output, session) {
     runDayOfYear <- rapbase::makeRunDayOfYearSequence(
       interval = interval)
 
-    email <- sendTo$email
+    email <- dispatchment$email
     organization <- rapbase::getUserReshId(session)
 
     if (input$dispatchmentRep == "Samlerapport1") {
@@ -192,25 +194,45 @@ server <- function(input, output, session) {
     dispatchment$tab <- rapbase::makeRegDispatchmentTab(session)
   })
 
+  ## ui: velg frekvens
+  output$freq <- renderUI({
+    selectInput("dispatchmentFreq", "Frekvens:",
+                list(Årlig = "Årlig-year",
+                      Kvartalsvis = "Kvartalsvis-quarter",
+                      Månedlig = "Månedlig-month",
+                      Ukentlig = "Ukentlig-week",
+                      Daglig = "Daglig-DSTday"),
+                selected = dispatchment$freq)
+  })
+
   ## ui: legg til gyldig- og slett epost
-  output$handleEmailControls <- renderUI({
+  output$editEmail <- renderUI({
     if (!grepl("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
                input$email)) {
       tags$p("Angi ny mottaker over")
     } else {
-      if (input$email %in% sendTo$email) {
-        actionButton("doDelEmail", "Slett epostmottaker",
+      if (input$email %in% dispatchment$email) {
+        actionButton("delEmail", "Slett epostmottaker",
                      icon = shiny::icon("trash"))
       } else {
-        actionButton("doAddEmail", "Legg til epostmottaker",
+        actionButton("addEmail", "Legg til epostmottaker",
                      icon = shiny::icon("pencil"))
       }
     }
   })
 
   ## ui: vis valgte mottakere
-  output$recipients <- renderText(paste(sendTo$email, sep = "<br>"))
+  output$recipients <- renderText(paste(dispatchment$email, sep = "<br>"))
 
+  ## ui: lag ny utsending
+  output$makeDispatchment <- renderUI({
+    if (length(dispatchment$email) == 0) {
+      NULL
+    } else {
+      actionButton("dispatch", "Lag utsending",
+                   icon = shiny::icon("save"))
+    }
+  })
 
   ## lag tabell over gjeldende status for utsending
   output$activeDispatchments <- DT::renderDataTable(
@@ -228,6 +250,11 @@ server <- function(input, output, session) {
         DT::dataTableOutput("activeDispatchments")
       )
     }
+  })
+
+  # Rediger eksisterende utsending
+  observeEvent(input$editButton, {
+
   })
 
   # Slett eksisterende auto rapport (gjelder for alle typer, e.g. abb og utsen)
