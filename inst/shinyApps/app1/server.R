@@ -192,15 +192,18 @@ server <- function(input, output, session) {
     dispatchment$tab <- rapbase::makeRegDispatchmentTab(session)
   })
 
-  ## ui: legg til og slett epost
+  ## ui: legg til gyldig- og slett epost
   output$handleEmailControls <- renderUI({
-    if (input$email == "") {
+    if (!grepl("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
+               input$email)) {
       tags$p("Angi ny mottaker over")
     } else {
       if (input$email %in% sendTo$email) {
-        actionButton("doDelEmail", "Slett epostmottaker")
+        actionButton("doDelEmail", "Slett epostmottaker",
+                     icon = shiny::icon("trash"))
       } else {
-        actionButton("doAddEmail", "Legg til epostmottaker")
+        actionButton("doAddEmail", "Legg til epostmottaker",
+                     icon = shiny::icon("pencil"))
       }
     }
   })
