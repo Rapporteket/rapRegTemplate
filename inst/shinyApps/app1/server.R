@@ -83,12 +83,12 @@ server <- function(input, output, session) {
   # Abonnement
   ## rekative verdier for å holde rede på endringer som skjer mens
   ## applikasjonen kjører
-  rv <- reactiveValues(
-    subscriptionTab = rapbase::makeUserSubscriptionTab(session))
+  subscription <- reactiveValues(
+    tab = rapbase::makeUserSubscriptionTab(session))
 
   ## lag tabell over gjeldende status for abonnement
   output$activeSubscriptions <- DT::renderDataTable(
-    rv$subscriptionTab, server = FALSE, escape = FALSE, selection = 'none',
+    subscription$tab, server = FALSE, escape = FALSE, selection = 'none',
     options = list(dom = 'tp', ordning = FALSE), rownames = FALSE
   )
 
@@ -96,7 +96,7 @@ server <- function(input, output, session) {
   output$subscriptionContent <- renderUI({
     userFullName <- rapbase::getUserFullName(session)
     userEmail <- rapbase::getUserEmail(session)
-    if (length(rv$subscriptionTab) == 0) {
+    if (length(subscription$tab) == 0) {
       p(paste("Ingen aktive abonnement for", userFullName))
     } else {
       tagList(
@@ -117,7 +117,7 @@ server <- function(input, output, session) {
     runDayOfYear <- rapbase::makeRunDayOfYearSequence(
       interval = interval)
 
-    rapbase::getUserEmail(session)
+    email <- rapbase::getUserEmail(session)
     organization <- rapbase::getUserReshId(session)
 
     if (input$subscriptionRep == "Samlerapport1") {
@@ -139,7 +139,7 @@ server <- function(input, output, session) {
                               email = email, organization = organization,
                               runDayOfYear = runDayOfYear,
                               interval = interval, intervalName = intervalName)
-    rv$subscriptionTab <- rapbase::makeUserSubscriptionTab(session)
+    subscription$tab <- rapbase::makeUserSubscriptionTab(session)
   })
 
 
@@ -270,7 +270,6 @@ server <- function(input, output, session) {
     dispatchment$freq <- paste0(rep$intervalName, "-", rep$interval)
     dispatchment$email <- rep$email
     rapbase::deleteAutoReport(repId)
-    rv$subscriptionTab <- rapbase::makeUserSubscriptionTab(session)
     dispatchment$tab <- rapbase::makeRegDispatchmentTab(session)
 
   })
@@ -279,7 +278,7 @@ server <- function(input, output, session) {
   observeEvent(input$del_button, {
     repId <- strsplit(input$del_button, "_")[[1]][2]
     rapbase::deleteAutoReport(repId)
-    rv$subscriptionTab <- rapbase::makeUserSubscriptionTab(session)
+    subscription$tab <- rapbase::makeUserSubscriptionTab(session)
     dispatchment$tab <- rapbase::makeRegDispatchmentTab(session)
   })
 
