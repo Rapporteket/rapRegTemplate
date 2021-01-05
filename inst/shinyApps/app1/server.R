@@ -148,6 +148,7 @@ server <- function(input, output, session) {
   ## applikasjonen kjører
   dispatchment <- reactiveValues(
     tab = rapbase::makeRegDispatchmentTab(session = session),
+    report = "Automatisk samlerapport1",
     freq = "Månedlig-month",
     email = vector()
   )
@@ -172,14 +173,14 @@ server <- function(input, output, session) {
     email <- dispatchment$email
     organization <- rapbase::getUserReshId(session)
 
-    if (input$dispatchmentRep == "Samlerapport1") {
+    if (input$dispatchmentRep == "Automatisk samlerapport1") {
       synopsis <- "Automatisk samlerapport1"
       fun <- "samlerapport1Fun"
       paramNames <- c("p1", "p2")
       paramValues <- c("Alder", 1)
 
     }
-    if (input$dispatchmentRep == "Samlerapport2") {
+    if (input$dispatchmentRep == "Automatisk samlerapport2") {
       synopsis <- "Automatisk samlerapport2"
       fun <- "samlerapport2Fun"
       paramNames <- c("p1", "p2")
@@ -192,6 +193,14 @@ server <- function(input, output, session) {
                               runDayOfYear = runDayOfYear,
                               interval = interval, intervalName = intervalName)
     dispatchment$tab <- rapbase::makeRegDispatchmentTab(session)
+    dispatchment$email <- vector()
+  })
+
+  ## ui: velg rapport
+  output$report <- renderUI({
+    selectInput("dispatchmentRep", "Rapport:",
+                c("Automatisk samlerapport1", "Automatisk samlerapport2"),
+                selected = dispatchment$report)
   })
 
   ## ui: velg frekvens
@@ -209,7 +218,7 @@ server <- function(input, output, session) {
   output$editEmail <- renderUI({
     if (!grepl("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
                input$email)) {
-      tags$p("Angi ny mottaker over")
+      tags$p("Angi mottaker over")
     } else {
       if (input$email %in% dispatchment$email) {
         actionButton("delEmail", "Slett epostmottaker",
@@ -236,9 +245,10 @@ server <- function(input, output, session) {
 
   ## lag tabell over gjeldende status for utsending
   output$activeDispatchments <- DT::renderDataTable(
-    dispatchment$tab, server = FALSE, escape = FALSE, selection = 'none',
-    options = list(dom = 'tp', ordning = FALSE), rownames = FALSE
+        dispatchment$tab, server = FALSE, escape = FALSE, selection = 'none',
+        options = list(dom = 'tp', ordning = FALSE), rownames = FALSE
   )
+
 
   ## ui: lag side som viser status for utsending, også når det ikke finnes noen
   output$dispatchmentContent <- renderUI({
@@ -253,14 +263,22 @@ server <- function(input, output, session) {
   })
 
   # Rediger eksisterende utsending
-  observeEvent(input$editButton, {
+  observeEvent(input$edit_button, {
+    repId <- strsplit(input$edit_button, "_")[[1]][2]
+    rep <- rapbase::readAutoReportData()[[repId]]
+    dispatchment$report <- rep$synopsis
+    dispatchment$freq <- paste0(rep$intervalName, "-", rep$interval)
+    dispatchment$email <- rep$email
+    rapbase::deleteAutoReport(repId)
+    rv$subscriptionTab <- rapbase::makeUserSubscriptionTab(session)
+    dispatchment$tab <- rapbase::makeRegDispatchmentTab(session)
 
   })
 
   # Slett eksisterende auto rapport (gjelder for alle typer, e.g. abb og utsen)
   observeEvent(input$del_button, {
-    selectedRepId <- strsplit(input$del_button, "_")[[1]][2]
-    rapbase::deleteAutoReport(selectedRepId)
+    repId <- strsplit(input$del_button, "_")[[1]][2]
+    rapbase::deleteAutoReport(repId)
     rv$subscriptionTab <- rapbase::makeUserSubscriptionTab(session)
     dispatchment$tab <- rapbase::makeRegDispatchmentTab(session)
   })
