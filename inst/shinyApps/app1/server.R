@@ -14,9 +14,9 @@ server <- function(input, output, session) {
     system.file(srcFile, package="rapRegTemplate") %>%
       knitr::knit() %>%
       markdown::markdownToHTML(.,
-                               options = c('fragment_only',
-                                           'base64_images',
-                                           'highlight_code')) %>%
+                               options = c("fragment_only",
+                                           "base64_images",
+                                           "highlight_code")) %>%
       shiny::HTML()
   }
 
@@ -84,7 +84,7 @@ server <- function(input, output, session) {
   ## rekative verdier for å holde rede på endringer som skjer mens
   ## applikasjonen kjører
   subscription <- reactiveValues(
-    tab = rapbase::makeUserSubscriptionTab(session))
+    tab = rapbase::makeAutoReportTab(session, type = "subscription"))
 
   ## lag tabell over gjeldende status for abonnement
   output$activeSubscriptions <- DT::renderDataTable(
@@ -139,7 +139,8 @@ server <- function(input, output, session) {
                               email = email, organization = organization,
                               runDayOfYear = runDayOfYear,
                               interval = interval, intervalName = intervalName)
-    subscription$tab <- rapbase::makeUserSubscriptionTab(session)
+    subscription$tab <-
+      rapbase::makeAutoReportTab(session, type = "subscription")
   })
 
 
@@ -147,7 +148,7 @@ server <- function(input, output, session) {
   ## reaktive verdier for å holde rede på endringer som skjer mens
   ## applikasjonen kjører
   dispatchment <- reactiveValues(
-    tab = rapbase::makeRegDispatchmentTab(session = session),
+    tab = rapbase::makeAutoReportTab(session = session, type = "dispatchment"),
     report = "Automatisk samlerapport1",
     freq = "Månedlig-month",
     email = vector()
@@ -164,7 +165,8 @@ server <- function(input, output, session) {
   observeEvent (input$dispatch, {
     package <- "rapRegTemplate"
     type <- "dispatchment"
-    owner <- getUserName(session)
+    owner <- rapbase::getUserName(session)
+    ownerName <- rapbase::getUserFullName(session)
     interval <- strsplit(input$dispatchmentFreq, "-")[[1]][2]
     intervalName <- strsplit(input$dispatchmentFreq, "-")[[1]][1]
     runDayOfYear <- rapbase::makeRunDayOfYearSequence(
@@ -189,10 +191,12 @@ server <- function(input, output, session) {
     rapbase::createAutoReport(synopsis = synopsis, package = package,
                               type = type, fun = fun, paramNames = paramNames,
                               paramValues = paramValues, owner = owner,
+                              ownerName = ownerName,
                               email = email, organization = organization,
                               runDayOfYear = runDayOfYear,
                               interval = interval, intervalName = intervalName)
-    dispatchment$tab <- rapbase::makeRegDispatchmentTab(session)
+    dispatchment$tab <-
+      rapbase::makeAutoReportTab(session, type = "dispatchment")
     dispatchment$email <- vector()
   })
 
@@ -262,24 +266,34 @@ server <- function(input, output, session) {
     }
   })
 
-  # Rediger eksisterende utsending
+  # Rediger eksisterende auto rapport (alle typer)
   observeEvent(input$edit_button, {
     repId <- strsplit(input$edit_button, "_")[[1]][2]
     rep <- rapbase::readAutoReportData()[[repId]]
-    dispatchment$report <- rep$synopsis
-    dispatchment$freq <- paste0(rep$intervalName, "-", rep$interval)
-    dispatchment$email <- rep$email
-    rapbase::deleteAutoReport(repId)
-    dispatchment$tab <- rapbase::makeRegDispatchmentTab(session)
+    if (rep$type == "subscription") {
 
+    }
+    if (rep$type == "dispatchment") {
+      dispatchment$freq <- paste0(rep$intervalName, "-", rep$interval)
+      dispatchment$email <- rep$email
+      rapbase::deleteAutoReport(repId)
+      dispatchment$tab <-
+        rapbase::makeAutoReportTab(session, type = "dispatchment")
+      dispatchment$report <- rep$synopsis
+    }
+    if (rep$type == "bulletin") {
+
+    }
   })
 
-  # Slett eksisterende auto rapport (gjelder for alle typer, e.g. abb og utsen)
+  # Slett eksisterende auto rapport (alle typer)
   observeEvent(input$del_button, {
     repId <- strsplit(input$del_button, "_")[[1]][2]
     rapbase::deleteAutoReport(repId)
-    subscription$tab <- rapbase::makeUserSubscriptionTab(session)
-    dispatchment$tab <- rapbase::makeRegDispatchmentTab(session)
+    subscription$tab <-
+      rapbase::makeAutoReportTab(session, type = "subscription")
+    dispatchment$tab <-
+      rapbase::makeAutoReportTab(session, type = "dispatchment")
   })
 
 }
