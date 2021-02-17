@@ -89,7 +89,9 @@ server <- function(input, output, session) {
   ## lag tabell over gjeldende status for abonnement
   output$activeSubscriptions <- DT::renderDataTable(
     subscription$tab, server = FALSE, escape = FALSE, selection = 'none',
-    options = list(dom = 'tp', ordning = FALSE), rownames = FALSE
+    options = list(dom = 'tp', ordning = FALSE,
+                   columnDefs = list(list(visible = FALSE, targets = 6))),
+    rownames = FALSE
   )
 
   ## lag side som viser status for abonnement, også når det ikke finnes noen
@@ -101,7 +103,7 @@ server <- function(input, output, session) {
     } else {
       tagList(
         p(paste0("Aktive abonnement som sendes per epost til ", userFullName,
-                 "(",userEmail, "):")),
+                 ":")),
         DT::dataTableOutput("activeSubscriptions")
       )
     }
