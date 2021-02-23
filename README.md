@@ -10,6 +10,7 @@ output:
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.org/Rapporteket/rapRegTemplate.svg?branch=master)](https://travis-ci.org/Rapporteket/rapRegTemplate)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/Rapporteket/rapRegTemplate?branch=master&svg=true)](https://ci.appveyor.com/project/Rapporteket/rapRegTemplate)
+[![R build status](https://github.com/rapporteket/rapRegTemplate/workflows/R-CMD-check/badge.svg)](https://github.com/rapporteket/rapRegTemplate/actions)
 <!-- badges: end -->
   
 # Lag et register i Rapporteket <img src="man/figures/logo.svg" align="right" height="150" />
