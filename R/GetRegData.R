@@ -8,6 +8,7 @@
 
 getRegData <- function(registryName) {
 
+  # nocov start
   query <- "
 SELECT
   AvdRESH AS Avdeling,
@@ -19,5 +20,6 @@ GROUP BY
 "
 
   rapbase::loadRegData(registryName, query)
+  # nocov end
 
 }

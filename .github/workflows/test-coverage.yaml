@@ -1,7 +1,4 @@
 on:
-  push:
-    branches:
-      - clean-up
   pull_request:
     branches:
       - main

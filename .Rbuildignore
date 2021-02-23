@@ -8,5 +8,5 @@
 ^LICENSE\.md$
 ^Rprofile.site$
 ^Dockerfile$
-
+^\.lintr$
 ^\.github$

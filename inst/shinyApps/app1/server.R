@@ -9,9 +9,7 @@ server <- function(input, output, session) {
 
   # Gjenbrukbar funksjon for å bearbeide Rmd til html
   htmlRenderRmd <- function(srcFile, params = list()) {
-    # set param needed for report meta processing
-    # params <- list(tableFormat="html")
-    system.file(srcFile, package="rapRegTemplate") %>%
+    system.file(srcFile, package = "rapRegTemplate") %>%
       knitr::knit() %>%
       markdown::markdownToHTML(.,
                                options = c("fragment_only",
@@ -21,12 +19,14 @@ server <- function(input, output, session) {
   }
 
   # Brukerinformasjon i menylinja (navbar)
-  output$appUserName <- renderText(paste(getUserFullName(session),
-                                         getUserRole(session), sep = ", "))
-  output$appOrgName <- renderText(getUserReshId(session))
+  output$appUserName <-
+    shiny::renderText(
+      paste(rapbase::getUserFullName(session),
+            rapbase::getUserRole(session), sep = ", "))
+  output$appOrgName <- shiny::renderText(rapbase::getUserReshId(session))
   userInfo <- rapbase::howWeDealWithPersonalData(session,
                                                  callerPkg = "rapRegTemplate")
-  observeEvent(input$userInfo, {
+  shiny::observeEvent(input$userInfo, {
     shinyalert("Dette vet Rapporteket om deg:", userInfo,
                type = "", imageUrl = "rap/logo.svg",
                closeOnEsc = TRUE, closeOnClickOutside = TRUE,
@@ -41,25 +41,26 @@ server <- function(input, output, session) {
 
   # Figur og tabell
   ## Figur
-  #output$distPlot <- renderPlot({
+  # output$distPlot <- renderPlot({
   #  makeHist(df = regData, var = input$var, bins = input$bins)
-  #})
+  # })
 
   ## Tabell
   #output$distTable <- renderTable({
-  #  makeHist(df = regData, var = input$var, bins = input$bins, makeTable = TRUE)
+  #  makeHist(df = regData, var = input$var, bins = input$bins,
+  #           makeTable = TRUE)
   #})
 
 
   # Samlerapport
   ## vis
-  output$samlerapport <- renderUI({
+  output$samlerapport <- shiny::renderUI({
     htmlRenderRmd(srcFile = "samlerapport.Rmd",
                   params = list(var = input$varS, bins = input$binsS))
   })
 
   ## last ned
-  output$downloadSamlerapport <- downloadHandler(
+  output$downloadSamlerapport <- shiny::downloadHandler(
     filename = function() {
       "rapRegTemplateSamlerapport.html"
     },
@@ -83,37 +84,36 @@ server <- function(input, output, session) {
   # Abonnement
   ## rekative verdier for å holde rede på endringer som skjer mens
   ## applikasjonen kjører
-  subscription <- reactiveValues(
+  subscription <- shiny::reactiveValues(
     tab = rapbase::makeAutoReportTab(session, type = "subscription"))
 
   ## lag tabell over gjeldende status for abonnement
   output$activeSubscriptions <- DT::renderDataTable(
-    subscription$tab, server = FALSE, escape = FALSE, selection = 'none',
-    options = list(dom = 'tp', ordning = FALSE,
+    subscription$tab, server = FALSE, escape = FALSE, selection = "none",
+    options = list(dom = "tp", ordning = FALSE,
                    columnDefs = list(list(visible = FALSE, targets = 6))),
     rownames = FALSE
   )
 
   ## lag side som viser status for abonnement, også når det ikke finnes noen
-  output$subscriptionContent <- renderUI({
+  output$subscriptionContent <- shiny::renderUI({
     userFullName <- rapbase::getUserFullName(session)
-    userEmail <- rapbase::getUserEmail(session)
     if (length(subscription$tab) == 0) {
-      p(paste("Ingen aktive abonnement for", userFullName))
+      shiny::p(paste("Ingen aktive abonnement for", userFullName))
     } else {
-      tagList(
-        p(paste0("Aktive abonnement som sendes per epost til ", userFullName,
-                 ":")),
+      shiny::tagList(
+        shiny::p(paste0("Aktive abonnement som sendes per epost til ",
+                        userFullName, ":")),
         DT::dataTableOutput("activeSubscriptions")
       )
     }
   })
 
   ## nye abonnement
-  observeEvent (input$subscribe, {
+  shiny::observeEvent(input$subscribe, {
     package <- "rapRegTemplate"
     type <- "subscription"
-    owner <- getUserName(session)
+    owner <- rapbase::getUserName(session)
     interval <- strsplit(input$subscriptionFreq, "-")[[1]][2]
     intervalName <- strsplit(input$subscriptionFreq, "-")[[1]][1]
     runDayOfYear <- rapbase::makeRunDayOfYearSequence(
@@ -149,7 +149,7 @@ server <- function(input, output, session) {
   # Utsending
   ## reaktive verdier for å holde rede på endringer som skjer mens
   ## applikasjonen kjører
-  dispatchment <- reactiveValues(
+  dispatchment <- shiny::reactiveValues(
     tab = rapbase::makeAutoReportTab(session = session, type = "dispatchment"),
     report = "Automatisk samlerapport1",
     freq = "Månedlig-month",
@@ -157,14 +157,14 @@ server <- function(input, output, session) {
   )
 
   ## observér og foreta endringer mens applikasjonen kjører
-  observeEvent(input$addEmail, {
+  shiny::observeEvent(input$addEmail, {
     dispatchment$email <- c(dispatchment$email, input$email)
   })
-  observeEvent(input$delEmail, {
+  shiny::observeEvent(input$delEmail, {
     dispatchment$email <-
       dispatchment$email[!dispatchment$email == input$email]
   })
-  observeEvent (input$dispatch, {
+  shiny::observeEvent(input$dispatch, {
     package <- "rapRegTemplate"
     type <- "dispatchment"
     owner <- rapbase::getUserName(session)
@@ -203,73 +203,76 @@ server <- function(input, output, session) {
   })
 
   ## ui: velg rapport
-  output$report <- renderUI({
-    selectInput("dispatchmentRep", "Rapport:",
-                c("Automatisk samlerapport1", "Automatisk samlerapport2"),
-                selected = dispatchment$report)
+  output$report <- shiny::renderUI({
+    shiny::selectInput(
+      "dispatchmentRep", "Rapport:",
+      c("Automatisk samlerapport1", "Automatisk samlerapport2"),
+      selected = dispatchment$report)
   })
 
   ## ui: velg frekvens
-  output$freq <- renderUI({
-    selectInput("dispatchmentFreq", "Frekvens:",
-                list(Årlig = "Årlig-year",
-                      Kvartalsvis = "Kvartalsvis-quarter",
-                      Månedlig = "Månedlig-month",
-                      Ukentlig = "Ukentlig-week",
-                      Daglig = "Daglig-DSTday"),
-                selected = dispatchment$freq)
+  output$freq <- shiny::renderUI({
+    shiny::selectInput(
+      "dispatchmentFreq", "Frekvens:",
+      list(Årlig = "Årlig-year",
+            Kvartalsvis = "Kvartalsvis-quarter",
+            Månedlig = "Månedlig-month",
+            Ukentlig = "Ukentlig-week",
+            Daglig = "Daglig-DSTday"),
+      selected = dispatchment$freq)
   })
 
   ## ui: legg til gyldig- og slett epost
-  output$editEmail <- renderUI({
+  output$editEmail <- shiny::renderUI({
     if (!grepl("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
                input$email)) {
-      tags$p("Angi mottaker over")
+      shiny::tags$p("Angi mottaker over")
     } else {
       if (input$email %in% dispatchment$email) {
-        actionButton("delEmail", "Slett epostmottaker",
-                     icon = shiny::icon("trash"))
+        shiny::actionButton("delEmail", "Slett epostmottaker",
+                            icon = shiny::icon("trash"))
       } else {
-        actionButton("addEmail", "Legg til epostmottaker",
-                     icon = shiny::icon("pencil"))
+        shiny::actionButton("addEmail", "Legg til epostmottaker",
+                            icon = shiny::icon("pencil"))
       }
     }
   })
 
   ## ui: vis valgte mottakere
-  output$recipients <- renderText(paste(dispatchment$email, sep = "<br>"))
+  output$recipients <- shiny::renderText(paste(dispatchment$email,
+                                               sep = "<br>"))
 
   ## ui: lag ny utsending
-  output$makeDispatchment <- renderUI({
+  output$makeDispatchment <- shiny::renderUI({
     if (length(dispatchment$email) == 0) {
       NULL
     } else {
-      actionButton("dispatch", "Lag utsending",
-                   icon = shiny::icon("save"))
+      shiny::actionButton("dispatch", "Lag utsending",
+                          icon = shiny::icon("save"))
     }
   })
 
   ## lag tabell over gjeldende status for utsending
   output$activeDispatchments <- DT::renderDataTable(
-        dispatchment$tab, server = FALSE, escape = FALSE, selection = 'none',
-        options = list(dom = 'tp', ordning = FALSE), rownames = FALSE
+        dispatchment$tab, server = FALSE, escape = FALSE, selection = "none",
+        options = list(dom = "tp", ordning = FALSE), rownames = FALSE
   )
 
 
   ## ui: lag side som viser status for utsending, også når det ikke finnes noen
-  output$dispatchmentContent <- renderUI({
+  output$dispatchmentContent <- shiny::renderUI({
     if (length(dispatchment$tab) == 0) {
-      p("Det finnes ingen utendinger")
+      shiny::p("Det finnes ingen utendinger")
     } else {
-      tagList(
-        p("Aktive utsendinger:"),
+      shiny::tagList(
+        shiny::p("Aktive utsendinger:"),
         DT::dataTableOutput("activeDispatchments")
       )
     }
   })
 
   # Rediger eksisterende auto rapport (alle typer)
-  observeEvent(input$edit_button, {
+  shiny::observeEvent(input$edit_button, {
     repId <- strsplit(input$edit_button, "_")[[1]][2]
     rep <- rapbase::readAutoReportData()[[repId]]
     if (rep$type == "subscription") {
@@ -289,7 +292,7 @@ server <- function(input, output, session) {
   })
 
   # Slett eksisterende auto rapport (alle typer)
-  observeEvent(input$del_button, {
+  shiny::observeEvent(input$del_button, {
     repId <- strsplit(input$del_button, "_")[[1]][2]
     rapbase::deleteAutoReport(repId)
     subscription$tab <-
