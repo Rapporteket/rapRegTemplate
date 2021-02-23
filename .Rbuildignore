@@ -9,3 +9,4 @@
 ^Rprofile.site$
 ^Dockerfile$
 
+^\.github$
