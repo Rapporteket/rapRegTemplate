@@ -2,8 +2,8 @@ library(shiny)
 library(shinyalert)
 library(rapbase)
 
-addResourcePath('rap', system.file('www', package='rapbase'))
-regTitle = "rapRegTemplate"
+addResourcePath("rap", system.file("www", package = "rapbase"))
+regTitle <- "rapRegTemplate"
 
 ui <- tagList(
   navbarPage(
@@ -69,7 +69,8 @@ ui <- tagList(
       # ,
       # sidebarLayout(
       #   sidebarPanel(width = 3,
-      #     selectInput("subscriptionRep", "Rapport:", c("Samlerapport1", "Samlerapport2")),
+      #     selectInput("subscriptionRep", "Rapport:",
+      #                 c("Samlerapport1", "Samlerapport2")),
       #     selectInput("subscriptionFreq", "Frekvens:",
       #                 list(Årlig = "Årlig-year",
       #                      Kvartalsvis = "Kvartalsvis-quarter",
@@ -77,7 +78,8 @@ ui <- tagList(
       #                      Ukentlig = "Ukentlig-week",
       #                      Daglig = "Daglig-DSTday"),
       #                 selected = "Månedlig-month"),
-      #     actionButton("subscribe", "Bestill", icon = shiny::icon("paper-plane"))
+      #     actionButton("subscribe", "Bestill",
+      #                  icon = shiny::icon("paper-plane"))
       #   ),
       #   mainPanel(
       #     uiOutput("subscriptionContent")

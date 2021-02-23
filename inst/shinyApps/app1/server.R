@@ -9,9 +9,7 @@ server <- function(input, output, session) {
 
   # Gjenbrukbar funksjon for å bearbeide Rmd til html
   htmlRenderRmd <- function(srcFile, params = list()) {
-    # set param needed for report meta processing
-    # params <- list(tableFormat="html")
-    system.file(srcFile, package="rapRegTemplate") %>%
+    system.file(srcFile, package = "rapRegTemplate") %>%
       knitr::knit() %>%
       markdown::markdownToHTML(.,
                                options = c("fragment_only",
@@ -21,9 +19,9 @@ server <- function(input, output, session) {
   }
 
   # Brukerinformasjon i menylinja (navbar)
-  output$appUserName <- renderText(paste(getUserFullName(session),
+  output$appUserName <- shiny::renderText(paste(getUserFullName(session),
                                          getUserRole(session), sep = ", "))
-  output$appOrgName <- renderText(getUserReshId(session))
+  output$appOrgName <- shiny::renderText(getUserReshId(session))
   userInfo <- rapbase::howWeDealWithPersonalData(session,
                                                  callerPkg = "rapRegTemplate")
   observeEvent(input$userInfo, {
@@ -41,13 +39,14 @@ server <- function(input, output, session) {
 
   # Figur og tabell
   ## Figur
-  #output$distPlot <- renderPlot({
+  # output$distPlot <- renderPlot({
   #  makeHist(df = regData, var = input$var, bins = input$bins)
-  #})
+  # })
 
   ## Tabell
   #output$distTable <- renderTable({
-  #  makeHist(df = regData, var = input$var, bins = input$bins, makeTable = TRUE)
+  #  makeHist(df = regData, var = input$var, bins = input$bins,
+  #           makeTable = TRUE)
   #})
 
 
@@ -88,8 +87,8 @@ server <- function(input, output, session) {
 
   ## lag tabell over gjeldende status for abonnement
   output$activeSubscriptions <- DT::renderDataTable(
-    subscription$tab, server = FALSE, escape = FALSE, selection = 'none',
-    options = list(dom = 'tp', ordning = FALSE,
+    subscription$tab, server = FALSE, escape = FALSE, selection = "none",
+    options = list(dom = "tp", ordning = FALSE,
                    columnDefs = list(list(visible = FALSE, targets = 6))),
     rownames = FALSE
   )
@@ -97,7 +96,6 @@ server <- function(input, output, session) {
   ## lag side som viser status for abonnement, også når det ikke finnes noen
   output$subscriptionContent <- renderUI({
     userFullName <- rapbase::getUserFullName(session)
-    userEmail <- rapbase::getUserEmail(session)
     if (length(subscription$tab) == 0) {
       p(paste("Ingen aktive abonnement for", userFullName))
     } else {
@@ -110,7 +108,7 @@ server <- function(input, output, session) {
   })
 
   ## nye abonnement
-  observeEvent (input$subscribe, {
+  observeEvent(input$subscribe, {
     package <- "rapRegTemplate"
     type <- "subscription"
     owner <- getUserName(session)
@@ -164,7 +162,7 @@ server <- function(input, output, session) {
     dispatchment$email <-
       dispatchment$email[!dispatchment$email == input$email]
   })
-  observeEvent (input$dispatch, {
+  observeEvent(input$dispatch, {
     package <- "rapRegTemplate"
     type <- "dispatchment"
     owner <- rapbase::getUserName(session)
@@ -251,8 +249,8 @@ server <- function(input, output, session) {
 
   ## lag tabell over gjeldende status for utsending
   output$activeDispatchments <- DT::renderDataTable(
-        dispatchment$tab, server = FALSE, escape = FALSE, selection = 'none',
-        options = list(dom = 'tp', ordning = FALSE), rownames = FALSE
+        dispatchment$tab, server = FALSE, escape = FALSE, selection = "none",
+        options = list(dom = "tp", ordning = FALSE), rownames = FALSE
   )
 
 
