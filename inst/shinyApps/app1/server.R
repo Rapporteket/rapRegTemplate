@@ -204,34 +204,36 @@ server <- function(input, output, session) {
 
   ## ui: velg rapport
   output$report <- shiny::renderUI({
-    selectInput("dispatchmentRep", "Rapport:",
-                c("Automatisk samlerapport1", "Automatisk samlerapport2"),
-                selected = dispatchment$report)
+    shiny::selectInput(
+      "dispatchmentRep", "Rapport:",
+      c("Automatisk samlerapport1", "Automatisk samlerapport2"),
+      selected = dispatchment$report)
   })
 
   ## ui: velg frekvens
   output$freq <- shiny::renderUI({
-    selectInput("dispatchmentFreq", "Frekvens:",
-                list(Årlig = "Årlig-year",
-                      Kvartalsvis = "Kvartalsvis-quarter",
-                      Månedlig = "Månedlig-month",
-                      Ukentlig = "Ukentlig-week",
-                      Daglig = "Daglig-DSTday"),
-                selected = dispatchment$freq)
+    shiny::selectInput(
+      "dispatchmentFreq", "Frekvens:",
+      list(Årlig = "Årlig-year",
+            Kvartalsvis = "Kvartalsvis-quarter",
+            Månedlig = "Månedlig-month",
+            Ukentlig = "Ukentlig-week",
+            Daglig = "Daglig-DSTday"),
+      selected = dispatchment$freq)
   })
 
   ## ui: legg til gyldig- og slett epost
   output$editEmail <- shiny::renderUI({
     if (!grepl("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
                input$email)) {
-      tags$p("Angi mottaker over")
+      shiny::tags$p("Angi mottaker over")
     } else {
       if (input$email %in% dispatchment$email) {
-        actionButton("delEmail", "Slett epostmottaker",
-                     icon = shiny::icon("trash"))
+        shiny::actionButton("delEmail", "Slett epostmottaker",
+                            icon = shiny::icon("trash"))
       } else {
-        actionButton("addEmail", "Legg til epostmottaker",
-                     icon = shiny::icon("pencil"))
+        shiny::actionButton("addEmail", "Legg til epostmottaker",
+                            icon = shiny::icon("pencil"))
       }
     }
   })
