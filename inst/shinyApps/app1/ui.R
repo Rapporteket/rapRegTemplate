@@ -5,8 +5,8 @@ library(rapbase)
 addResourcePath("rap", system.file("www", package = "rapbase"))
 regTitle <- "rapRegTemplate"
 
-ui <- tagList(
-  navbarPage(
+ui <- shiny::tagList(
+  shiny::navbarPage(
     title = div(a(includeHTML(system.file("www/logo.svg",
                                           package = "rapbase"))),
                 regTitle),
@@ -14,16 +14,17 @@ ui <- tagList(
     theme = "rap/bootstrap.css",
     id = "tabs",
 
-    tabPanel("Veiledning",
-      mainPanel(width = 12,
-        htmlOutput("veiledning", inline = TRUE),
-        useShinyalert(),
-        appNavbarUserWidget(user = uiOutput("appUserName"),
-                            organization = uiOutput("appOrgName"),
-                            addUserInfo = TRUE)
+    shiny::tabPanel("Veiledning",
+      shiny::mainPanel(width = 12,
+        shiny::htmlOutput("veiledning", inline = TRUE),
+        shinyalert::useShinyalert(),
+        rapbase::appNavbarUserWidget(
+          user = uiOutput("appUserName"),
+          organization = uiOutput("appOrgName"),
+          addUserInfo = TRUE)
       )
     ),
-    tabPanel("Figur og tabell"
+    shiny::tabPanel("Figur og tabell"
       # ,
       # sidebarLayout(
       #   sidebarPanel(width = 3,
@@ -44,7 +45,7 @@ ui <- tagList(
       #   )
       # )
     ),
-    tabPanel("Samlerapport"
+    shiny::tabPanel("Samlerapport"
         # ,
         # tabPanel("Fordeling av mpg",
         #   sidebarLayout(
@@ -65,7 +66,7 @@ ui <- tagList(
         #   )
         # )
       ),
-    tabPanel("Abonnement"
+    shiny::tabPanel("Abonnement"
       # ,
       # sidebarLayout(
       #   sidebarPanel(width = 3,
@@ -86,7 +87,7 @@ ui <- tagList(
       #   )
       # )
     ),
-    tabPanel("Utsending"
+    shiny::tabPanel("Utsending"
       # ,
       # sidebarLayout(
       #   sidebarPanel(width = 3,
