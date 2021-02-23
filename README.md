@@ -1,12 +1,3 @@
----
-title: 'Veiledning'
-author: 'Rapporteket'
-date: '24. mai 2019'
-output: 
-  html_document: 
-    keep_md: yes
----
-
 <!-- badges: start -->
 [![Version](https://img.shields.io/github/v/release/rapporteket/rapRegTemplate?sort=semver)](https://github.com/rapporteket/rapRegTemplate/releases)
 [![R build status](https://github.com/rapporteket/rapRegTemplate/workflows/R-CMD-check/badge.svg)](https://github.com/rapporteket/rapRegTemplate/actions)
