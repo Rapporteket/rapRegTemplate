@@ -7,11 +7,11 @@ Authors@R: c(
            family = "Edvardsen",
            role = c("aut", "cre"),
            email = "biorakel@gmail.com",
-           comment = c(ORCID = "0000-0002-5210-3656"))
+           comment = c(ORCID = "0000-0002-5210-3656")))
 Maintainer: Are Edvardsen <biorakel@gmail.com>
 Description: Boilerplate R code for making result services for registries at
   Rapporteket. May be used as templalte for establishin such services or as
-  plain exercise for training purposes
+  plain exercise for training purposes.
 Depends:
   R (>= 3.5.0)
 Imports:
