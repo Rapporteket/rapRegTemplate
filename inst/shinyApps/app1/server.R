@@ -255,7 +255,7 @@ server <- function(input, output, session) {
   ## lag tabell over gjeldende status for utsending
   output$activeDispatchments <- DT::renderDataTable(
         dispatchment$tab, server = FALSE, escape = FALSE, selection = "none",
-        options = list(dom = "tp", ordning = FALSE), rownames = FALSE
+        options = list(dom = "tp", ordering = FALSE), rownames = FALSE
   )
 
 
