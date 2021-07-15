@@ -3,9 +3,9 @@ title: "Samlerapport"
 author: "Rapporteket"
 date: '`r format(Sys.time(), "%d. %B %Y")`'
 params:
+  type: "pdf"
   var: "mpg"
   bins: 5
-output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -33,8 +33,17 @@ Tabellen under er kjedelig, men illustrerer poenget:
 
 ```{r eksTab}
 dt <- mtcars[1:6, ][params$var]
-kable(dt) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+
+if (params$type == "html") {
+  t <- kable(dt) %>% 
+    kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+}
+
+if (params$type == "pdf") {
+  t <- kable(dt, format = "latex") 
+    
+}
+t
 ```
 
 
