@@ -60,13 +60,13 @@ server <- function(input, output, session) {
   output$downloadSamlerapport <- shiny::downloadHandler(
     filename = function() {
       basename(tempfile(pattern = "rapRegTemplateSamlerapport",
-                        fileext = ".pdf"))
+                        fileext = paste0(".", input$formatS)))
     },
     content = function(file) {
       srcFile <-
         normalizePath(system.file("samlerapport.Rmd", package = "rapRegTemplate"))
-      fn <- rapbase::renderRmd(srcFile, outputType = "pdf",
-                               params = list(type = "pdf",
+      fn <- rapbase::renderRmd(srcFile, outputType = input$formatS,
+                               params = list(type = input$formatS,
                                              var = input$varS,
                                              bins = input$binsS))
       file.rename(fn, file)
