@@ -46,35 +46,35 @@ ui <- shiny::tagList(
       # )
     ),
     shiny::tabPanel("Samlerapport"
-        ,
-        shiny::tabPanel("Fordeling av mpg",
-          shiny::sidebarLayout(
-            shiny::sidebarPanel(
-              width = 3,
-              shiny::selectInput(
-                inputId = "varS",
-                label = "Variabel:",
-                c("mpg", "disp", "hp", "drat", "wt", "qsec")),
-              shiny::sliderInput(
-                inputId = "binsS",
-                label = "Antall grupper:",
-                min = 1,
-                max = 10,
-                value = 5),
-              shiny::selectInput(
-                inputId = "formatS",
-                label = "Velg format for nedlasting:",
-                choices = list(PDF = "pdf", HTML = "html")
-              ),
-              shiny::downloadButton(
-                outputId = "downloadSamlerapport",
-                label = "Last ned!")
-            ),
-            shiny::mainPanel(
-              shiny::uiOutput("samlerapport")
-            )
-          )
-        )
+        # ,
+        # shiny::tabPanel("Fordeling av mpg",
+        #   shiny::sidebarLayout(
+        #     shiny::sidebarPanel(
+        #       width = 3,
+        #       shiny::selectInput(
+        #         inputId = "varS",
+        #         label = "Variabel:",
+        #         c("mpg", "disp", "hp", "drat", "wt", "qsec")),
+        #       shiny::sliderInput(
+        #         inputId = "binsS",
+        #         label = "Antall grupper:",
+        #         min = 1,
+        #         max = 10,
+        #         value = 5),
+        #       shiny::selectInput(
+        #         inputId = "formatS",
+        #         label = "Velg format for nedlasting:",
+        #         choices = list(PDF = "pdf", HTML = "html")
+        #       ),
+        #       shiny::downloadButton(
+        #         outputId = "downloadSamlerapport",
+        #         label = "Last ned!")
+        #     ),
+        #     shiny::mainPanel(
+        #       shiny::uiOutput("samlerapport")
+        #     )
+        #   )
+        # )
       ),
     shiny::tabPanel("Abonnement"
       # ,
