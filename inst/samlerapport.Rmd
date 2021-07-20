@@ -37,23 +37,16 @@ Tabell \@ref(tab:eksTab) under er kjedelig, men illustrerer poenget.
 
 ```{r eksTab}
 dt <- mtcars[1:6, ][params$var]
-cap <- paste("Eksempeltabell som viser", params$var, "fra mtcars.")
-label <- "eksTab"
+cap <- paste("Eksempeltabell som viser variabelen", params$var, "fra mtcars.")
 
-if (params$type == "html") {
-  t <- rapbase::mst(tab = dt, type = "html", cap = cap, label = label)
-}
+rapbase::mst(tab = dt, type = params$type, cap = cap)
 
-if (params$type == "pdf") {
-  t <- rapbase::mst(tab = dt, type = "latex", cap = cap, label = label)  
-}
-t
 ```
 
 
 ## Eksempel på figur
 Samlerapporter kan også inneholde figurer basert på data slik som vist i Figur \@ref(fig:eksFig).
 
-```{r eksFig, echo=FALSE, fig.cap=paste("Eksempelfigur som viser frekvensfordelingen av", params$var, "fra mtcars.")}
+```{r eksFig, echo=FALSE, out.width="80%", fig.cap=paste("Eksempelfigur som viser frekvensfordelingen av", params$var, "fra mtcars.")}
 f <- rapRegTemplate::makeHist(df = mtcars, var = params$var, bins = params$bins, makeTable = FALSE)
 ```
