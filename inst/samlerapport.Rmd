@@ -1,15 +1,17 @@
 ---
+params:
+  type: pdf
+  var: mpg
+  bins: 5
 title: Samlerapport
 subtitle: en eksempelrapport fra rapRegTemplate
 author: Rapporteket
 userFullName: Tore Tester
 registryName: SKDE
+reglogo: '`r system.file("logo.png", package = "rapRegTemplate")`'
+regtext: '`r readLines(system.file("shortDescription.txt", package = "rapRegTemplate"))`'
 date: '`r format(Sys.time(), "%d. %B %Y")`'
 abstract: Om rapporten trenger et sammendrag kan det settes inn her
-params:
-  type: pdf
-  var: mpg
-  bins: 5
 ---
 
 ```{r setup, include=FALSE}
