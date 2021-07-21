@@ -7,25 +7,14 @@ server <- function(input, output, session) {
   # Last inn data
   # regData <- getFakeRegData()
 
-  # Gjenbrukbar funksjon for å bearbeide Rmd til html
-  htmlRenderRmd <- function(srcFile, params = list()) {
-    system.file(srcFile, package = "rapRegTemplate") %>%
-      knitr::knit() %>%
-      markdown::markdownToHTML(.,
-                               options = c("fragment_only",
-                                           "base64_images",
-                                           "highlight_code")) %>%
-      shiny::HTML()
-  }
-
   # Brukerinformasjon i menylinja (navbar)
   output$appUserName <-
     shiny::renderText(
       paste(rapbase::getUserFullName(session),
             rapbase::getUserRole(session), sep = ", "))
   output$appOrgName <- shiny::renderText(rapbase::getUserReshId(session))
-  userInfo <- rapbase::howWeDealWithPersonalData(session,
-                                                 callerPkg = "rapRegTemplate")
+  userInfo <-
+    rapbase::howWeDealWithPersonalData(session, callerPkg = "rapRegTemplate")
   shiny::observeEvent(input$userInfo, {
     shinyalert("Dette vet Rapporteket om deg:", userInfo,
                type = "", imageUrl = "rap/logo.svg",
@@ -35,7 +24,10 @@ server <- function(input, output, session) {
 
   # Veiledning
   output$veiledning <- renderUI({
-    htmlRenderRmd("veiledning.Rmd")
+    rapbase::renderRmd(
+      system.file("veiledning.Rmd", package = "rapRegTemplate"),
+      outputType = "html_fragment"
+    )
   })
 
 
@@ -55,28 +47,29 @@ server <- function(input, output, session) {
   # Samlerapport
   ## vis
   output$samlerapport <- shiny::renderUI({
-    htmlRenderRmd(srcFile = "samlerapport.Rmd",
-                  params = list(var = input$varS, bins = input$binsS))
+    rapbase::renderRmd(
+      system.file("samlerapport.Rmd", package = "rapRegTemplate"),
+      outputType = "html_fragment",
+      params = list(type = "html",
+                    var = input$varS,
+                    bins = input$binsS)
+    )
   })
 
   ## last ned
   output$downloadSamlerapport <- shiny::downloadHandler(
     filename = function() {
-      "rapRegTemplateSamlerapport.html"
+      basename(tempfile(pattern = "rapRegTemplateSamlerapport",
+                        fileext = paste0(".", input$formatS)))
     },
     content = function(file) {
-      srcFile <- normalizePath(system.file("samlerapport.Rmd",
-                                           package = "rapRegTemplate"))
-      tmpFile <- "tmpSamlerapport.Rmd"
-      owd <- setwd(tempdir())
-      on.exit(setwd(owd))
-      file.copy(srcFile, tmpFile, overwrite = TRUE)
-      out <- rmarkdown::render(tmpFile,
-                               output_format =  rmarkdown::html_document(),
-                               params = list(var = input$varS,
-                                             bins = input$binsS),
-                               output_dir = tempdir())
-      file.rename(out, file)
+      srcFile <-
+        normalizePath(system.file("samlerapport.Rmd", package = "rapRegTemplate"))
+      fn <- rapbase::renderRmd(srcFile, outputType = input$formatS,
+                               params = list(type = input$formatS,
+                                             var = input$varS,
+                                             bins = input$binsS))
+      file.rename(fn, file)
     }
   )
 

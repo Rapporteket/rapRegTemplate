@@ -70,7 +70,7 @@ Utgangspunket for de neste stegene er bruk av det innebygde datasettet "mtcars",
 Tips til oppgave B:
 ```{r eval=FALSE}
 ## Sammendrag
-output$distSummary <- renderTable({
+output$distSummary <- shiny::renderTable({
   as.data.frame(sapply(regData, summary))[input$var]
 }, rownames = TRUE)
 ```
