@@ -28,6 +28,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -47,12 +49,6 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li>
@@ -61,7 +57,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="http://github.com/Rapporteket/rapRegTemplate/">
+  <a href="http://github.com/Rapporteket/rapRegTemplate/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -80,26 +76,25 @@
   <div class="contents col-md-9">
 
 
-<div id="lag-et-register-i-rapporteket-" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#lag-et-register-i-rapporteket-" class="anchor"></a>Lag et register i Rapporteket <img src="reference/figures/logo.svg" align="right" height="150">
+<div class="section level1">
+<div class="page-header"><h1 id="lag-et-register-i-rapporteket-">Lag et register i Rapporteket <img src="reference/figures/logo.svg" align="right" height="150"><a class="anchor" aria-label="anchor" href="#lag-et-register-i-rapporteket-"></a>
 </h1></div>
-<p>Beskrivelsen under er ikke nødvendigvis utfyllende og forutsetter kjennskap til RStudio og bruk av git og GitHub. Som en ekstra støtte anbefales <a href="http://r-pkgs.had.co.nz/">R pacakges</a> av Hadley Wickham og spesielt <a href="http://r-pkgs.had.co.nz/git.html#git-rstudio">beskrivelsen av git og GitHub</a>.</p>
-<div id="prøv-templatet" class="section level2">
-<h2 class="hasAnchor">
-<a href="#pr%C3%B8v-templatet" class="anchor"></a>Prøv templatet</h2>
-<ol>
-<li>Installér pakken <a href="https://github.com/Rapporteket/rapRegTemplate">rapRegTemplate</a> i RStudio (<code><a href="https://devtools.r-lib.org//reference/remote-reexports.html">devtools::install_github("Rapporteket/rapRegTemplate")</a></code>)</li>
-<li>Hent ned prosjektet <a href="https://github.com/Rapporteket/rapRegTemplate">rapRegTemplate</a> til RStudio (for mer info, se <a href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects">her</a>)</li>
+<p>Beskrivelsen under er ikke nødvendigvis utfyllende og forutsetter kjennskap til RStudio og bruk av git og GitHub. Som en ekstra støtte anbefales <a href="http://r-pkgs.had.co.nz/" class="external-link">R pacakges</a> av Hadley Wickham og spesielt <a href="http://r-pkgs.had.co.nz/git.html#git-rstudio" class="external-link">beskrivelsen av git og GitHub</a>.</p>
+<div class="section level2">
+<h2 id="prøv-templatet">Prøv templatet<a class="anchor" aria-label="anchor" href="#pr%C3%B8v-templatet"></a>
+</h2>
+<ol style="list-style-type: decimal">
+<li>Installér pakken <a href="https://github.com/Rapporteket/rapRegTemplate" class="external-link">rapRegTemplate</a> i RStudio (<code>devtools::install_github("Rapporteket/rapRegTemplate")</code>)</li>
+<li>Hent ned prosjektet <a href="https://github.com/Rapporteket/rapRegTemplate" class="external-link">rapRegTemplate</a> til RStudio (for mer info, se <a href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects" class="external-link">her</a>)</li>
 <li>Åpne fila inst/shinyApps/app1/ui.R og start Shiny-applikasjonen (“Run App”)</li>
 <li>Navigér i applikasjonen for å se på struktur og farger (innhold mangler)</li>
 </ol>
 </div>
-<div id="valgfritt-lag-ditt-eget-prosjekt-basert-på-templatet" class="section level2">
-<h2 class="hasAnchor">
-<a href="#valgfritt-lag-ditt-eget-prosjekt-basert-p%C3%A5-templatet" class="anchor"></a>Valgfritt: lag ditt eget prosjekt basert på templatet</h2>
+<div class="section level2">
+<h2 id="valgfritt-lag-ditt-eget-prosjekt-basert-på-templatet">Valgfritt: lag ditt eget prosjekt basert på templatet<a class="anchor" aria-label="anchor" href="#valgfritt-lag-ditt-eget-prosjekt-basert-p%C3%A5-templatet"></a>
+</h2>
 <p>Denne delen er satt som valgfri men kan likevel være relevant, særlig om det er ønskelig å benytte templatetet som utgangspunkt for etablering av nye registre på Rapporteket.</p>
-<ol>
+<ol style="list-style-type: decimal">
 <li>Lag et nytt prosjekt i RStudio som en R-pakke</li>
 <li>Gi pakken et navn som gjerne gjenspeiler overordnet funksjon i pakken, eksempelvis “testRegister”</li>
 <li>Valgfritt: hak gjerne av for “Create a git repository” også da det vil gi nyttig kunnskap når egne registre skal utvikles seinere</li>
@@ -111,41 +106,41 @@
 <li>Test gjerne at innebygget Shiny-applikasjon fungerer på samme vis som i prosjektet “rapRegTemplate”</li>
 </ol>
 </div>
-<div id="last-registerdata" class="section level2">
-<h2 class="hasAnchor">
-<a href="#last-registerdata" class="anchor"></a>Last registerdata</h2>
-<div id="alternativ-1-med-docker-for-rapporteket" class="section level3">
-<h3 class="hasAnchor">
-<a href="#alternativ-1-med-docker-for-rapporteket" class="anchor"></a>Alternativ 1: med Docker for Rapporteket</h3>
-<ol>
+<div class="section level2">
+<h2 id="last-registerdata">Last registerdata<a class="anchor" aria-label="anchor" href="#last-registerdata"></a>
+</h2>
+<div class="section level3">
+<h3 id="alternativ-1-med-docker-for-rapporteket">Alternativ 1: med Docker for Rapporteket<a class="anchor" aria-label="anchor" href="#alternativ-1-med-docker-for-rapporteket"></a>
+</h3>
+<ol style="list-style-type: decimal">
 <li>Åpne fila R/GetRegData.R</li>
 <li>Se på de tre delene av funksjonen som definerer registernavn og sql-spørringen samt den som bruker de to forrige til å hente data (og som returnerer ei dataramme fra funksjonen)</li>
 <li>Sjekk at egen konfigurasjon (i fila /home/rstudio/rap_config) er i henhold til det datagrunnlaget som er gjort tilgjengelig</li>
 <li>Endre i SQL-spørringen slik at den er i henhold til datagrunnlaget som ønskes benyttet</li>
 <li>Prøv funksjonen fra kommandolinja (Console i RStudio), <em>e.g.</em> <code>df &lt;- getRegData("navn_på_register")</code>
 </li>
-<li>Sjekk at du får returnert ei dataramme med X observasjoner for Y variabler, <em>e.g.</em> <code><a href="https://rdrr.io/r/base/attributes.html">attributes(df)</a></code>
+<li>Sjekk at du får returnert ei dataramme med X observasjoner for Y variabler, <em>e.g.</em> <code>attributes(df)</code>
 </li>
 </ol>
 </div>
-<div id="alternativ-2-uten-docker-for-rapporteket" class="section level3">
-<h3 class="hasAnchor">
-<a href="#alternativ-2-uten-docker-for-rapporteket" class="anchor"></a>Alternativ 2: uten Docker for Rapporteket</h3>
-<ol>
+<div class="section level3">
+<h3 id="alternativ-2-uten-docker-for-rapporteket">Alternativ 2: uten Docker for Rapporteket<a class="anchor" aria-label="anchor" href="#alternativ-2-uten-docker-for-rapporteket"></a>
+</h3>
+<ol style="list-style-type: decimal">
 <li>Åpne fila R/GetFakeRegData.R</li>
 <li>Se at funksjonen returnerer et kjedelig og irrelevant innebygget datasett :-(</li>
 <li>Prøv funksjonen fra kommandolinja (Console i RStudio), <em>e.g.</em> <code>df &lt;- getFakeRegData()</code>
 </li>
-<li>Sjekk at du får returnert ei dataramme med X observasjoner for Y variabler, <em>e.g.</em> <code><a href="https://rdrr.io/r/base/attributes.html">attributes(df)</a></code>
+<li>Sjekk at du får returnert ei dataramme med X observasjoner for Y variabler, <em>e.g.</em> <code>attributes(df)</code>
 </li>
 </ol>
 </div>
 </div>
-<div id="lag-innhold-i-shiny-applikasjonen-steg-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#lag-innhold-i-shiny-applikasjonen-steg-1" class="anchor"></a>Lag innhold i Shiny-applikasjonen, steg 1</h2>
+<div class="section level2">
+<h2 id="lag-innhold-i-shiny-applikasjonen-steg-1">Lag innhold i Shiny-applikasjonen, steg 1<a class="anchor" aria-label="anchor" href="#lag-innhold-i-shiny-applikasjonen-steg-1"></a>
+</h2>
 <p>Utgangspunket for de neste stegene er bruk av det innebygde datasettet “mtcars”, jf. “Alternativ 2” over.</p>
-<ol>
+<ol style="list-style-type: decimal">
 <li>I shiny-applikasjonen, naviger til arkfanen “Figur og tabell”</li>
 <li>Åpne fila inst/shinyApps/app1/ui.R</li>
 <li>Bla ned til linja <code>tabPanel("Figur og tabell"</code>
@@ -156,10 +151,10 @@
 <li>Oppgave: gjør endringer i inst/shinyApps/app1/ui.R (på de linjene som nettopp er kommentert inn) slik at maks antall grupper endres fra 10 til 12 i applikasjonen</li>
 </ol>
 </div>
-<div id="lag-innhold-i-shiny-applikasjonen-steg-2" class="section level2">
-<h2 class="hasAnchor">
-<a href="#lag-innhold-i-shiny-applikasjonen-steg-2" class="anchor"></a>Lag innhold i Shiny-applikasjonen, steg 2</h2>
-<ol>
+<div class="section level2">
+<h2 id="lag-innhold-i-shiny-applikasjonen-steg-2">Lag innhold i Shiny-applikasjonen, steg 2<a class="anchor" aria-label="anchor" href="#lag-innhold-i-shiny-applikasjonen-steg-2"></a>
+</h2>
+<ol style="list-style-type: decimal">
 <li>Ãpne fila inst/shinyApps/app1/server.R</li>
 <li>Bla ned til kommentaren <code># Last inn data</code> og kommenter inn linja under</li>
 <li>Bla videre ned til kommentaren <code># Figur og tabell</code> og kommenter inn de linjene som ligger under <code>## Figur</code> og <code>## Tabell</code>, hhv</li>
@@ -174,46 +169,46 @@
 </ol>
 <p>Tips til oppgave B:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">## Sammendrag</span>
-<span class="va">output</span><span class="op">$</span><span class="va">distSummary</span> <span class="op">&lt;-</span> <span class="fu">renderTable</span><span class="op">(</span><span class="op">{</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">regData</span>, <span class="va">summary</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="va">input</span><span class="op">$</span><span class="va">var</span><span class="op">]</span>
-<span class="op">}</span>, rownames <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co">## Sammendrag</span></span>
+<span><span class="va">output</span><span class="op">$</span><span class="va">distSummary</span> <span class="op">&lt;-</span> <span class="fu">renderTable</span><span class="op">(</span><span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">regData</span>, <span class="va">summary</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="va">input</span><span class="op">$</span><span class="va">var</span><span class="op">]</span></span>
+<span><span class="op">}</span>, rownames <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div id="lag-innhold-i-shiny-applikasjonen-steg-3" class="section level2">
-<h2 class="hasAnchor">
-<a href="#lag-innhold-i-shiny-applikasjonen-steg-3" class="anchor"></a>Lag innhold i Shiny-applikasjonen, steg 3</h2>
+<div class="section level2">
+<h2 id="lag-innhold-i-shiny-applikasjonen-steg-3">Lag innhold i Shiny-applikasjonen, steg 3<a class="anchor" aria-label="anchor" href="#lag-innhold-i-shiny-applikasjonen-steg-3"></a>
+</h2>
 <p>Bruk samme tilnærming som over, men for “Samlerapport”. Her er det en del nye elementer, bl.a.</p>
 <ul>
 <li>bruk av en Rmd-fil som rapportmal</li>
 <li>funksjonalitet for nedlasting av rapporten</li>
 </ul>
 </div>
-<div id="lag-innhold-i-shiny-applikasjonen-steg-4" class="section level2">
-<h2 class="hasAnchor">
-<a href="#lag-innhold-i-shiny-applikasjonen-steg-4" class="anchor"></a>Lag innhold i Shiny-applikasjonen, steg 4</h2>
-<p>Denne delen forutsetter bruk av <a href="https://github.com/Rapporteket/docker">Docker for Rapporteket</a> eller tilsvarende utviklingsmiljø¸ som “simulerer” Rapporteket. Her skal hver enkelt bruker kunne bestille rutinemessig tilsending per epost av gitte rapporter, eksempelvis slik som samlerapporten over med predefinerte verdier for “Variabel” og “Antall grupper”. Tilnærmingen introduserer noen nye elementer, slik som:</p>
+<div class="section level2">
+<h2 id="lag-innhold-i-shiny-applikasjonen-steg-4">Lag innhold i Shiny-applikasjonen, steg 4<a class="anchor" aria-label="anchor" href="#lag-innhold-i-shiny-applikasjonen-steg-4"></a>
+</h2>
+<p>Denne delen forutsetter bruk av <a href="https://github.com/Rapporteket/docker" class="external-link">Docker for Rapporteket</a> eller tilsvarende utviklingsmiljø¸ som “simulerer” Rapporteket. Her skal hver enkelt bruker kunne bestille rutinemessig tilsending per epost av gitte rapporter, eksempelvis slik som samlerapporten over med predefinerte verdier for “Variabel” og “Antall grupper”. Tilnærmingen introduserer noen nye elementer, slik som:</p>
 <ul>
 <li>reaktive verdier</li>
 <li>lagring av innstillinger som er “varige” også etter at appliksjonen er avsluttet</li>
 </ul>
 </div>
-<div id="valgfritt-sjekk-inn-endringer-i-git" class="section level2">
-<h2 class="hasAnchor">
-<a href="#valgfritt-sjekk-inn-endringer-i-git" class="anchor"></a>Valgfritt: sjekk inn endringer i git</h2>
+<div class="section level2">
+<h2 id="valgfritt-sjekk-inn-endringer-i-git">Valgfritt: sjekk inn endringer i git<a class="anchor" aria-label="anchor" href="#valgfritt-sjekk-inn-endringer-i-git"></a>
+</h2>
 <p>Git er et verktøy for versjonskontroll som gir mulighet for å spore endringer og samarbeide om kode. Basale funksjoner i git er svært nyttinge, men kan virke forvirrende i starten. Sørg for at egen kode (bestandig) versjonshåndteres (i git) og at koden finnes sentralisert og tilgjengelig for deg selv og andre (på GitHub).</p>
-<ol>
-<li>Sett opp git lokalt og etabler et sentralt repository for din R-pakke gjennom å følge <a href="http://r-pkgs.had.co.nz/git.html#git-rstudio">Hadley Wickhams veiledning</a>
+<ol style="list-style-type: decimal">
+<li>Sett opp git lokalt og etabler et sentralt repository for din R-pakke gjennom å følge <a href="http://r-pkgs.had.co.nz/git.html#git-rstudio" class="external-link">Hadley Wickhams veiledning</a>
 </li>
 <li>Om du ikke har det fra før, etabler et ssh-nøkkelpar for sikker kommunikasjon med GitHub</li>
 </ol>
 <p>NB Ved etablering av et nøkkelpar for bruk av Secure Shell (ssh) i kommunikasjonen med GitHub (generelt lurt men også nødvendig for avansert bruk av Rapporteket) er det viktig å påse at disse blir etablert på din egen fysiske datamaskin (og eksempelvi ikke inne i en docker-container om det er i bruk)</p>
 </div>
-<div id="valgfritt-dytt-push-r-pakken-til-github" class="section level2">
-<h2 class="hasAnchor">
-<a href="#valgfritt-dytt-push-r-pakken-til-github" class="anchor"></a>Valgfritt: dytt (push) R-pakken til GitHub</h2>
-<ol>
+<div class="section level2">
+<h2 id="valgfritt-dytt-push-r-pakken-til-github">Valgfritt: dytt (push) R-pakken til GitHub<a class="anchor" aria-label="anchor" href="#valgfritt-dytt-push-r-pakken-til-github"></a>
+</h2>
+<ol style="list-style-type: decimal">
 <li>Om du ikke allerede har gjort det, lag din egen bruker på GitHub (se over)</li>
-<li>Om du ikke allerede har gjort det, <a href="https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account">legg ut den offentlige delen av ditt ssh-nøkkelpar på din github-konto</a>
+<li>Om du ikke allerede har gjort det, <a href="https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account" class="external-link">legg ut den offentlige delen av ditt ssh-nøkkelpar på din github-konto</a>
 </li>
 <li>Om du ikke allerede har gjort det, bli medlem av organisasjonen Rapporteket på GitHub</li>
 <li>Under din egen side på GitHub, opprett et Repository med navn tilsvarende din egen pakke (<em>e.g.</em> “testRegister”)</li>
@@ -226,50 +221,50 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Browse source code at <br><a href="http://github.com/Rapporteket/rapRegTemplate/">http://​github.com/​Rapporteket/​rapRegTemplate/​</a>
-</li>
-<li>Report a bug at <br><a href="http://github.com/Rapporteket/rapRegTemplate/issues">http://​github.com/​Rapporteket/​rapRegTemplate/​issues</a>
-</li>
-</ul>
-</div>
-<div class="license">
-<h2>License</h2>
-<ul class="list-unstyled">
-<li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></small></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>Are Edvardsen <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-5210-3656" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="http://github.com/Rapporteket/rapRegTemplate/" class="external-link">Browse source code</a></li>
+<li><a href="http://github.com/Rapporteket/rapRegTemplate/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="license">
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/rapporteket/rapRegTemplate/releases"><img src="https://img.shields.io/github/v/release/rapporteket/rapRegTemplate?sort=semver" alt="Version"></a></li>
-<li><a href="https://github.com/rapporteket/rapRegTemplate/actions"><img src="https://github.com/rapporteket/rapRegTemplate/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
-<li><a href="https://codecov.io/gh/Rapporteket/rapRegTemplate?branch=main"><img src="https://codecov.io/gh/Rapporteket/rapRegTemplate/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
-<li><a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: maturing"></a></li>
-<li><a href="https://github.com/rapporteket/rapRegTemplate/issues"><img src="https://img.shields.io/github/issues/rapporteket/rapRegTemplate.svg" alt="GitHub open issues"></a></li>
-<li><a href="https://www.gnu.org/licenses/gpl-3.0"><img src="https://img.shields.io/badge/License-GPLv3-blue.svg" alt="License: GPL v3"></a></li>
-<li><a href="https://rapporteket.github.io/rapRegTemplate/"><img src="https://img.shields.io/badge/Doc--grey.svg" alt="Doc"></a></li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://www.r-project.org/Licenses/GPL-3" class="external-link">GPL-3</a></small></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing rapRegTemplate</a></li>
+</ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>Are Edvardsen <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-5210-3656" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+</ul>
+</div>
+
+
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Are Edvardsen.</p>
+  <p></p>
+<p>Developed by Are Edvardsen.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
@@ -277,6 +272,8 @@
 
   
 
+
+  
 
   </body>
 </html>
