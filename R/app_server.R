@@ -1,8 +1,7 @@
 library(shiny)
 library(magrittr)
-library(rapRegTemplate)
 
-server <- function(input, output, session) {
+app_server <- function(input, output, session) {
 
   # Last inn data
   # regData <- getFakeRegData()

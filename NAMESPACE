@@ -3,3 +3,4 @@
 export(getFakeRegData)
 export(getRegData)
 export(makeHist)
+export(run_app)

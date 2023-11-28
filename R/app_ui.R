@@ -1,11 +1,10 @@
 library(shiny)
-library(shinyalert)
 library(rapbase)
 
 addResourcePath("rap", system.file("www", package = "rapbase"))
 regTitle <- "rapRegTemplate"
 
-ui <- shiny::tagList(
+app_ui <- shiny::tagList(
   shiny::navbarPage(
     title = div(a(includeHTML(system.file("www/logo.svg",
                                           package = "rapbase"))),
@@ -17,7 +16,6 @@ ui <- shiny::tagList(
     shiny::tabPanel("Veiledning",
       shiny::mainPanel(width = 12,
         shiny::htmlOutput("veiledning", inline = TRUE),
-        shinyalert::useShinyalert(),
         rapbase::appNavbarUserWidget(
           user = uiOutput("appUserName"),
           organization = uiOutput("appOrgName"),
