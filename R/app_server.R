@@ -74,8 +74,8 @@ app_server <- function(input, output, session) {
 
 
   # Abonnement
-  ## rekative verdier for å holde rede på endringer som skjer mens
-  ## applikasjonen kjører
+  ## rekative verdier for aa holde rede paa endringer som skjer mens
+  ## applikasjonen kjorer
   subscription <- shiny::reactiveValues(
     tab = rapbase::makeAutoReportTab(session, type = "subscription"))
 
@@ -87,7 +87,7 @@ app_server <- function(input, output, session) {
     rownames = FALSE
   )
 
-  ## lag side som viser status for abonnement, også når det ikke finnes noen
+  ## lag side som viser status for abonnement, ogsaa naar det ikke finnes noen
   output$subscriptionContent <- shiny::renderUI({
     userFullName <- rapbase::getUserFullName(session)
     if (length(subscription$tab) == 0) {
@@ -139,16 +139,16 @@ app_server <- function(input, output, session) {
 
 
   # Utsending
-  ## reaktive verdier for å holde rede på endringer som skjer mens
-  ## applikasjonen kjører
+  ## reaktive verdier for aa holde rede paa endringer som skjer mens
+  ## applikasjonen kjorer
   dispatchment <- shiny::reactiveValues(
     tab = rapbase::makeAutoReportTab(session = session, type = "dispatchment"),
     report = "Automatisk samlerapport1",
-    freq = "Månedlig-month",
+    freq = "M\u00E5nedlig-month",
     email = vector()
   )
 
-  ## observér og foreta endringer mens applikasjonen kjører
+  ## observer og foreta endringer mens applikasjonen kjorer
   shiny::observeEvent(input$addEmail, {
     dispatchment$email <- c(dispatchment$email, input$email)
   })
@@ -206,9 +206,9 @@ app_server <- function(input, output, session) {
   output$freq <- shiny::renderUI({
     shiny::selectInput(
       "dispatchmentFreq", "Frekvens:",
-      list(Årlig = "Årlig-year",
+      list(\u00C5rlig = "\u00C5rlig-year",
             Kvartalsvis = "Kvartalsvis-quarter",
-            Månedlig = "Månedlig-month",
+            M\u00E5nedlig = "M\u00E5nedlig-month",
             Ukentlig = "Ukentlig-week",
             Daglig = "Daglig-DSTday"),
       selected = dispatchment$freq)
@@ -251,7 +251,7 @@ app_server <- function(input, output, session) {
   )
 
 
-  ## ui: lag side som viser status for utsending, også når det ikke finnes noen
+  ## ui: lag side som viser status for utsending, ogsaa naar det ikke finnes noen
   output$dispatchmentContent <- shiny::renderUI({
     if (length(dispatchment$tab) == 0) {
       shiny::p("Det finnes ingen utendinger")
