@@ -1,33 +1,17 @@
-FROM rocker/r-base
+FROM rapporteket/base-r:4.2.1
 
-LABEL maintainer "Are Edvardsen <are.edvardsen@helse-nord.no>"
-LABEL no.mongr.cd.enable="true"
+LABEL maintainer "Arnfinn Hykkerud Steindal <arnfinn.hykkerud.steindal@helse-nord.no>"
 
-# system libraries of general use
-RUN apt-get update && apt-get install -y \
-    sudo \
-    pandoc \
-    pandoc-citeproc \
-    libcurl4-gnutls-dev \
-    libcairo2-dev \
-    libxt-dev \
-    libxml2-dev \
-    default-jdk \
-    libssl-dev \
-    libmariadbclient-dev 
+LABEL no.rapporteket.cd.enable="true"
 
-# basic R functionality
-RUN R -e "install.packages(c('remotes'), repos='https://cloud.r-project.org/')"
+WORKDIR /app/R
 
-# install rapRegTemplate app
-RUN R -e "remotes::install_github('Rapporteket/rapRegTemplate')"
+# hadolint ignore=DL3010
+COPY *.tar.gz .
 
-# copy the app to the image
-RUN mkdir /root/rapRegTemplate
-COPY inst/shinyApps/app1 /root/rapRegTemplate
-
-COPY Rprofile.site /usr/lib/R/etc/
+RUN R -e "remotes::install_local(list.files(pattern = \"*.tar.gz\"))" \
+    && rm ./*.tar.gz
 
 EXPOSE 3838
 
-CMD ["R", "-e", "shiny::runApp('/root/rapRegTemplate')"]
+CMD ["R", "-e", "options(shiny.port = 3838,shiny.host = \"0.0.0.0\"); rapRegTemplate::run_app()"]
