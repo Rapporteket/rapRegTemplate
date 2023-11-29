@@ -206,9 +206,9 @@ app_server <- function(input, output, session) {
   output$freq <- shiny::renderUI({
     shiny::selectInput(
       "dispatchmentFreq", "Frekvens:",
-      list(\u00C5rlig = "\u00C5rlig-year",
+      list(Aarlig = "\u00C5rlig-year",
             Kvartalsvis = "Kvartalsvis-quarter",
-            M\u00E5nedlig = "M\u00E5nedlig-month",
+            Maanedlig = "M\u00E5nedlig-month",
             Ukentlig = "Ukentlig-week",
             Daglig = "Daglig-DSTday"),
       selected = dispatchment$freq)
