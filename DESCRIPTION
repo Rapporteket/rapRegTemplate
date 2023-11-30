@@ -20,7 +20,8 @@ Imports:
   magrittr,
   rapbase,
   rmarkdown,
-  shiny
+  shiny,
+  shinyalert
 Remotes:
   Rapporteket/rapbase
 License: GPL-3

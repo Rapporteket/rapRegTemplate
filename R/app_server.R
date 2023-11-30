@@ -1,5 +1,11 @@
-library(shiny)
-library(magrittr)
+#' Server logic for the rapRegTemplate app
+#'
+#' @param input shiny input object
+#' @param output shiny output object
+#' @param session shiny session object
+#'
+#' @return A shiny app server object
+#' @export
 
 app_server <- function(input, output, session) {
 
@@ -15,7 +21,7 @@ app_server <- function(input, output, session) {
   userInfo <-
     rapbase::howWeDealWithPersonalData(session, callerPkg = "rapRegTemplate")
   shiny::observeEvent(input$userInfo, {
-    shinyalert("Dette vet Rapporteket om deg:", userInfo,
+    shinyalert::shinyalert("Dette vet Rapporteket om deg:", userInfo,
                type = "", imageUrl = "rap/logo.svg",
                closeOnEsc = TRUE, closeOnClickOutside = TRUE,
                html = TRUE, confirmButtonText = rapbase::noOptOutOk())
