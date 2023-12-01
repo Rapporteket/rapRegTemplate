@@ -79,42 +79,42 @@ app_ui <- function() {
                        )
       ),
       shiny::tabPanel("Abonnement"
-                      # ,
-                      # sidebarLayout(
-                      #   sidebarPanel(width = 3,
-                      #     selectInput("subscriptionRep", "Rapport:",
-                      #                 c("Samlerapport1", "Samlerapport2")),
-                      #     selectInput("subscriptionFreq", "Frekvens:",
-                      #                 list(Årlig = "Årlig-year",
-                      #                      Kvartalsvis = "Kvartalsvis-quarter",
-                      #                      Månedlig = "Månedlig-month",
-                      #                      Ukentlig = "Ukentlig-week",
-                      #                      Daglig = "Daglig-DSTday"),
-                      #                 selected = "Månedlig-month"),
-                      #     actionButton("subscribe", "Bestill",
-                      #                  icon = shiny::icon("paper-plane"))
-                      #   ),
-                      #   mainPanel(
-                      #     uiOutput("subscriptionContent")
-                      #   )
-                      # )
+                       ,
+                       shiny::sidebarLayout(
+                         shiny::sidebarPanel(width = 3,
+                           shiny::selectInput("subscriptionRep", "Rapport:",
+                                       c("Samlerapport1", "Samlerapport2")),
+                           shiny::selectInput("subscriptionFreq", "Frekvens:",
+                                       list(Årlig = "Årlig-year",
+                                            Kvartalsvis = "Kvartalsvis-quarter",
+                                            Månedlig = "Månedlig-month",
+                                            Ukentlig = "Ukentlig-week",
+                                            Daglig = "Daglig-DSTday"),
+                                       selected = "Månedlig-month"),
+                           shiny::actionButton("subscribe", "Bestill",
+                                        icon = shiny::icon("paper-plane"))
+                         ),
+                         shiny::mainPanel(
+                           shiny::uiOutput("subscriptionContent")
+                         )
+                       )
       ),
       shiny::tabPanel("Utsending"
-                      # ,
-                      # sidebarLayout(
-                      #   sidebarPanel(width = 3,
-                      #     uiOutput("report"),
-                      #     uiOutput("freq"),
-                      #     textInput("email", "Epostmottakere:"),
-                      #     uiOutput("editEmail"),
-                      #     htmlOutput("recipients"),
-                      #     tags$hr(),
-                      #     uiOutput("makeDispatchment")
-                      #   ),
-                      #   mainPanel(
-                      #     uiOutput("dispatchmentContent")
-                      #   )
-                      # )
+                       ,
+                       shiny::sidebarLayout(
+                         shiny::sidebarPanel(width = 3,
+                           shiny::uiOutput("report"),
+                           shiny::uiOutput("freq"),
+                           shiny::textInput("email", "Epostmottakere:"),
+                           shiny::uiOutput("editEmail"),
+                           shiny::htmlOutput("recipients"),
+                           shiny::tags$hr(),
+                           shiny::uiOutput("makeDispatchment")
+                         ),
+                         shiny::mainPanel(
+                           shiny::uiOutput("dispatchmentContent")
+                         )
+                       )
       )
 
     ) # navbarPage
