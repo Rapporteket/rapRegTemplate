@@ -27,56 +27,56 @@ app_ui <- function() {
                       )
       ),
       shiny::tabPanel("Figur og tabell"
-                      # ,
-                      # sidebarLayout(
-                      #   sidebarPanel(width = 3,
-                      #     selectInput(inputId = "var",
-                      #                 label = "Variabel:",
-                      #                 c("mpg", "disp", "hp", "drat", "wt", "qsec")),
-                      #     sliderInput(inputId = "bins",
-                      #                 label = "Antall grupper:",
-                      #                 min = 1,
-                      #                 max = 10,
-                      #                 value = 5)
-                      #   ),
-                      #   mainPanel(
-                      #     tabsetPanel(
-                      #       tabPanel("Figur", plotOutput("distPlot")),
-                      #       tabPanel("Tabell", tableOutput("distTable"))
-                      #     )
-                      #   )
-                      # )
+                       ,
+                       shiny::sidebarLayout(
+                         shiny::sidebarPanel(width = 3,
+                           shiny::selectInput(inputId = "var",
+                                       label = "Variabel:",
+                                       c("mpg", "disp", "hp", "drat", "wt", "qsec")),
+                           shiny::sliderInput(inputId = "bins",
+                                       label = "Antall grupper:",
+                                       min = 1,
+                                       max = 10,
+                                       value = 5)
+                         ),
+                         shiny::mainPanel(
+                           shiny::tabsetPanel(
+                             tabPanel("Figur", plotOutput("distPlot")),
+                             tabPanel("Tabell", tableOutput("distTable"))
+                           )
+                         )
+                       )
       ),
       shiny::tabPanel("Samlerapport"
-                      # ,
-                      # shiny::tabPanel("Fordeling av mpg",
-                      #   shiny::sidebarLayout(
-                      #     shiny::sidebarPanel(
-                      #       width = 3,
-                      #       shiny::selectInput(
-                      #         inputId = "varS",
-                      #         label = "Variabel:",
-                      #         c("mpg", "disp", "hp", "drat", "wt", "qsec")),
-                      #       shiny::sliderInput(
-                      #         inputId = "binsS",
-                      #         label = "Antall grupper:",
-                      #         min = 1,
-                      #         max = 10,
-                      #         value = 5),
-                      #       shiny::selectInput(
-                      #         inputId = "formatS",
-                      #         label = "Velg format for nedlasting:",
-                      #         choices = list(PDF = "pdf", HTML = "html")
-                      #       ),
-                      #       shiny::downloadButton(
-                      #         outputId = "downloadSamlerapport",
-                      #         label = "Last ned!")
-                      #     ),
-                      #     shiny::mainPanel(
-                      #       shiny::uiOutput("samlerapport")
-                      #     )
-                      #   )
-                      # )
+                       ,
+                       shiny::tabPanel("Fordeling av mpg",
+                         shiny::sidebarLayout(
+                           shiny::sidebarPanel(
+                             width = 3,
+                             shiny::selectInput(
+                               inputId = "varS",
+                               label = "Variabel:",
+                               c("mpg", "disp", "hp", "drat", "wt", "qsec")),
+                             shiny::sliderInput(
+                               inputId = "binsS",
+                               label = "Antall grupper:",
+                               min = 1,
+                               max = 10,
+                               value = 5),
+                             shiny::selectInput(
+                               inputId = "formatS",
+                               label = "Velg format for nedlasting:",
+                               choices = list(PDF = "pdf", HTML = "html")
+                             ),
+                             shiny::downloadButton(
+                               outputId = "downloadSamlerapport",
+                               label = "Last ned!")
+                           ),
+                           shiny::mainPanel(
+                             shiny::uiOutput("samlerapport")
+                           )
+                         )
+                       )
       ),
       shiny::tabPanel("Abonnement"
                       # ,

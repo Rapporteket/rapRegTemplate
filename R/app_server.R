@@ -10,7 +10,7 @@
 app_server <- function(input, output, session) {
 
   # Last inn data
-  # regData <- getFakeRegData()
+  regData <- getFakeRegData()
 
   # Brukerinformasjon i menylinja (navbar)
   output$appUserName <-
@@ -28,7 +28,7 @@ app_server <- function(input, output, session) {
   })
 
   # Veiledning
-  output$veiledning <- renderUI({
+  output$veiledning <- shiny::renderUI({
     rapbase::renderRmd(
       system.file("veiledning.Rmd", package = "rapRegTemplate"),
       outputType = "html_fragment"
@@ -37,16 +37,16 @@ app_server <- function(input, output, session) {
 
 
   # Figur og tabell
-  ## Figur
-  # output$distPlot <- renderPlot({
-  #  makeHist(df = regData, var = input$var, bins = input$bins)
-  # })
+  # Figur
+   output$distPlot <- renderPlot({
+    makeHist(df = regData, var = input$var, bins = input$bins)
+   })
 
-  ## Tabell
-  #output$distTable <- renderTable({
-  #  makeHist(df = regData, var = input$var, bins = input$bins,
-  #           makeTable = TRUE)
-  #})
+  # Tabell
+  output$distTable <- renderTable({
+    makeHist(df = regData, var = input$var, bins = input$bins,
+             makeTable = TRUE)
+  })
 
 
   # Samlerapport
