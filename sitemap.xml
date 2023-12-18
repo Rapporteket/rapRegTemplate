@@ -16,6 +16,12 @@
     <loc>/news/index.html</loc>
   </url>
   <url>
+    <loc>/reference/app_server.html</loc>
+  </url>
+  <url>
+    <loc>/reference/app_ui.html</loc>
+  </url>
+  <url>
     <loc>/reference/getFakeRegData.html</loc>
   </url>
   <url>
@@ -26,5 +32,11 @@
   </url>
   <url>
     <loc>/reference/makeHist.html</loc>
+  </url>
+  <url>
+    <loc>/reference/pipe.html</loc>
+  </url>
+  <url>
+    <loc>/reference/run_app.html</loc>
   </url>
 </urlset>
