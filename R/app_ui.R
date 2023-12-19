@@ -8,9 +8,9 @@ app_ui <- function() {
   shiny::addResourcePath("rap", system.file("www", package = "rapbase"))
   regTitle <- "rapRegTemplate"
 
-  ui <- shiny::tagList(
+  shiny::tagList(
     shiny::navbarPage(
-      title = div(a(includeHTML(system.file("www/logo.svg",
+      title = shiny::div(shiny::a(shiny::includeHTML(system.file("www/logo.svg",
                                             package = "rapbase"))),
                   regTitle),
       windowTitle = regTitle,
@@ -21,8 +21,8 @@ app_ui <- function() {
                       shiny::mainPanel(width = 12,
                                        shiny::htmlOutput("veiledning", inline = TRUE),
                                        rapbase::appNavbarUserWidget(
-                                         user = uiOutput("appUserName"),
-                                         organization = uiOutput("appOrgName"),
+                                         user = shiny::uiOutput("appUserName"),
+                                         organization = shiny::uiOutput("appOrgName"),
                                          addUserInfo = TRUE)
                       )
       ),
@@ -41,8 +41,8 @@ app_ui <- function() {
                          ),
                          shiny::mainPanel(
                            shiny::tabsetPanel(
-                             tabPanel("Figur", plotOutput("distPlot")),
-                             tabPanel("Tabell", tableOutput("distTable"))
+                             shiny::tabPanel("Figur", shiny::plotOutput("distPlot")),
+                             shiny::tabPanel("Tabell", shiny::tableOutput("distTable"))
                            )
                          )
                        )
@@ -85,12 +85,12 @@ app_ui <- function() {
                            shiny::selectInput("subscriptionRep", "Rapport:",
                                        c("Samlerapport1", "Samlerapport2")),
                            shiny::selectInput("subscriptionFreq", "Frekvens:",
-                                       list(Årlig = "Årlig-year",
+                                       list("\u212brlig" = "\u212brlig-year",
                                             Kvartalsvis = "Kvartalsvis-quarter",
-                                            Månedlig = "Månedlig-month",
+                                            "M\u00e5nedlig" = "M\u00e5nedlig-month",
                                             Ukentlig = "Ukentlig-week",
                                             Daglig = "Daglig-DSTday"),
-                                       selected = "Månedlig-month"),
+                                       selected = "M\u00e5nedlig-month"),
                            shiny::actionButton("subscribe", "Bestill",
                                         icon = shiny::icon("paper-plane"))
                          ),

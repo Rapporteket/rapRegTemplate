@@ -16,10 +16,8 @@ Depends:
   R (>= 3.5.0)
 Imports:
   DT,
-  kableExtra,
   magrittr,
   rapbase,
-  rmarkdown,
   shiny,
   shinyalert
 Remotes:

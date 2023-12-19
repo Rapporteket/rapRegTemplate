@@ -38,12 +38,12 @@ app_server <- function(input, output, session) {
 
   # Figur og tabell
   # Figur
-   output$distPlot <- renderPlot({
+   output$distPlot <- shiny::renderPlot({
     makeHist(df = regData, var = input$var, bins = input$bins)
    })
 
   # Tabell
-  output$distTable <- renderTable({
+  output$distTable <- shiny::renderTable({
     makeHist(df = regData, var = input$var, bins = input$bins,
              makeTable = TRUE)
   })
