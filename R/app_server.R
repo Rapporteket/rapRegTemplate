@@ -108,41 +108,29 @@ app_server <- function(input, output, session) {
   })
 
   ## nye abonnement
-  shiny::observeEvent(input$subscribe, {
-    package <- "rapRegTemplate"
-    type <- "subscription"
-    owner <- rapbase::getUserName(session)
-    interval <- strsplit(input$subscriptionFreq, "-")[[1]][2]
-    intervalName <- strsplit(input$subscriptionFreq, "-")[[1]][1]
-    runDayOfYear <- rapbase::makeRunDayOfYearSequence(
-      interval = interval)
+  ## Objects currently shared among subscription and dispathcment
+  orgs <- list(Sykehus1 = 1234,
+               Sykehus2 = 4321)
+  reports <- list(
+    Samlerapport1 = list(
+      synopsis = "Automatisk samlerapport1",
+      fun = "samlerapport1Fun",
+      paramNames = c("p1", "p2"),
+      paramValues = c("Alder", 1)
+    ),
+    Samlerapport2 = list(
+      synopsis = "Automatisk samlerapport2",
+      fun = "samlerapport2Fun",
+      paramNames = c("p1", "p2"),
+      paramValues = c("BMI", 1)
+    )
+  )
 
-    email <- rapbase::getUserEmail(session)
-    organization <- rapbase::getUserReshId(session)
-
-    if (input$subscriptionRep == "Samlerapport1") {
-      synopsis <- "Automatisk samlerapport1"
-      fun <- "samlerapport1Fun"
-      paramNames <- c("p1", "p2")
-      paramValues <- c("Alder", 1)
-
-    }
-    if (input$subscriptionRep == "Samlerapport2") {
-      synopsis <- "Automatisk samlerapport2"
-      fun <- "samlerapport2Fun"
-      paramNames <- c("p1", "p2")
-      paramValues <- c("BMI", 2)
-    }
-    rapbase::createAutoReport(synopsis = synopsis, package = package,
-                              type = type, fun = fun, paramNames = paramNames,
-                              paramValues = paramValues, owner = owner,
-                              email = email, organization = organization,
-                              runDayOfYear = runDayOfYear,
-                              interval = interval, intervalName = intervalName)
-    subscription$tab <-
-      rapbase::makeAutoReportTab(session, type = "subscription")
-  })
-
+  ## Subscription
+  rapbase::autoReportServer(
+    id = "testSubscription", registryName = "rapRegTemplate",
+    type = "subscription", reports = reports, orgs = orgs, freq = "quarter"
+  )
 
   # Utsending
   ## reaktive verdier for aa holde rede paa endringer som skjer mens
