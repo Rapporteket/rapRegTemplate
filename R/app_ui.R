@@ -101,7 +101,7 @@ app_ui <- function() {
       ),
       shiny::tabPanel(
         shiny::span("Abonnement v2",
-                    title="Bestill tilsending av rapporter på e-post"),
+                    title="Bestill tilsending av rapporter p\u00e5 e-post"),
         shiny::sidebarLayout(
           shiny::sidebarPanel(
             rapbase::autoReportInput("testSubscription")
