@@ -6,7 +6,6 @@ LABEL no.rapporteket.cd.enable="true"
 
 WORKDIR /app/R
 
-# hadolint ignore=DL3010
 COPY *.tar.gz .
 
 RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
