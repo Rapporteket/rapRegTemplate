@@ -33,7 +33,7 @@ Denne delen er satt som valgfri men kan likevel være relevant, særlig om det e
 ### Alternativ 1: med Docker for Rapporteket
 1. Åpne fila R/GetRegData.R
 1. Se på de tre delene av funksjonen som definerer registernavn og sql-spørringen samt den som bruker de to forrige til å hente data (og som returnerer ei dataramme fra funksjonen)
-1. Sjekk at egen konfigurasjon (i fila `r Sys.getenv("R_RAP_CONFIG_PATH")`) er i henhold til det datagrunnlaget som er gjort tilgjengelig
+1. Sjekk at egen konfigurasjon (i fila /home/rstudio/rap_config) er i henhold til det datagrunnlaget som er gjort tilgjengelig
 1. Endre i SQL-spørringen slik at den er i henhold til datagrunnlaget som ønskes benyttet
 1. Prøv funksjonen fra kommandolinja (Console i RStudio), _e.g._ `df <- getRegData("navn_på_register")`
 1. Sjekk at du får returnert ei dataramme med X observasjoner for Y variabler, _e.g._ `attributes(df)`
@@ -47,7 +47,7 @@ Denne delen er satt som valgfri men kan likevel være relevant, særlig om det e
 ## Lag innhold i Shiny-applikasjonen, steg 1
 Utgangspunket for de neste stegene er bruk av det innebygde datasettet "mtcars", jf. "Alternativ 2" over.
 
-1. I shiny-applikasjonen, navigér til arkfanen "Figur og tabell"
+1. I shiny-applikasjonen, naviger til arkfanen "Figur og tabell"
 1. Åpne fila inst/shinyApps/app1/ui.R
 1. Bla ned til linja `tabPanel("Figur og tabell"`
 1. Kommenter inn linjene under, lagre fila og last applikasjonen på nytt ("Reload App")
@@ -102,3 +102,30 @@ NB Ved etablering av et nøkkelpar for bruk av Secure Shell (ssh) i kommunikasjo
 1. Om du ikke allerede har gjort det, bli medlem av organisasjonen Rapporteket på GitHub
 1. Under din egen side på GitHub, opprett et Repository med navn tilsvarende din egen pakke (_e.g._ "testRegister")
 1. I RStudio, push pakken til ditt nye Repository på GitHub
+
+## Valgfritt: bygg docker image lokalt
+
+For å bygge og kjøre docker image lokalt kan man gjøre følgende:
+
+1. Bygg pakken til en `tar.gz`-fil
+```sh
+R CMD build .
+```
+2. Lag Github Personal Access Token. Dette kan enten gjøres direkte på github (https://github.com/settings/tokens) eller gjennom R (`usethis::create_github_token()`). Det tryggeste er å *ikke* gi den noe særlig med rettigheter (kun lese). Vi lager og bruker en token for å ikke få feil fordi man har for mange api-kall til github.
+3. Putt den i miljøvariablen `GITHUB_PAT`.
+```sh
+export GITHUB_PAT=ghp_ETT_ELLER_ANNET # token du nettop lagde
+```
+4. Bygg image med navn `some_image_name`. Bruker `--progress plain` for å få ut alt av `stdout`, og mater inn token som en hemmelighet
+```sh
+docker build -t some_image_name --progress plain --secret id=GITHUB_PAT .
+```
+5. Kjør image
+```sh
+# enten
+docker run -p 3838:3838 some_image_name
+# eller
+docker compose up
+```
+6. Åpne siden http://localhost:3838/ og se resultatet
+

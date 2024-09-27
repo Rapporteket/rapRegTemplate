@@ -12,7 +12,7 @@
 Beskrivelsen under er ikke nødvendigvis utfyllende og forutsetter kjennskap til RStudio og bruk av git og GitHub. Som en ekstra støtte anbefales [R pacakges](http://r-pkgs.had.co.nz/) av Hadley Wickham og spesielt [beskrivelsen av git og GitHub](http://r-pkgs.had.co.nz/git.html#git-rstudio).
 
 ## Prøv templatet
-1. Installér pakken [rapRegTemplate](https://github.com/Rapporteket/rapRegTemplate) i RStudio (`devtools::install_github("Rapporteket/rapRegTemplate")`)
+1. Installér pakken [rapRegTemplate](https://github.com/Rapporteket/rapRegTemplate) i RStudio (`remotes::install_github("Rapporteket/rapRegTemplate")`)
 1. Hent ned prosjektet [rapRegTemplate](https://github.com/Rapporteket/rapRegTemplate) til RStudio (for mer info, se [her](https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects))
 1. Åpne fila inst/shinyApps/app1/ui.R og start Shiny-applikasjonen ("Run App")
 1. Navigér i applikasjonen for å se på struktur og farger (innhold mangler)
@@ -57,7 +57,7 @@ Utgangspunket for de neste stegene er bruk av det innebygde datasettet "mtcars",
 1. Oppgave: gjør endringer i inst/shinyApps/app1/ui.R (på de linjene som nettopp er kommentert inn) slik at maks antall grupper endres fra 10 til 12 i applikasjonen 
 
 ## Lag innhold i Shiny-applikasjonen, steg 2
-1. Ãpne fila inst/shinyApps/app1/server.R
+1. Åpne fila inst/shinyApps/app1/server.R
 1. Bla ned til kommentaren `# Last inn data` og kommenter inn linja under 
 1. Bla videre ned til kommentaren `# Figur og tabell` og kommenter inn de linjene som ligger under `## Figur` og `## Tabell`, hhv
 1. Sjekk at det er samsvar mellom id-ene definert i inst/shinyApps/app1/ui.R og de datastrukturene (`output$distPlot` og `output$distTable`) du nå har definert i inst/shinyApps/app1/server.R
@@ -72,7 +72,7 @@ Tips til oppgave B:
 
 ```r
 ## Sammendrag
-output$distSummary <- renderTable({
+output$distSummary <- shiny::renderTable({
   as.data.frame(sapply(regData, summary))[input$var]
 }, rownames = TRUE)
 ```
@@ -84,7 +84,7 @@ Bruk samme tilnærming som over, men for "Samlerapport". Her er det en del nye e
 - funksjonalitet for nedlasting av rapporten
 
 ## Lag innhold i Shiny-applikasjonen, steg 4
-Denne delen forutsetter bruk av [Docker for Rapporteket](https://github.com/Rapporteket/docker) eller tilsvarende utviklingsmiljø¸ som "simulerer" Rapporteket. Her skal hver enkelt bruker kunne bestille rutinemessig tilsending per epost av gitte rapporter, eksempelvis slik som samlerapporten over med predefinerte verdier for "Variabel" og "Antall grupper". Tilnærmingen introduserer noen nye elementer, slik som:
+Denne delen forutsetter bruk av [Docker for Rapporteket](https://github.com/Rapporteket/docker) eller tilsvarende utviklingsmiljø som "simulerer" Rapporteket. Her skal hver enkelt bruker kunne bestille rutinemessig tilsending per epost av gitte rapporter, eksempelvis slik som samlerapporten over med predefinerte verdier for "Variabel" og "Antall grupper". Tilnærmingen introduserer noen nye elementer, slik som:
 
 - reaktive verdier
 - lagring av innstillinger som er "varige" også etter at appliksjonen er avsluttet
@@ -104,3 +104,29 @@ NB Ved etablering av et nøkkelpar for bruk av Secure Shell (ssh) i kommunikasjo
 1. Om du ikke allerede har gjort det, bli medlem av organisasjonen Rapporteket på GitHub
 1. Under din egen side på GitHub, opprett et Repository med navn tilsvarende din egen pakke (_e.g._ "testRegister")
 1. I RStudio, push pakken til ditt nye Repository på GitHub
+
+## Valgfritt: bygg docker image lokalt
+
+For å bygge og kjøre docker image lokalt kan man gjøre følgende:
+
+1. Bygg pakken til en `tar.gz`-fil
+```sh
+R CMD build .
+```
+2. Lag Github Personal Access Token. Dette kan enten gjøres direkte på github (https://github.com/settings/tokens) eller gjennom R (`usethis::create_github_token()`). Det tryggeste er å *ikke* gi den noe særlig med rettigheter (kun lese). Vi lager og bruker en token for å ikke få feil fordi man har for mange api-kall til github.
+3. Putt den i miljøvariablen `GITHUB_PAT`.
+```sh
+export GITHUB_PAT=ghp_ETT_ELLER_ANNET # token du nettop lagde
+```
+4. Bygg image med navn `some_image_name`. Bruker `--progress plain` for å få ut alt av `stdout`, og mater inn token som en hemmelighet
+```sh
+docker build -t some_image_name --progress plain --secret id=GITHUB_PAT .
+```
+5. Kjør image
+```sh
+# enten
+docker run -p 3838:3838 some_image_name
+# eller
+docker compose up
+```
+6. Åpne siden http://localhost:3838/ og se resultatet
