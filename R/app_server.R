@@ -13,18 +13,18 @@ app_server <- function(input, output, session) {
   regData <- getFakeRegData()
 
   # Brukerinformasjon i menylinja (navbar)
-  output$appUserName <-
-    shiny::renderText(
-      paste(rapbase::getUserFullName(session),
-            rapbase::getUserRole(session), sep = ", "))
+  output$appUserName <- shiny::renderText(
+    paste(rapbase::getUserFullName(session),
+          rapbase::getUserRole(session), sep = ", ")
+  )
   output$appOrgName <- shiny::renderText(rapbase::getUserReshId(session))
   userInfo <-
     rapbase::howWeDealWithPersonalData(session, callerPkg = "rapRegTemplate")
   shiny::observeEvent(input$userInfo, {
     shinyalert::shinyalert("Dette vet Rapporteket om deg:", userInfo,
-               type = "", imageUrl = "rap/logo.svg",
-               closeOnEsc = TRUE, closeOnClickOutside = TRUE,
-               html = TRUE, confirmButtonText = rapbase::noOptOutOk())
+                           type = "", imageUrl = "rap/logo.svg",
+                           closeOnEsc = TRUE, closeOnClickOutside = TRUE,
+                           html = TRUE, confirmButtonText = rapbase::noOptOutOk())
   })
 
   # Veiledning
@@ -38,9 +38,9 @@ app_server <- function(input, output, session) {
 
   # Figur og tabell
   # Figur
-   output$distPlot <- shiny::renderPlot({
+  output$distPlot <- shiny::renderPlot({
     makeHist(df = regData, var = input$var, bins = input$bins)
-   })
+  })
 
   # Tabell
   output$distTable <- shiny::renderTable({
@@ -83,7 +83,8 @@ app_server <- function(input, output, session) {
   ## rekative verdier for aa holde rede paa endringer som skjer mens
   ## applikasjonen kjorer
   subscription <- shiny::reactiveValues(
-    tab = rapbase::makeAutoReportTab(session, type = "subscription"))
+    tab = rapbase::makeAutoReportTab(session, type = "subscription")
+  )
 
   ## lag tabell over gjeldende status for abonnement
   output$activeSubscriptions <- DT::renderDataTable(
@@ -158,7 +159,8 @@ app_server <- function(input, output, session) {
     interval <- strsplit(input$dispatchmentFreq, "-")[[1]][2]
     intervalName <- strsplit(input$dispatchmentFreq, "-")[[1]][1]
     runDayOfYear <- rapbase::makeRunDayOfYearSequence(
-      interval = interval)
+      interval = interval
+    )
 
     email <- dispatchment$email
     organization <- rapbase::getUserReshId(session)
@@ -193,7 +195,8 @@ app_server <- function(input, output, session) {
     shiny::selectInput(
       "dispatchmentRep", "Rapport:",
       c("Automatisk samlerapport1", "Automatisk samlerapport2"),
-      selected = dispatchment$report)
+      selected = dispatchment$report
+    )
   })
 
   ## ui: velg frekvens
@@ -201,11 +204,12 @@ app_server <- function(input, output, session) {
     shiny::selectInput(
       "dispatchmentFreq", "Frekvens:",
       list("\u00C5rlig" = "\u00C5rlig-year",
-            Kvartalsvis = "Kvartalsvis-quarter",
-            Maanedlig = "M\u00E5nedlig-month",
-            Ukentlig = "Ukentlig-week",
-            Daglig = "Daglig-DSTday"),
-      selected = dispatchment$freq)
+           Kvartalsvis = "Kvartalsvis-quarter",
+           Maanedlig = "M\u00E5nedlig-month",
+           Ukentlig = "Ukentlig-week",
+           Daglig = "Daglig-DSTday"),
+      selected = dispatchment$freq
+    )
   })
 
   ## ui: legg til gyldig- og slett epost
@@ -240,8 +244,8 @@ app_server <- function(input, output, session) {
 
   ## lag tabell over gjeldende status for utsending
   output$activeDispatchments <- DT::renderDataTable(
-        dispatchment$tab, server = FALSE, escape = FALSE, selection = "none",
-        options = list(dom = "tp", ordering = FALSE), rownames = FALSE
+    dispatchment$tab, server = FALSE, escape = FALSE, selection = "none",
+    options = list(dom = "tp", ordering = FALSE), rownames = FALSE
   )
 
 
