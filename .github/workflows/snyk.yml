@@ -20,6 +20,10 @@ jobs:
     name: Snyk image scan
     steps:
     - uses: actions/checkout@v4
+    - name: R setup
+      uses: r-lib/actions/setup-r@v2.10.1
+    - name: Build package (tarball)
+      run: R CMD build .
     - name: Build docker image
       run: docker build -t ${{ github.repository }} .
     - name: Run Snyk to check Docker image for vulnerabilities
