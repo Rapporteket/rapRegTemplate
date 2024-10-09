@@ -15,8 +15,8 @@ concurrency:
 jobs:
   snyk:
     runs-on: ubuntu-latest
-    strategy:
-        fail-fast: false
+    env:
+      IMAGE_NAME: ${{ github.sha:0:10 }}
     name: Snyk image scan
     steps:
     - uses: actions/checkout@v4
@@ -25,7 +25,7 @@ jobs:
     - name: Build package (tarball)
       run: R CMD build .
     - name: Build docker image
-      run: docker build -t ${{ github.repository }} .
+      run: docker build -t ${{ IMAGE_NAME }} .
     - name: Run Snyk to check Docker image for vulnerabilities
       # Snyk can be used to break the build when it detects vulnerabilities.
       # In this case we want to upload the issues to GitHub Code Scanning
@@ -34,7 +34,7 @@ jobs:
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
-        image: ${{ github.repository }}
+        image: ${{ IMAGE_NAME }}
         args: --file=Dockerfile --severity-threshold=high
     - name: Upload result to GitHub Code Scanning
       uses: github/codeql-action/upload-sarif@v3
@@ -46,5 +46,5 @@ jobs:
       env:
         SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
       with:
-        image: ${{ github.repository }}
+        image: ${{ IMAGE_NAME }}
         args: --file=Dockerfile --severity-threshold=high
