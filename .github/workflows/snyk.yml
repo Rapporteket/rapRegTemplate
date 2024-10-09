@@ -16,7 +16,7 @@ jobs:
   snyk:
     runs-on: ubuntu-latest
     env:
-      IMAGE_NAME: ${{ github.sha:0:10 }}
+      IMAGE_NAME: snyktest
     name: Snyk image scan
     steps:
     - uses: actions/checkout@v4
