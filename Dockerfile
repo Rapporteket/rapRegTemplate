@@ -1,4 +1,5 @@
-FROM rapporteket/base-r:4.2.2
+# syntax=docker/dockerfile:1
+FROM rapporteket/base-r:main
 
 LABEL maintainer="Arnfinn Hykkerud Steindal <arnfinn.hykkerud.steindal@helse-nord.no>"
 
