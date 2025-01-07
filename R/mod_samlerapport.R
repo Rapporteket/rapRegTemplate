@@ -12,29 +12,29 @@ samlerapport_ui <- function(id) {
       shiny::sidebarPanel(
         width = 3,
         shiny::selectInput(
-          inputId = "varS",
+          inputId = ns("varS"),
           label = "Variabel:",
           c("mpg", "disp", "hp", "drat", "wt", "qsec")
         ),
         shiny::sliderInput(
-          inputId = "binsS",
+          inputId = ns("binsS"),
           label = "Antall grupper:",
           min = 1,
           max = 10,
           value = 5
         ),
         shiny::selectInput(
-          inputId = "formatS",
+          inputId = ns("formatS"),
           label = "Velg format for nedlasting:",
           choices = list(PDF = "pdf", HTML = "html")
         ),
         shiny::downloadButton(
-          outputId = "downloadSamlerapport",
+          outputId = ns("downloadSamlerapport"),
           label = "Last ned!"
         )
       ),
       shiny::mainPanel(
-        shiny::uiOutput("samlerapport")
+        shiny::uiOutput(ns("samlerapport"))
       )
     )
   )
@@ -58,7 +58,7 @@ samlerapport_server <- function(id) {
         )
       })
 
-       ## last ned
+      ## last ned
       output$downloadSamlerapport <- shiny::downloadHandler(
         filename = function() {
           basename(tempfile(pattern = "rapRegTemplateSamlerapport",

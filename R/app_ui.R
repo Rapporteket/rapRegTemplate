@@ -39,7 +39,7 @@ app_ui <- function() {
       shiny::tabPanel(
         shiny::span("Abonnement v2",
                     title = "Bestill tilsending av rapporter p\u00e5 e-post"),
-        abonnementV2_ui("abonnementV2")
+        abonnement_v2_ui("abonnementV2")
       ),
       shiny::tabPanel(
         "Utsending",

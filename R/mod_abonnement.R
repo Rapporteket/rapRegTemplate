@@ -39,36 +39,34 @@ abonnement_server <- function(id) {
     function(input, output, session) {
       ns <- session$ns
 
-      
-  # Abonnement
-  ## rekative verdier for aa holde rede paa endringer som skjer mens
-  ## applikasjonen kjorer
-  subscription <- shiny::reactiveValues(
-    tab = rapbase::makeAutoReportTab(session, type = "subscription")
-  )
-
-  ## lag tabell over gjeldende status for abonnement
-  output$activeSubscriptions <- DT::renderDataTable(
-    subscription$tab, server = FALSE, escape = FALSE, selection = "none",
-    options = list(dom = "tp", ordning = FALSE,
-                   columnDefs = list(list(visible = FALSE, targets = 6))),
-    rownames = FALSE
-  )
-
-  ## lag side som viser status for abonnement, ogsaa naar det ikke finnes noen
-  output$subscriptionContent <- shiny::renderUI({
-    userFullName <- rapbase::getUserFullName(session)
-    if (length(subscription$tab) == 0) {
-      shiny::p(paste("Ingen aktive abonnement for", userFullName))
-    } else {
-      shiny::tagList(
-        shiny::p(paste0("Aktive abonnement som sendes per epost til ",
-                        userFullName, ":")),
-        DT::dataTableOutput("activeSubscriptions")
+      # Abonnement
+      ## rekative verdier for aa holde rede paa endringer som skjer mens
+      ## applikasjonen kjorer
+      subscription <- shiny::reactiveValues(
+        tab = rapbase::makeAutoReportTab(session, type = "subscription")
       )
-    }
-  })
-  
+
+      ## lag tabell over gjeldende status for abonnement
+      output$activeSubscriptions <- DT::renderDataTable(
+        subscription$tab, server = FALSE, escape = FALSE, selection = "none",
+        options = list(dom = "tp", ordning = FALSE,
+                      columnDefs = list(list(visible = FALSE, targets = 6))),
+        rownames = FALSE
+      )
+
+      ## lag side som viser status for abonnement, ogsaa naar det ikke finnes noen
+      output$subscriptionContent <- shiny::renderUI({
+        userFullName <- rapbase::getUserFullName(session)
+        if (length(subscription$tab) == 0) {
+          shiny::p(paste("Ingen aktive abonnement for", userFullName))
+        } else {
+          shiny::tagList(
+            shiny::p(paste0("Aktive abonnement som sendes per epost til ",
+                            userFullName, ":")),
+            DT::dataTableOutput(ns("activeSubscriptions"))
+          )
+        }
+      })
     }
   )
 }
