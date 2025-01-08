@@ -7,10 +7,10 @@ abonnement_ui <- function(id) {
 
   shiny::sidebarLayout(
     shiny::sidebarPanel(
-      rapbase::autoReportInput("testSubscription")
+      rapbase::autoReportInput(id)
     ),
     shiny::mainPanel(
-      rapbase::autoReportUI("testSubscription")
+      rapbase::autoReportUI(id)
     )
   )
 }
@@ -38,7 +38,7 @@ abonnement_server <- function(id) {
 
   ## Subscription
   rapbase::autoReportServer(
-    id = "testSubscription", registryName = "rapRegTemplate",
+    id = id, registryName = "rapRegTemplate",
     type = "subscription", reports = reports, orgs = orgs, freq = "quarter"
   )
 }
