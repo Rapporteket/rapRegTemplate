@@ -100,10 +100,10 @@ utsending_server <- function(id) {
         shiny::selectInput(
           ns("dispatchmentFreq"), "Frekvens:",
           list("\u00C5rlig" = "\u00C5rlig-year",
-              Kvartalsvis = "Kvartalsvis-quarter",
-              Maanedlig = "M\u00E5nedlig-month",
-              Ukentlig = "Ukentlig-week",
-              Daglig = "Daglig-DSTday"),
+               Kvartalsvis = "Kvartalsvis-quarter",
+               Maanedlig = "M\u00E5nedlig-month",
+               Ukentlig = "Ukentlig-week",
+               Daglig = "Daglig-DSTday"),
           selected = dispatchment$freq
         )
       })
@@ -111,7 +111,7 @@ utsending_server <- function(id) {
       ## ui: legg til gyldig- og slett epost
       output$editEmail <- shiny::renderUI({
         if (!grepl("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
-                  input$email)) {
+                   input$email)) {
           shiny::tags$p("Angi mottaker over")
         } else {
           if (input$email %in% dispatchment$email) {
@@ -126,7 +126,7 @@ utsending_server <- function(id) {
 
       ## ui: vis valgte mottakere
       output$recipients <- shiny::renderText(paste(dispatchment$email,
-                                                  sep = "<br>"))
+                                                   sep = "<br>"))
 
       ## ui: lag ny utsending
       output$makeDispatchment <- shiny::renderUI({

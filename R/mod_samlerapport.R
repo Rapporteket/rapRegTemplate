@@ -44,7 +44,6 @@ samlerapport_server <- function(id) {
   shiny::moduleServer(
     id,
     function(input, output, session) {
-      ns <- session$ns
 
       # Samlerapport
       ## vis
@@ -68,9 +67,9 @@ samlerapport_server <- function(id) {
           srcFile <-
             normalizePath(system.file("samlerapport.Rmd", package = "rapRegTemplate"))
           fn <- rapbase::renderRmd(srcFile, outputType = input$formatS,
-                                  params = list(type = input$formatS,
-                                                var = input$varS,
-                                                bins = input$binsS))
+                                   params = list(type = input$formatS,
+                                                 var = input$varS,
+                                                 bins = input$binsS))
           file.rename(fn, file)
         }
       )

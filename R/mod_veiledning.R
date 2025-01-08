@@ -21,7 +21,6 @@ veiledning_server <- function(id) {
   shiny::moduleServer(
     id,
     function(input, output, session) {
-      ns <- session$ns
 
       # Veiledning
       output$veiledning <- shiny::renderUI({

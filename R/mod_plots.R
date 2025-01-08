@@ -35,7 +35,6 @@ plots_server <- function(id) {
   shiny::moduleServer(
     id,
     function(input, output, session) {
-      ns <- session$ns
 
       # Last inn data
       regData <- getFakeRegData()
@@ -49,7 +48,7 @@ plots_server <- function(id) {
       # Tabell
       output$distTable <- shiny::renderTable({
         makeHist(df = regData, var = input$var, bins = input$bins,
-                makeTable = TRUE)
+                 makeTable = TRUE)
       })
     }
   )
