@@ -33,13 +33,9 @@ app_ui <- function() {
         samlerapport_ui("samlerapport")
       ),
       shiny::tabPanel(
-        "Abonnement",
-        abonnement_ui("abonnement")
-      ),
-      shiny::tabPanel(
-        shiny::span("Abonnement v2",
+        shiny::span("Abonnement",
                     title = "Bestill tilsending av rapporter p\u00e5 e-post"),
-        abonnement_v2_ui("abonnementV2")
+        abonnement_ui("abonnement")
       ),
       shiny::tabPanel(
         "Utsending",

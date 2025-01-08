@@ -29,6 +29,5 @@ app_server <- function(input, output, session) {
   plots_server("plots")
   samlerapport_server("samlerapport")
   abonnement_server("abonnement")
-  abonnement_v2_server("abonnementV2")
   utsending_server("utsending")
 }
