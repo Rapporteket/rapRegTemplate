@@ -8,7 +8,6 @@
 
 getFakeRegData <- function() {
 
-  regData <- datasets::mtcars
+  datasets::mtcars
 
-  return(regData)
 }
