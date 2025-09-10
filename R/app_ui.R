@@ -22,7 +22,8 @@ app_ui <- function() {
       id = "tabs",
       shiny::tabPanel(
         "Veiledning",
-        veiledning_ui("veiledning")
+        veiledning_ui("veiledning"),
+        rapbase::navbarWidgetInput("navbar-widget", selectOrganization = TRUE)
       ),
       shiny::tabPanel(
         "Figur og tabell",
