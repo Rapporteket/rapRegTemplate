@@ -33,7 +33,7 @@ utsending_server <- function(id) {
       ## reaktive verdier for aa holde rede paa endringer som skjer mens
       ## applikasjonen kjorer
       dispatchment <- shiny::reactiveValues(
-        tab = rapbase::makeAutoReportTab(session = session, type = "dispatchment"),
+        tab = rapbase::makeAutoReportTab(type = "dispatchment"),
         report = "Automatisk samlerapport1",
         freq = "M\u00E5nedlig-month",
         email = vector()
@@ -82,7 +82,7 @@ utsending_server <- function(id) {
                                   runDayOfYear = runDayOfYear,
                                   interval = interval, intervalName = intervalName)
         dispatchment$tab <-
-          rapbase::makeAutoReportTab(session, type = "dispatchment")
+          rapbase::makeAutoReportTab(type = "dispatchment")
         dispatchment$email <- vector()
       })
 
@@ -169,7 +169,7 @@ utsending_server <- function(id) {
           dispatchment$email <- rep$email
           rapbase::deleteAutoReport(repId)
           dispatchment$tab <-
-            rapbase::makeAutoReportTab(session, type = "dispatchment")
+            rapbase::makeAutoReportTab(type = "dispatchment")
           dispatchment$report <- rep$synopsis
         }
         if (rep$type == "bulletin") {
@@ -182,9 +182,9 @@ utsending_server <- function(id) {
         repId <- strsplit(input$del_button, "_")[[1]][2]
         rapbase::deleteAutoReport(repId)
         subscription$tab <-
-          rapbase::makeAutoReportTab(session, type = "subscription")
+          rapbase::makeAutoReportTab(type = "subscription")
         dispatchment$tab <-
-          rapbase::makeAutoReportTab(session, type = "dispatchment")
+          rapbase::makeAutoReportTab(type = "dispatchment")
       })
     }
   )

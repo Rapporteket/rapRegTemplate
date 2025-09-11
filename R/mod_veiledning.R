@@ -8,12 +8,7 @@ veiledning_ui <- function(id) {
 
   shiny::mainPanel(
     width = 12,
-    shiny::htmlOutput(ns("veiledning"), inline = TRUE),
-    rapbase::appNavbarUserWidget(
-      user = shiny::uiOutput(ns("appUserName")),
-      organization = shiny::uiOutput(ns("appOrgName")),
-      addUserInfo = TRUE
-    )
+    shiny::htmlOutput(ns("veiledning"), inline = TRUE)
   )
 }
 

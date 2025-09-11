@@ -1,8 +1,19 @@
-#' Run the imongr Shiny Application
+#' Run the Shiny Application
 #'
-#' @return An object representeing the imongr app
+#' @param browser Open app in browser window
+#' @param logAsJson Log in json-format
+#'
+#' @return An object representing the app
 #' @export
 
-run_app <- function() {
-  shiny::shinyApp(ui = app_ui, server = app_server)
+run_app <- function(browser = FALSE, logAsJson = FALSE) {
+
+  if (logAsJson) {
+    rapbase::loggerSetup()
+  }
+  shiny::shinyApp(
+    ui = app_ui,
+    server = app_server,
+    options = list(launch.browser = browser)
+  )
 }
