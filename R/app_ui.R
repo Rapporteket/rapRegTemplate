@@ -34,13 +34,18 @@ app_ui <- function() {
         samlerapport_ui("samlerapport")
       ),
       shiny::tabPanel(
-        shiny::span("Abonnement",
-                    title = "Bestill tilsending av rapporter p\u00e5 e-post"),
-        abonnement_ui("abonnement")
-      ),
-      shiny::tabPanel(
-        "Utsending",
-        utsending_ui("utsending")
+        shiny::span(
+          "Abonnement",
+          title = "Bestill tilsending av rapporter p\u00e5 e-post"
+        ),
+        shiny::sidebarLayout(
+          shiny::sidebarPanel(
+            rapbase::autoReportInput("subscription")
+          ),
+          shiny::mainPanel(
+            rapbase::autoReportUI("subscription")
+          )
+        )
       )
     ) # navbarPage
   ) # tagList
