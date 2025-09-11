@@ -1,7 +1,7 @@
 #' Shiny module providing GUI and server logic for the intro tab
 #'
 #' @param id Character string module namespace
-NULL
+#' @return An shiny app ui object
 
 veiledning_ui <- function(id) {
   ns <- shiny::NS(id)
