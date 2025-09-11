@@ -36,7 +36,7 @@ app_ui <- function() {
       shiny::tabPanel(
         shiny::span(
           "Abonnement",
-          title = "Bestill tilsending av rapporter på e-post"
+          title = "Bestill tilsending av rapporter p\u00e5 e-post"
         ),
         shiny::sidebarLayout(
           shiny::sidebarPanel(
