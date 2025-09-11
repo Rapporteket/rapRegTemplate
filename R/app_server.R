@@ -10,8 +10,7 @@
 app_server <- function(input, output, session) {
   user <- rapbase::navbarWidgetServer2(
     "navbar-widget",
-    orgName = "pilot",
-    caller = packageName()
+    orgName = "pilot"
   )
 
   # Brukerinformasjon i menylinja (navbar)
