@@ -15,7 +15,6 @@ Description: Boilerplate R code for making result services for registries at
 Depends:
   R (>= 3.5.0)
 Imports:
-  DT,
   magrittr,
   rapbase,
   shiny,
