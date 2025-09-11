@@ -26,17 +26,17 @@ Som en ekstra støtte anbefales [R pacakges](http://r-pkgs.had.co.nz/) av Hadley
 
 Denne delen kan være relevant om det er ønskelig å benytte templatetet som utgangspunkt for etablering av nye registre på Rapporteket.
 
-- Hent ned prosjektet [rapRegTemplate](https://github.com/Rapporteket/rapRegTemplate)
-- Slett mappen `.git`
-- Initiér nytt git-repositor 
+1. Hent ned prosjektet [rapRegTemplate](https://github.com/Rapporteket/rapRegTemplate)
+2. Slett mappen `.git`
+3. Initiér nytt git-repositor 
 ```bash
   git init .
   git add .
   git commit -m "init commit"
   ```
-- Erstatt `rapRegTemplate` med valgfritt pakkenavn i koden og rydd i prosjektet (f.eks. ved bruk av *vscode*).
-- Bygg, installér og last pakken i R
-- Test gjerne at innebygget Shiny-applikasjon fungerer på samme vis som i prosjektet "rapRegTemplate"
+4. Erstatt `rapRegTemplate` med valgfritt pakkenavn i koden og rydd i prosjektet (f.eks. ved bruk av *vscode*).
+5. Bygg, installér og last pakken i R
+6. Test gjerne at innebygget Shiny-applikasjon fungerer på samme vis som i prosjektet "rapRegTemplate"
 
 ## Sjekk inn endringer i git
 Git er et verktøy for versjonskontroll som gir mulighet for å spore endringer og samarbeide om kode. Basale funksjoner i git er svært nyttinge, men kan virke forvirrende i starten. Sørg for at egen kode (bestandig) versjonshåndteres (i git) og at koden finnes sentralisert og tilgjengelig for deg selv og andre (på GitHub).
@@ -45,14 +45,14 @@ Git er et verktøy for versjonskontroll som gir mulighet for å spore endringer 
 1. Om du ikke har det fra før, etabler et ssh-nøkkelpar for sikker kommunikasjon med GitHub
 
 
-## Valgfritt: dytt (push) R-pakken til GitHub
+## Dytt (push) R-pakken til GitHub
 1. Om du ikke allerede har gjort det, lag din egen bruker på GitHub (se over)
 1. Om du ikke allerede har gjort det, [legg ut den offentlige delen av ditt ssh-nøkkelpar på din github-konto](https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account) 
 1. Om du ikke allerede har gjort det, bli medlem av organisasjonen Rapporteket på GitHub
 1. Under din egen side på GitHub, opprett et Repository med navn tilsvarende din egen pakke (_e.g._ "testRegister")
 1. I RStudio, push pakken til ditt nye Repository på GitHub
 
-## Valgfritt: bygg docker image lokalt
+## Bygg docker image lokalt
 
 For å bygge og kjøre docker image lokalt kan man gjøre følgende:
 
