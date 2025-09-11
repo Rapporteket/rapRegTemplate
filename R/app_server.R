@@ -33,7 +33,7 @@ app_server <- function(input, output, session) {
     )
   })
 
-  veiledning_server("veiledning")
+  info_server("info")
   plots_server("plots")
   samlerapport_server("samlerapport")
 

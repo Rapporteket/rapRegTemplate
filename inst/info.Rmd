@@ -1,0 +1,26 @@
+---
+title: 'Informasjon om rapRegTemplate'
+author: 'Rapporteket'
+date: '`r format(Sys.time(), "%d. %B %Y")`'
+output: 
+  html_document: 
+    keep_md: yes
+---
+
+
+
+Dette er en enkel informasjonsside med masse spennende informasjon om pakken.
+
+Denne kan også vise noen figurer og tabeller lagd i R.
+
+### Stygg figur
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+### Stygg tabell
+
+```{r cars, echo=FALSE}
+knitr::kable(head(cars))
+```

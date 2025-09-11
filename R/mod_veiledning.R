@@ -3,24 +3,24 @@
 #' @param id Character string module namespace
 #' @return An shiny app ui object
 
-veiledning_ui <- function(id) {
+info_ui <- function(id) {
   ns <- shiny::NS(id)
 
   shiny::mainPanel(
     width = 12,
-    shiny::htmlOutput(ns("veiledning"), inline = TRUE)
+    shiny::htmlOutput(ns("info"), inline = TRUE)
   )
 }
 
-veiledning_server <- function(id) {
+info_server <- function(id) {
   shiny::moduleServer(
     id,
     function(input, output, session) {
 
-      # Veiledning
-      output$veiledning <- shiny::renderUI({
+      # Info
+      output$info <- shiny::renderUI({
         rapbase::renderRmd(
-          system.file("veiledning.Rmd", package = "rapRegTemplate"),
+          system.file("info.Rmd", package = "rapRegTemplate"),
           outputType = "html_fragment"
         )
       })
