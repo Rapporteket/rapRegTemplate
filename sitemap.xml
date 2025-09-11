@@ -4,6 +4,7 @@
 <url><loc>/authors.html</loc></url>
 <url><loc>/index.html</loc></url>
 <url><loc>/news/index.html</loc></url>
+<url><loc>/reference/abonnement_ui.html</loc></url>
 <url><loc>/reference/app_server.html</loc></url>
 <url><loc>/reference/app_ui.html</loc></url>
 <url><loc>/reference/getFakeRegData.html</loc></url>
@@ -11,6 +12,9 @@
 <url><loc>/reference/index.html</loc></url>
 <url><loc>/reference/makeHist.html</loc></url>
 <url><loc>/reference/pipe.html</loc></url>
+<url><loc>/reference/plots_ui.html</loc></url>
 <url><loc>/reference/run_app.html</loc></url>
+<url><loc>/reference/samlerapport_ui.html</loc></url>
+<url><loc>/reference/veiledning_ui.html</loc></url>
 </urlset>
 

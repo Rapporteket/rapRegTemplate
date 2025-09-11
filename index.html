@@ -6,12 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Template to be used for Making New Registries at Rapportekt • rapRegTemplate</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="apple-touch-icon-60x60.png">
+<!-- favicons --><link rel="icon" type="image/png" sizes="48x48" href="favicon-48x48.png">
+<link rel="icon" type="”image/svg+xml”" href="favicon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" sizes="any" href="favicon.ico">
+<link rel="manifest" href="site.webmanifest">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/flatly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
@@ -82,9 +81,9 @@
 <h2 id="prøv-templatet">Prøv templatet<a class="anchor" aria-label="anchor" href="#pr%C3%B8v-templatet"></a>
 </h2>
 <ol style="list-style-type: decimal">
-<li>Installér pakken <a href="https://github.com/Rapporteket/rapRegTemplate" class="external-link">rapRegTemplate</a> i RStudio (<code>devtools::install_github("Rapporteket/rapRegTemplate")</code>)</li>
+<li>Installér pakken <a href="https://github.com/Rapporteket/rapRegTemplate" class="external-link">rapRegTemplate</a> i RStudio (<code>remotes::install_github("Rapporteket/rapRegTemplate")</code>)</li>
 <li>Hent ned prosjektet <a href="https://github.com/Rapporteket/rapRegTemplate" class="external-link">rapRegTemplate</a> til RStudio (for mer info, se <a href="https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects" class="external-link">her</a>)</li>
-<li>Åpne fila inst/shinyApps/app1/ui.R og start Shiny-applikasjonen (“Run App”)</li>
+<li>Åpne fila R/ui.R og start Shiny-applikasjonen (“Run App”)</li>
 <li>Navigér i applikasjonen for å se på struktur og farger (innhold mangler)</li>
 </ol>
 </div>
@@ -113,7 +112,7 @@
 <ol style="list-style-type: decimal">
 <li>Åpne fila R/GetRegData.R</li>
 <li>Se på de tre delene av funksjonen som definerer registernavn og sql-spørringen samt den som bruker de to forrige til å hente data (og som returnerer ei dataramme fra funksjonen)</li>
-<li>Sjekk at egen konfigurasjon (i fila /home/rstudio/rap_config) er i henhold til det datagrunnlaget som er gjort tilgjengelig</li>
+<li>Sjekk at egen konfigurasjon (i mappen /home/rstudio/rap_config) er i henhold til det datagrunnlaget som er gjort tilgjengelig</li>
 <li>Endre i SQL-spørringen slik at den er i henhold til datagrunnlaget som ønskes benyttet</li>
 <li>Prøv funksjonen fra kommandolinja (Console i RStudio), <em>e.g.</em> <code>df &lt;- getRegData("navn_på_register")</code>
 </li>
@@ -140,35 +139,35 @@
 <p>Utgangspunket for de neste stegene er bruk av det innebygde datasettet “mtcars”, jf. “Alternativ 2” over.</p>
 <ol style="list-style-type: decimal">
 <li>I shiny-applikasjonen, naviger til arkfanen “Figur og tabell”</li>
-<li>Åpne fila inst/shinyApps/app1/ui.R</li>
+<li>Åpne fila R/ui.R</li>
 <li>Bla ned til linja <code>tabPanel("Figur og tabell"</code>
 </li>
 <li>Kommenter inn linjene under, lagre fila og last applikasjonen på nytt (“Reload App”)</li>
 <li>Sjekk at det er kommet inn GUI-elementer i arkfanen “Figur og tabell” som før var tom</li>
 <li>Prøv gjerne de brukervalg som er i venstre kolonne</li>
-<li>Oppgave: gjør endringer i inst/shinyApps/app1/ui.R (på de linjene som nettopp er kommentert inn) slik at maks antall grupper endres fra 10 til 12 i applikasjonen</li>
+<li>Oppgave: gjør endringer i R/ui.R (på de linjene som nettopp er kommentert inn) slik at maks antall grupper endres fra 10 til 12 i applikasjonen</li>
 </ol>
 </div>
 <div class="section level2">
 <h2 id="lag-innhold-i-shiny-applikasjonen-steg-2">Lag innhold i Shiny-applikasjonen, steg 2<a class="anchor" aria-label="anchor" href="#lag-innhold-i-shiny-applikasjonen-steg-2"></a>
 </h2>
 <ol style="list-style-type: decimal">
-<li>Ãpne fila inst/shinyApps/app1/server.R</li>
+<li>Åpne fila R/server.R</li>
 <li>Bla ned til kommentaren <code># Last inn data</code> og kommenter inn linja under</li>
 <li>Bla videre ned til kommentaren <code># Figur og tabell</code> og kommenter inn de linjene som ligger under <code>## Figur</code> og <code>## Tabell</code>, hhv</li>
-<li>Sjekk at det er samsvar mellom id-ene definert i inst/shinyApps/app1/ui.R og de datastrukturene (<code>output$distPlot</code> og <code>output$distTable</code>) du nå har definert i inst/shinyApps/app1/server.R</li>
+<li>Sjekk at det er samsvar mellom id-ene definert i R/ui.R og de datastrukturene (<code>output$distPlot</code> og <code>output$distTable</code>) du nå har definert i R/server.R</li>
 <li>Se at <code>regData</code> gis inn til de funksjoner som lager figur og tabell, hhv</li>
-<li>Se også at de samme funksjonene tar i mot de brukervalg som er definert i inst/shinyApps/app1/ui.R (<code>input$var</code> og <code>input$bins</code>)</li>
+<li>Se også at de samme funksjonene tar i mot de brukervalg som er definert i R/ui.R (<code>input$var</code> og <code>input$bins</code>)</li>
 <li>Valgfritt: ta en titt på funksjonen som lager innholdet i figur og tabell: <code><a href="reference/makeHist.html">?makeHist</a></code>
 </li>
 <li>Lagre fila, start applikasjonen på nytt og sjekk at figur og tabell er på plass og at disse reagerer på ulike brukervalg</li>
-<li>Oppgave A: lag en ny arkfane “Sammendrag” (etter “Figur” og “Tabell”) ved å legge til kode i inst/shinyApps/app1/ui.R</li>
-<li>Oppgave B: fyll “Sammendrag” med en tabell som viser <code>summary</code> av valgt variabel ved å legge til kode i inst/shinyApps/app1/server.R</li>
+<li>Oppgave A: lag en ny arkfane “Sammendrag” (etter “Figur” og “Tabell”) ved å legge til kode i R/ui.R</li>
+<li>Oppgave B: fyll “Sammendrag” med en tabell som viser <code>summary</code> av valgt variabel ved å legge til kode i R/server.R</li>
 </ol>
 <p>Tips til oppgave B:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">## Sammendrag</span></span>
-<span><span class="va">output</span><span class="op">$</span><span class="va">distSummary</span> <span class="op">&lt;-</span> <span class="fu">renderTable</span><span class="op">(</span><span class="op">{</span></span>
+<span><span class="va">output</span><span class="op">$</span><span class="va">distSummary</span> <span class="op">&lt;-</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderTable.html" class="external-link">renderTable</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">regData</span>, <span class="va">summary</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="va">input</span><span class="op">$</span><span class="va">var</span><span class="op">]</span></span>
 <span><span class="op">}</span>, rownames <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
@@ -184,7 +183,7 @@
 <div class="section level2">
 <h2 id="lag-innhold-i-shiny-applikasjonen-steg-4">Lag innhold i Shiny-applikasjonen, steg 4<a class="anchor" aria-label="anchor" href="#lag-innhold-i-shiny-applikasjonen-steg-4"></a>
 </h2>
-<p>Denne delen forutsetter bruk av <a href="https://github.com/Rapporteket/docker" class="external-link">Docker for Rapporteket</a> eller tilsvarende utviklingsmiljø¸ som “simulerer” Rapporteket. Her skal hver enkelt bruker kunne bestille rutinemessig tilsending per epost av gitte rapporter, eksempelvis slik som samlerapporten over med predefinerte verdier for “Variabel” og “Antall grupper”. Tilnærmingen introduserer noen nye elementer, slik som:</p>
+<p>Denne delen forutsetter bruk av <a href="https://github.com/Rapporteket/docker" class="external-link">Docker for Rapporteket</a> eller tilsvarende utviklingsmiljø som “simulerer” Rapporteket. Her skal hver enkelt bruker kunne bestille rutinemessig tilsending per epost av gitte rapporter, eksempelvis slik som samlerapporten over med predefinerte verdier for “Variabel” og “Antall grupper”. Tilnærmingen introduserer noen nye elementer, slik som:</p>
 <ul>
 <li>reaktive verdier</li>
 <li>lagring av innstillinger som er “varige” også etter at appliksjonen er avsluttet</li>
@@ -211,6 +210,34 @@
 <li>Om du ikke allerede har gjort det, bli medlem av organisasjonen Rapporteket på GitHub</li>
 <li>Under din egen side på GitHub, opprett et Repository med navn tilsvarende din egen pakke (<em>e.g.</em> “testRegister”)</li>
 <li>I RStudio, push pakken til ditt nye Repository på GitHub</li>
+</ol>
+</div>
+<div class="section level2">
+<h2 id="valgfritt-bygg-docker-image-lokalt">Valgfritt: bygg docker image lokalt<a class="anchor" aria-label="anchor" href="#valgfritt-bygg-docker-image-lokalt"></a>
+</h2>
+<p>For å bygge og kjøre docker image lokalt kan man gjøre følgende:</p>
+<ol style="list-style-type: decimal">
+<li>Bygg pakken til en <code>tar.gz</code>-fil</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">R</span> CMD build .</span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>Lag Github Personal Access Token. Dette kan enten gjøres direkte på github (<a href="https://github.com/settings/tokens" class="external-link uri">https://github.com/settings/tokens</a>) eller gjennom R (<code>usethis::create_github_token()</code>). Det tryggeste er å <em>ikke</em> gi den noe særlig med rettigheter (kun lese). Vi lager og bruker en token for å ikke få feil fordi man har for mange api-kall til github.</li>
+<li>Putt den i miljøvariablen <code>GITHUB_PAT</code>.</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="bu">export</span> <span class="va">GITHUB_PAT</span><span class="op">=</span>ghp_ETT_ELLER_ANNET <span class="co"># token du nettop lagde</span></span></code></pre></div>
+<ol start="4" style="list-style-type: decimal">
+<li>Bygg image med navn <code>some_image_name</code>. Bruker <code>--progress plain</code> for å få ut alt av <code>stdout</code>, og mater inn token som en hemmelighet</li>
+</ol>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">docker</span> build <span class="at">-t</span> some_image_name <span class="at">--progress</span> plain <span class="at">--secret</span> id=GITHUB_PAT .</span></code></pre></div>
+<ol start="5" style="list-style-type: decimal">
+<li>Kjør image</li>
+</ol>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sh"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># enten</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-p</span> 3838:3838 some_image_name</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co"># eller</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="ex">docker</span> compose up</span></code></pre></div>
+<ol start="6" style="list-style-type: decimal">
+<li>Åpne siden <a href="http://localhost:3838/" class="external-link uri">http://localhost:3838/</a> og se resultatet</li>
 </ol>
 </div>
 </div>
@@ -245,7 +272,7 @@
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li>Are Edvardsen <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-5210-3656" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Are Edvardsen <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-5210-3656" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a>  </li>
 </ul>
 </div>
 
@@ -262,7 +289,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
 </div>
 
       </footer>
