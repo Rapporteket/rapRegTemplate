@@ -11,7 +11,7 @@ mod_fordeling_plot_UI <- function (id) {
 
       # Inputs: select variables to plot
       shiny::sidebarPanel(
-        width = 3,
+        width = 4,
 
 
         # Select variable for x-axis
@@ -19,9 +19,10 @@ mod_fordeling_plot_UI <- function (id) {
           inputId = ns("x_var"),
           label = "Variabel:",
           choices = c(
+            "Kjoenn" = "preOp_gender",
             "BMI" = "preOp_calcBMI_cat",
             "Mallampati score" = "preOp_mallampati",
-            "Preoperativ smert" = "preOp_pain",
+            "Preoperativ smerte" = "preOp_pain",
             "Behandling" = "treat",
             "Stoerrelse inngrep" = "intraOp_surgerySize",
             "Hosting etter ekstubasjon" = "extubation_cough",
@@ -60,11 +61,11 @@ mod_fordeling_plot_UI <- function (id) {
 
       mainPanel(
         tabsetPanel(id = ns("tab"),
-                    tabPanel("Figur",
+                    tabPanel("Figur", value = "Fig",
                              plotOutput(outputId = ns("fordeling_plot")),
                              downloadButton(ns("nedlastning_fordeling_plot"),
                                             "Last ned figur")),
-                    tabPanel("Tabell",
+                    tabPanel("Tabell", value = "Tabl",
                              DT::DTOutput(outputId = ns("fordeling_tabell")),
                              downloadButton(ns("nedlastning_fordeling_plot"),
                                             "Last ned tabell")))
