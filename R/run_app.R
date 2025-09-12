@@ -6,14 +6,6 @@
 #' @return An object representing the app
 #' @export
 
-run_app <- function(browser = FALSE, logAsJson = FALSE) {
-
-  if (logAsJson) {
-    rapbase::loggerSetup()
-  }
-  shiny::shinyApp(
-    ui = app_ui,
-    server = app_server,
-    options = list(launch.browser = browser)
-  )
+run_app <- function() {
+  shiny::shinyApp(ui = app_ui, server = app_server)
 }

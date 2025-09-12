@@ -2,6 +2,7 @@
 #'
 #' @param id Character string module namespace
 #' @return An shiny app ui object
+#' @export
 
 samlerapport_ui <- function(id) {
   ns <- shiny::NS(id)
@@ -39,6 +40,10 @@ samlerapport_ui <- function(id) {
     )
   )
 }
+
+#' Server logic for samlerapport
+#' @return A Shiny app server object
+#' @export
 
 samlerapport_server <- function(id) {
   shiny::moduleServer(

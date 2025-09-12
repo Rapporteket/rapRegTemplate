@@ -13,10 +13,15 @@ app_server <- function(input, output, session) {
     orgName = "pilot"
   )
 
+  test_data <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-06-24/cases_year.csv')
+
+  data_licorice_gargle <- readr::read_csv2("../dev/data_licorice_gargle.csv")
 
   info_server("info")
-  plots_server("plots")
+  #plots_server("plots")
   samlerapport_server("samlerapport")
+  mod_fordeling_plot_server("fordeling", data = data_licorice_gargle)
+  #abonnement_server("abonnement", user)
 
   subParamNames <- shiny::reactive(c("reshID"))
   subParamValues <- shiny::reactive(user$org())

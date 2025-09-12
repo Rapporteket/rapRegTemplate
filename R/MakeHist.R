@@ -14,23 +14,9 @@
 #' @examples
 #' makeHist(df = mtcars, var = "mpg", bins = 5, makeTable = FALSE)
 
-makeHist <- function(df, var, bins, makeTable = FALSE) {
+makeHist <- function(df, x, var, makeTable = FALSE) {
 
-  x <- df[[var]]
-  bins <- seq(min(x), max(x), length.out = bins + 1)
-  t <- graphics::hist(
-    x,
-    breaks = bins,
-    col = "#154ba2",
-    border = "white",
-    main = paste("Fordeling av", var),
-    xlab = var,
-    ylab = "Antall"
-  )
-  if (makeTable) {
-    data.frame(GruppeMin = t$breaks[seq_len(length(t$mids))],
-               GruppeMax = t$breaks[2:(length(t$mids) + 1)], Antall = t$counts)
-  } else {
-    t
-  }
+  ggplot2::ggplot(df, ggplot2::aes(x=as.factor(x), y = var)) +
+    ggplot2::geom_bar()
+
 }
