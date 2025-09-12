@@ -11,45 +11,45 @@ forbered_data_fordeling <- function(data) {
 
   # Endre nivåene
   data <- data %>%
-    dplyr::mutate(preOp_gender = case_match(preOp_gender,
-                                            0 ~ "mann",
-                                            1 ~ "kvinne"),
-                  preOp_smoking = case_match(preOp_smoking,
+    dplyr::mutate(preOp_gender = dplyr::case_match(preOp_gender,
+                                                   0 ~ "mann",
+                                                   1 ~ "kvinne"),
+                  preOp_smoking = dplyr::case_match(preOp_smoking,
                                              1 ~ "Naa",
                                              2 ~ "Foer",
                                              3 ~ "Aldri"),
-                  preOp_pain = case_match(preOp_pain,
+                  preOp_pain = dplyr::case_match(preOp_pain,
                                           0 ~ "Nei",
                                           1 ~ "Ja"),
-                  treat = case_match(treat,
+                  treat = dplyr::case_match(treat,
                                      0 ~ "Sukker",
                                      1 ~ "Lakris"),
-                  extubation_cough = case_match(extubation_cough,
+                  extubation_cough = dplyr::case_match(extubation_cough,
                                                 0 ~ "ingen hoste",
                                                 1 ~ "mild hoste",
                                                 2 ~ "moderat hoste",
                                                 3 ~ "alvorlig hoste"),
-                  pacu30min_cough = case_match(pacu30min_cough,
+                  pacu30min_cough = dplyr::case_match(pacu30min_cough,
                                                 0 ~ "ingen hoste",
                                                 1 ~ "mild hoste",
                                                 2 ~ "moderat hoste",
                                                 3 ~ "alvorlig hoste"),
-                  pacu90min_cough = case_match(pacu90min_cough,
+                  pacu90min_cough = dplyr::case_match(pacu90min_cough,
                                                 0 ~ "ingen hoste",
                                                 1 ~ "mild hoste",
                                                 2 ~ "moderat hoste",
                                                 3 ~ "alvorlig hoste"),
-                  postOp4hour_cough = case_match(postOp4hour_cough,
+                  postOp4hour_cough = dplyr::case_match(postOp4hour_cough,
                                                 0 ~ "ingen hoste",
                                                 1 ~ "mild hoste",
                                                 2 ~ "moderat hoste",
                                                 3 ~ "alvorlig hoste"),
-                  pod1am_cough = case_match(pod1am_cough,
+                  pod1am_cough = dplyr::case_match(pod1am_cough,
                                                  0 ~ "ingen hoste",
                                                  1 ~ "mild hoste",
                                                  2 ~ "moderat hoste",
                                                  3 ~ "alvorlig hoste"),
-                  intraOp_surgerySize = case_match(intraOp_surgerySize,
+                  intraOp_surgerySize = dplyr::case_match(intraOp_surgerySize,
                                                  1 ~ "liten",
                                                  2 ~ "medium",
                                                  3 ~ "stor"),
@@ -76,7 +76,7 @@ forbered_data_fordeling <- function(data) {
 utvalg <- function(data, alder1, alder2, roek) {
 
   data <- data %>%
-    dplyr::filter(between(preOp_age, {{alder1}}, {{alder2}}))
+    dplyr::filter(dplyr::between(preOp_age, {{alder1}}, {{alder2}}))
 
 
   data <- data %>%
@@ -101,9 +101,9 @@ utvalg <- function(data, alder1, alder2, roek) {
 lag_fordeling_tabell <- function(data, var) {
 
   tabell <- data %>%
-    group_by(preOp_gender) %>%
-    count(.data[[var]]) %>%
-    rename("antall" = "n")
+    dplyr::group_by(preOp_gender) %>%
+    dplyr::count(.data[[var]]) %>%
+    dplyr::rename("antall" = "n")
 
 }
 
