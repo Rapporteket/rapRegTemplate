@@ -21,8 +21,8 @@ app_ui <- function() {
       theme = "rap/bootstrap.css",
       id = "tabs",
       shiny::tabPanel(
-        "Veiledning",
-        veiledning_ui("veiledning"),
+        "Informasjon",
+        info_ui("info"),
         rapbase::navbarWidgetInput("navbar-widget", selectOrganization = TRUE)
       ),
       shiny::tabPanel(

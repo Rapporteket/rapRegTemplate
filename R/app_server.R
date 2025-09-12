@@ -13,7 +13,8 @@ app_server <- function(input, output, session) {
     orgName = "pilot"
   )
 
-  veiledning_server("veiledning")
+
+  info_server("info")
   plots_server("plots")
   samlerapport_server("samlerapport")
 
