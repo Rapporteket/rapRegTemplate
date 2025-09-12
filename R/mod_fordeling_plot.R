@@ -124,6 +124,7 @@ mod_fordeling_plot_server <- function (id, data) {
       })
 
       plot_reactive <- reactive({
+        shiny::req(c(reactive_var_sammenligning$var_sammenligning))
         rapRegTemplate::lag_fordeling_plot(data_reactive(),
                                            input$x_var,
                                            input$sammenligne_grupper,
