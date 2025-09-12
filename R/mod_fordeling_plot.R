@@ -106,12 +106,6 @@ mod_fordeling_plot_server <- function (id, data) {
 
       data <- forbered_data_fordeling(data)
 
-      reactive_var_sammenligning <- reactiveValues(var_sammenligning = "preOp_gender")
-
-      observe({
-        reactive_var_sammenligning$var_sammenligning <- input$var_sammenligning
-      })
-
       data_reactive <- reactive({
         data <- rapRegTemplate::utvalg(data,
                                        input$alder_var[1],
@@ -124,11 +118,11 @@ mod_fordeling_plot_server <- function (id, data) {
       })
 
       plot_reactive <- reactive({
-        shiny::req(c(reactive_var_sammenligning$var_sammenligning))
+        shiny::req(c(input$var_sammenligning))
         rapRegTemplate::lag_fordeling_plot(data_reactive(),
                                            input$x_var,
                                            input$sammenligne_grupper,
-                                           reactive_var_sammenligning$var_sammenligning)})
+                                           input$var_sammenligning)})
 
       output$fordeling_plot <- renderPlot({
         plot_reactive()
