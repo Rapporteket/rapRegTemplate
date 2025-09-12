@@ -112,19 +112,26 @@ lag_fordeling_tabell <- function(data, var) {
 #' Plot
 #' @export
 
-lag_fordeling_plot <- function(data, var) {
+lag_fordeling_plot <- function(data, var, valg_sammenligne_grupper, var_sammenligne) {
 
   fordeling_plot <- ggplot2::ggplot(data = data, aes(x = .data[[var]])) +
     ggplot2::geom_bar(fill = "#6CACE4", alpha = .7)+
     ggplot2::ylab("Antall")+
     ggplot2::xlab("")+
-    ggplot2::theme_minimal()+
+    ggplot2::theme_bw()+
     ggplot2::theme(axis.title.y = ggplot2::element_text(vjust = 3, size = 15, face = "bold"))
+
+  if (valg_sammenligne_grupper == "Ja") {
+    fordeling_plot <- fordeling_plot +
+      ggplot2::facet_wrap(~ .data[[var_sammenligne]])
+  }
 
   return(fordeling_plot)
 
 }
 
 
+#plot <- lag_fordeling_plot(b, "preOp_pain", "Nei", "preOp_gender")
+#plot
 
 

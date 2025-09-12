@@ -4,7 +4,7 @@
 \alias{lag_fordeling_plot}
 \title{Plot}
 \usage{
-lag_fordeling_plot(data, var)
+lag_fordeling_plot(data, var, valg_sammenligne_grupper, var_sammenligne)
 }
 \description{
 Plot

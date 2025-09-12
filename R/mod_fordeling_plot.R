@@ -56,8 +56,30 @@ mod_fordeling_plot_UI <- function (id) {
                       "Aldri" = "Aldri",
                       "Alle valg" = "alle_valg"),
           selected = "alle_valg"
-        )
-      ),
+        ),
+
+        # Sammenligne grupper
+        radioButtons(
+          inputId = ns("sammenligne_grupper"),
+          label = "Sammenligne fordeling mellom grupper?",
+          choices = c("Ja", "Nei"),
+          selected = "Nei"
+        ),
+
+        conditionalPanel(
+          condition = "input.sammenligne_grupper == 'Ja'",
+          shiny::selectInput(
+            inputId = ns("var_sammenligning"),
+            label = "Sammenligne grupper",
+            choices = c("Kjoenn" = "preOp_gender",
+                        "Behandling" = "treat",
+                        "ASA-grad" = "preOp_asa",
+                        "Kirurgi stoerrelse" = "intraOp_surgerySize",
+                        "BMI" = "preOp_calcBMI_cat"),
+            selected = "preOp_gender"),
+          ns = NS(id)
+          )
+        ),
 
       mainPanel(
         tabsetPanel(id = ns("tab"),
@@ -84,6 +106,12 @@ mod_fordeling_plot_server <- function (id, data) {
 
       data <- forbered_data_fordeling(data)
 
+      reactive_var_sammenligning <- reactiveValues(var_sammenligning = "preOp_gender")
+
+      observe({
+        reactive_var_sammenligning$var_sammenligning <- input$var_sammenligning
+      })
+
       data_reactive <- reactive({
         data <- rapRegTemplate::utvalg(data,
                                        input$alder_var[1],
@@ -96,7 +124,10 @@ mod_fordeling_plot_server <- function (id, data) {
       })
 
       plot_reactive <- reactive({
-        rapRegTemplate::lag_fordeling_plot(data_reactive(), input$x_var)})
+        rapRegTemplate::lag_fordeling_plot(data_reactive(),
+                                           input$x_var,
+                                           input$sammenligne_grupper,
+                                           reactive_var_sammenligning$var_sammenligning)})
 
       output$fordeling_plot <- renderPlot({
         plot_reactive()
