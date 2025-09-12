@@ -1,0 +1,130 @@
+# Funksjoner til modulen "mod_fordeling"
+
+# Standard filtreringsfunksjon
+
+
+
+#' Preprosessering
+#' @export
+
+forbered_data_fordeling <- function(data) {
+
+  # Endre nivåene
+  data <- data %>%
+    dplyr::mutate(preOp_gender = case_match(preOp_gender,
+                                            0 ~ "mann",
+                                            1 ~ "kvinne"),
+                  preOp_smoking = case_match(preOp_smoking,
+                                             1 ~ "Naa",
+                                             2 ~ "Foer",
+                                             3 ~ "Aldri"),
+                  preOp_pain = case_match(preOp_pain,
+                                          0 ~ "Nei",
+                                          1 ~ "Ja"),
+                  treat = case_match(treat,
+                                     0 ~ "Sukker",
+                                     1 ~ "Lakris"),
+                  extubation_cough = case_match(extubation_cough,
+                                                0 ~ "ingen hoste",
+                                                1 ~ "mild hoste",
+                                                2 ~ "moderat hoste",
+                                                3 ~ "alvorlig hoste"),
+                  pacu30min_cough = case_match(pacu30min_cough,
+                                                0 ~ "ingen hoste",
+                                                1 ~ "mild hoste",
+                                                2 ~ "moderat hoste",
+                                                3 ~ "alvorlig hoste"),
+                  pacu90min_cough = case_match(pacu90min_cough,
+                                                0 ~ "ingen hoste",
+                                                1 ~ "mild hoste",
+                                                2 ~ "moderat hoste",
+                                                3 ~ "alvorlig hoste"),
+                  postOp4hour_cough = case_match(postOp4hour_cough,
+                                                0 ~ "ingen hoste",
+                                                1 ~ "mild hoste",
+                                                2 ~ "moderat hoste",
+                                                3 ~ "alvorlig hoste"),
+                  pod1am_cough = case_match(pod1am_cough,
+                                                 0 ~ "ingen hoste",
+                                                 1 ~ "mild hoste",
+                                                 2 ~ "moderat hoste",
+                                                 3 ~ "alvorlig hoste"),
+                  intraOp_surgerySize = case_match(intraOp_surgerySize,
+                                                 1 ~ "liten",
+                                                 2 ~ "medium",
+                                                 3 ~ "stor"),
+                  )
+
+  data$preOp_calcBMI_cat <- cut(data$preOp_calcBMI,
+                                breaks = c(0, 18.5, 24.9, 29.9, 34.4, 39.9, 100),
+                                labels = c("undervektig", "normal", "overvektig", "fedme", "moderat fedme", "alvorlig fedme"))
+
+  return(data)
+}
+
+# a <- forbered_data_fordeling(data)
+
+#' Funksjon som gjør utvalg basert på  ui-valg
+#' @param data datafil som utgangspunkt
+#' @param alder1 minste alder
+#' @param alder2 høyeste alder
+#' @param roek_1_2_3 røyking 1 = nå, 2 = før, 3 = aldri
+#' @return datafil der utvalg er gjort
+#' @export
+
+
+utvalg <- function(data, alder1, alder2, roek) {
+
+  data <- data %>%
+    dplyr::filter(between(preOp_age, {{alder1}}, {{alder2}}))
+
+
+  data <- data %>%
+      dplyr::filter(preOp_smoking == dplyr::case_when({{roek}} == "Naa" ~ "Naa",
+                                                      {{roek}} == "Foer" ~ "Foer",
+                                                      {{roek}} == "Aldri" ~ "Aldri",
+                                                      {{roek}} == "alle_valg" ~ preOp_smoking))
+
+  return(data)
+
+}
+
+
+# b <- utvalg(a, 10, 100, "Aldri")
+
+
+
+
+#' Tabell
+#' @export
+
+lag_fordeling_tabell <- function(data, var) {
+
+  tabell <- data %>%
+    group_by(preOp_gender) %>%
+    count(.data[[var]]) %>%
+    rename("antall" = "n")
+
+}
+
+#c <- lag_fordeling_tabell(b, "preOp_calcBMI_cat")
+
+#' Plot
+#' @export
+
+lag_fordeling_plot <- function(data, var) {
+
+  fordeling_plot <- ggplot2::ggplot(data = data, aes(x = .data[[var]])) +
+    ggplot2::geom_bar(fill = "#6CACE4", alpha = .7)+
+    ggplot2::ylab("Antall")+
+    ggplot2::xlab("")+
+    ggplot2::theme_minimal()+
+    ggplot2::theme(axis.title.y = ggplot2::element_text(vjust = 3, size = 15, face = "bold"))
+
+  return(fordeling_plot)
+
+}
+
+
+
+

@@ -27,17 +27,17 @@ app_ui <- function() {
       ),
       shiny::tabPanel(
         "Figur og tabell",
-        plots_ui("plots")
+        mod_fordeling_plot_UI("fordeling")
       ),
       shiny::tabPanel(
         "Samlerapport",
         samlerapport_ui("samlerapport")
       ),
-      shiny::tabPanel(
-        shiny::span("Abonnement",
-                    title = "Bestill tilsending av rapporter p\u00e5 e-post"),
-        abonnement_ui("abonnement")
-      ),
+      # shiny::tabPanel(
+      #   shiny::span("Abonnement",
+      #               title = "Bestill tilsending av rapporter p\u00e5 e-post"),
+      #   abonnement_ui("abonnement")
+      # ),
       shiny::tabPanel(
         "Utsending",
         utsending_ui("utsending")

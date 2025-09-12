@@ -2,6 +2,7 @@
 #'
 #' @param id Character string module namespace
 #' @return An shiny app ui object
+#' @export
 
 utsending_ui <- function(id) {
   ns <- shiny::NS(id)
@@ -22,6 +23,10 @@ utsending_ui <- function(id) {
     )
   )
 }
+
+#' Utsending serverdel
+#' @return a shiny app server object
+#' @export
 
 utsending_server <- function(id) {
   shiny::moduleServer(

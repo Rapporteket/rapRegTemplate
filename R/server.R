@@ -13,6 +13,10 @@ app_server <- function(input, output, session) {
     orgName = "pilot"
   )
 
+  test_data <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-06-24/cases_year.csv')
+
+  data_licorice_gargle <- readr::read_csv2("../dev/data_licorice_gargle.csv")
+
   # Brukerinformasjon i menylinja (navbar)
   output$appUserName <- shiny::renderText(
     paste(
@@ -34,8 +38,9 @@ app_server <- function(input, output, session) {
   })
 
   veiledning_server("veiledning")
-  plots_server("plots")
+  #plots_server("plots")
   samlerapport_server("samlerapport")
-  abonnement_server("abonnement", user)
+  mod_fordeling_plot_server("fordeling", data = data_licorice_gargle)
+  #abonnement_server("abonnement", user)
   utsending_server("utsending")
 }

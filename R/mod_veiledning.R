@@ -2,6 +2,7 @@
 #'
 #' @param id Character string module namespace
 #' @return An shiny app ui object
+#' @export
 
 veiledning_ui <- function(id) {
   ns <- shiny::NS(id)
@@ -11,6 +12,10 @@ veiledning_ui <- function(id) {
     shiny::htmlOutput(ns("veiledning"), inline = TRUE)
   )
 }
+
+#' Server logic
+#' @return A shiny app server object
+#' @export
 
 veiledning_server <- function(id) {
   shiny::moduleServer(
