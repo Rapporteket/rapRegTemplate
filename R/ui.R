@@ -21,8 +21,8 @@ app_ui <- function() {
       theme = "rap/bootstrap.css",
       id = "tabs",
       shiny::tabPanel(
-        "Veiledning",
-        veiledning_ui("veiledning"),
+        "Informasjon",
+        info_ui("info"),
         rapbase::navbarWidgetInput("navbar-widget", selectOrganization = TRUE)
       ),
       shiny::tabPanel(
@@ -39,8 +39,18 @@ app_ui <- function() {
       #   abonnement_ui("abonnement")
       # ),
       shiny::tabPanel(
-        "Utsending",
-        utsending_ui("utsending")
+        shiny::span(
+          "Abonnement",
+          title = "Bestill tilsending av rapporter p\u00e5 e-post"
+        ),
+        shiny::sidebarLayout(
+          shiny::sidebarPanel(
+            rapbase::autoReportInput("subscription")
+          ),
+          shiny::mainPanel(
+            rapbase::autoReportUI("subscription")
+          )
+        )
       )
     ) # navbarPage
   ) # tagList
