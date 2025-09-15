@@ -17,6 +17,7 @@ Depends:
 Imports:
     dplyr,
     DT,
+    ggplot2,
     kableExtra,
     knitr,
     magrittr,
