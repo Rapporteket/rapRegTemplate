@@ -16,7 +16,7 @@
 
 makeHist <- function(df, x, var, makeTable = FALSE) {
 
-  ggplot2::ggplot(df, ggplot2::aes(x=as.factor(x), y = var)) +
+  ggplot2::ggplot(df, ggplot2::aes(x = as.factor(x), y = var)) +
     ggplot2::geom_bar()
 
 }
