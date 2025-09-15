@@ -11,16 +11,24 @@ pivot_ui <- function(id) {
 }
 
 
-pivot_server <- function(id) {
+pivot_server <- function(id, user) {
   shiny::moduleServer(
     id,
     function(input, output, session) {
 
-      # Last inn data
-      regData <- getFakeRegData()
+      regData <- shiny::reactiveVal(data.frame())
+
+      shiny::observeEvent(user$role(), {
+        message("user role changed. It's now: ", user$role())
+        if ((user$role() %in% c("LC", "SC"))) {
+          regData(getFakeRegData())
+        } else {
+          regData(data.frame())
+        }
+      })
 
       output$pivotSurvey <- rpivotTable::renderRpivotTable({
-        rpivotTable::rpivotTable(regData)
+        rpivotTable::rpivotTable(regData())
       })
     }
   )

@@ -17,7 +17,7 @@ app_server <- function(input, output, session) {
   info_server("info")
   plots_server("plots")
   samlerapport_server("samlerapport")
-  pivot_server("pivot")
+  pivot_server("pivot", user)
 
   subParamNames <- shiny::reactive(c("reshID"))
   subParamValues <- shiny::reactive(user$org())
