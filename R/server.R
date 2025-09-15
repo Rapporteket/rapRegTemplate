@@ -21,6 +21,7 @@ app_server <- function(input, output, session) {
   samlerapport_server("samlerapport")
   mod_fordeling_plot_server("fordeling", data = data_licorice_gargle)
   mod_over_tid_server("over_tid", data = meslinger_data)
+  pivot_server("pivot", user)
 
   subParamNames <- shiny::reactive(c("reshID"))
   subParamValues <- shiny::reactive(user$org())

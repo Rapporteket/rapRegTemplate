@@ -43,6 +43,10 @@ app_ui <- function() {
       #   abonnement_ui("abonnement")
       # ),
       shiny::tabPanel(
+        "Pivot-tabell",
+        pivot_ui("pivot")
+      ),
+      shiny::tabPanel(
         shiny::span(
           "Abonnement",
           title = "Bestill tilsending av rapporter p\u00e5 e-post"

@@ -13,7 +13,7 @@ Description: Boilerplate R code for making result services for registries at
   Rapporteket. May be used as templalte for establishin such services or as
   plain exercise for training purposes.
 Depends:
-  R (>= 3.5.0)
+  R (>= 4.1.0)
 Imports:
     dplyr,
     DT,
@@ -22,6 +22,7 @@ Imports:
     knitr,
     magrittr,
     rapbase,
+    rpivotTable,
     shiny,
     shinyalert
 Remotes:
