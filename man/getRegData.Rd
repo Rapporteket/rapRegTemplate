@@ -4,10 +4,7 @@
 \alias{getRegData}
 \title{Provide dataframe of registry data}
 \usage{
-getRegData(registryName)
-}
-\arguments{
-\item{registryName}{String providing the current registryName}
+getRegData()
 }
 \value{
 regData data frame
