@@ -1,5 +1,3 @@
-#' Provide dataframe of registry data
-#'
 #' Provides a dataframe containing data from a registry
 #'
 #' @return regData data frame
