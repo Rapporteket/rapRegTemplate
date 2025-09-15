@@ -13,7 +13,7 @@ mod_fordeling_plot_ui <- function(id) {
         width = 4,
         # Select variable for x-axis
         shiny::selectInput( # First select
-          inputId = ns("x_var"),
+          inputId = shiny::NS(id, "x_var"),
           label = "Variabel:",
           choices = c(
             "Kjoenn" = "preOp_gender",
@@ -37,7 +37,7 @@ mod_fordeling_plot_ui <- function(id) {
         ),
         # Filtrere på alder
         shiny::sliderInput( # fourth select
-          inputId = ns("alder_var"),
+          inputId = shiny::NS(id, "alder_var"),
           label = "Aldersintervall:",
           min = 0,
           max = 100,
@@ -47,7 +47,7 @@ mod_fordeling_plot_ui <- function(id) {
 
         # Filtrere på Røyking
         shiny::radioButtons(
-          inputId = ns("roeking"),
+          inputId = shiny::NS(id, "roeking"),
           label = "Røyker?",
           choices = c(
             "Nå" = "Naa",
@@ -60,7 +60,7 @@ mod_fordeling_plot_ui <- function(id) {
 
         # Sammenligne grupper
         shiny::radioButtons(
-          inputId = ns("sammenligne_grupper"),
+          inputId = shiny::NS(id, "sammenligne_grupper"),
           label = "Sammenligne fordeling mellom grupper?",
           choices = c("Ja", "Nei"),
           selected = "Nei"
@@ -69,7 +69,7 @@ mod_fordeling_plot_ui <- function(id) {
         shiny::conditionalPanel(
           condition = "input.sammenligne_grupper == 'Ja'",
           shiny::selectInput(
-            inputId = ns("var_sammenligning"),
+            inputId = shiny::NS(id, "var_sammenligning"),
             label = "Sammenligne grupper",
             choices = c(
               "Kjoenn" = "preOp_gender",
@@ -80,26 +80,26 @@ mod_fordeling_plot_ui <- function(id) {
             ),
             selected = "preOp_gender"
           ),
-          ns = ns(id)
+          ns = shiny::NS(id)
         )
       ),
 
       shiny::mainPanel(
         shiny::tabsetPanel(
-          id = ns("tab"),
+          id = shiny::NS(id, "tab"),
           shiny::tabPanel(
             "Figur", value = "Fig",
-            shiny::plotOutput(outputId = ns("fordeling_plot")),
+            shiny::plotOutput(outputId = shiny::NS(id, "fordeling_plot")),
             shiny::downloadButton(
-              ns("nedlastning_fordeling_plot"),
+              shiny::NS(id, "nedlastning_fordeling_plot"),
               "Last ned figur"
             )
           ),
           shiny::tabPanel(
             "Tabell", value = "Tabl",
-            DT::DTOutput(outputId = ns("fordeling_tabell")),
+            DT::DTOutput(outputId = shiny::NS(id, "fordeling_tabell")),
             shiny::downloadButton(
-              ns("nedlastning_fordeling_tabell"),
+              shiny::NS(id, "nedlastning_fordeling_tabell"),
               "Last ned tabell"
             )
           )

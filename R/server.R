@@ -17,7 +17,10 @@ app_server <- function(input, output, session) {
     "https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-06-24/cases_year.csv"
   )
 
-  data_licorice_gargle <- readr::read_csv2("../dev/data_licorice_gargle.csv")
+  data_licorice_gargle <- readr::read_csv2(system.file(
+    "data_licorice_gargle.csv",
+    package = "rapRegTemplate"
+  ))
 
   info_server("info")
   samlerapport_server("samlerapport")
