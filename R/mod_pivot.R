@@ -1,3 +1,9 @@
+#' UI for the pivot module
+#'
+#' @param id Character string module namespace
+#'
+#' @return An shiny app ui object
+#' @export
 pivot_ui <- function(id) {
   ns <- shiny::NS(id)
 
@@ -11,6 +17,13 @@ pivot_ui <- function(id) {
 }
 
 
+#' Server logic for the pivot module
+#'
+#' @param id Character string module namespace
+#' @param user reactiveValues object containing user information
+#'
+#' @return Server logic for the pivot module
+#' @export
 pivot_server <- function(id, user) {
   shiny::moduleServer(
     id,

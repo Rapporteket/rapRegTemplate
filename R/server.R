@@ -13,11 +13,19 @@ app_server <- function(input, output, session) {
     orgName = "pilot"
   )
 
+  meslinger_data <- readr::read_csv(
+    "https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-06-24/cases_year.csv"
+  )
+
+  data_licorice_gargle <- readr::read_csv2(system.file(
+    "data_licorice_gargle.csv",
+    package = "rapRegTemplate"
+  ))
 
   info_server("info")
-  plots_server("plots")
   samlerapport_server("samlerapport")
-  pivot_server("pivot", user)
+  mod_fordeling_plot_server("fordeling", data = data_licorice_gargle)
+  mod_over_tid_server("over_tid", data = meslinger_data)
 
   subParamNames <- shiny::reactive(c("reshID"))
   subParamValues <- shiny::reactive(user$org())
