@@ -62,7 +62,7 @@ forbered_data_fordeling <- function(data) {
   return(data)
 }
 
-# a <- forbered_data_fordeling(data)
+#a <- forbered_data_fordeling(data)
 
 #' Funksjon som gjør utvalg basert på  ui-valg
 #' @param data datafil som utgangspunkt
@@ -73,7 +73,7 @@ forbered_data_fordeling <- function(data) {
 #' @export
 
 
-utvalg <- function(data, alder1, alder2, roek) {
+utvalg_fordeling <- function(data, alder1, alder2, roek) {
 
   data <- data %>%
     dplyr::filter(dplyr::between(preOp_age, {{alder1}}, {{alder2}}))
@@ -90,7 +90,7 @@ utvalg <- function(data, alder1, alder2, roek) {
 }
 
 
-# b <- utvalg(a, 10, 100, "Aldri")
+#b <- utvalg(a, 10, 100, "Aldri")
 
 
 
@@ -98,16 +98,21 @@ utvalg <- function(data, alder1, alder2, roek) {
 #' Tabell
 #' @export
 
-lag_fordeling_tabell <- function(data, var) {
+lag_fordeling_tabell <- function(data, var, valg_sammenligne_grupper, var_sammenligne) {
 
-  tabell <- data %>%
-    dplyr::group_by(preOp_gender) %>%
-    dplyr::count(.data[[var]]) %>%
-    dplyr::rename("antall" = "n")
-
+  if (valg_sammenligne_grupper == "Ja") {
+    tabell <- data %>%
+      dplyr::group_by(.data[[var_sammenligne]]) %>%
+      dplyr::count(.data[[var]]) %>%
+      dplyr::rename("antall" = "n")
+  } else {
+    tabell <- data %>%
+      dplyr::count(.data[[var]]) %>%
+      dplyr::rename("antall" = "n")
+  }
 }
 
-#c <- lag_fordeling_tabell(b, "preOp_calcBMI_cat")
+#c <- lag_fordeling_tabell(b, "preOp_calcBMI_cat", "Nei", "treat")
 
 #' Plot
 #' @export

@@ -89,7 +89,7 @@ mod_fordeling_plot_UI <- function (id) {
                                             "Last ned figur")),
                     tabPanel("Tabell", value = "Tabl",
                              DT::DTOutput(outputId = ns("fordeling_tabell")),
-                             downloadButton(ns("nedlastning_fordeling_plot"),
+                             downloadButton(ns("nedlastning_fordeling_tabell"),
                                             "Last ned tabell")))
     ))
   )
@@ -107,14 +107,18 @@ mod_fordeling_plot_server <- function (id, data) {
       data <- forbered_data_fordeling(data)
 
       data_reactive <- reactive({
-        data <- rapRegTemplate::utvalg(data,
-                                       input$alder_var[1],
-                                       input$alder_var[2],
-                                       input$roeking)
+        data <- rapRegTemplate::utvalg_fordeling(data,
+                                                 input$alder_var[1],
+                                                 input$alder_var[2],
+                                                 input$roeking)
       })
 
       tabell_reactive <- reactive({
-        rapRegTemplate::lag_fordeling_tabell(data_reactive(), input$x_var)
+        shiny::req(c(input$var_sammenligning))
+        rapRegTemplate::lag_fordeling_tabell(data_reactive(),
+                                             input$x_var,
+                                             input$sammenligne_grupper,
+                                             input$var_sammenligning)
       })
 
       plot_reactive <- reactive({
