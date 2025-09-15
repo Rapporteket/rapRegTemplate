@@ -13,55 +13,78 @@ forbered_data_fordeling <- function(data) {
 
   # Endre nivåene
   data <- data %>%
-    dplyr::mutate(preOp_gender = dplyr::case_match(preOp_gender,
-                                                   0 ~ "mann",
-                                                   1 ~ "kvinne"),
-                  preOp_smoking = dplyr::case_match(preOp_smoking,
-                                             1 ~ "Naa",
-                                             2 ~ "Foer",
-                                             3 ~ "Aldri"),
-                  preOp_pain = dplyr::case_match(preOp_pain,
-                                          0 ~ "Nei",
-                                          1 ~ "Ja"),
-                  treat = dplyr::case_match(treat,
-                                     0 ~ "Sukker",
-                                     1 ~ "Lakris"),
-                  extubation_cough = dplyr::case_match(extubation_cough,
-                                                0 ~ "ingen hoste",
-                                                1 ~ "mild hoste",
-                                                2 ~ "moderat hoste",
-                                                3 ~ "alvorlig hoste"),
-                  pacu30min_cough = dplyr::case_match(pacu30min_cough,
-                                                0 ~ "ingen hoste",
-                                                1 ~ "mild hoste",
-                                                2 ~ "moderat hoste",
-                                                3 ~ "alvorlig hoste"),
-                  pacu90min_cough = dplyr::case_match(pacu90min_cough,
-                                                0 ~ "ingen hoste",
-                                                1 ~ "mild hoste",
-                                                2 ~ "moderat hoste",
-                                                3 ~ "alvorlig hoste"),
-                  postOp4hour_cough = dplyr::case_match(postOp4hour_cough,
-                                                0 ~ "ingen hoste",
-                                                1 ~ "mild hoste",
-                                                2 ~ "moderat hoste",
-                                                3 ~ "alvorlig hoste"),
-                  pod1am_cough = dplyr::case_match(pod1am_cough,
-                                                 0 ~ "ingen hoste",
-                                                 1 ~ "mild hoste",
-                                                 2 ~ "moderat hoste",
-                                                 3 ~ "alvorlig hoste"),
-                  intraOp_surgerySize = dplyr::case_match(intraOp_surgerySize,
-                                                 1 ~ "liten",
-                                                 2 ~ "medium",
-                                                 3 ~ "stor"),
-                  )
+    dplyr::mutate(
+      preOp_gender = dplyr::case_match(
+        preOp_gender,
+        0 ~ "mann",
+        1 ~ "kvinne"
+      ),
+      preOp_smoking = dplyr::case_match(
+        preOp_smoking,
+        1 ~ "Naa",
+        2 ~ "Foer",
+        3 ~ "Aldri"
+      ),
+      preOp_pain = dplyr::case_match(
+        preOp_pain,
+        0 ~ "Nei",
+        1 ~ "Ja"
+      ),
+      treat = dplyr::case_match(
+        treat,
+        0 ~ "Sukker",
+        1 ~ "Lakris"
+      ),
+      extubation_cough = dplyr::case_match(
+        extubation_cough,
+        0 ~ "ingen hoste",
+        1 ~ "mild hoste",
+        2 ~ "moderat hoste",
+        3 ~ "alvorlig hoste"
+      ),
+      pacu30min_cough = dplyr::case_match(
+        pacu30min_cough,
+        0 ~ "ingen hoste",
+        1 ~ "mild hoste",
+        2 ~ "moderat hoste",
+        3 ~ "alvorlig hoste"
+      ),
+      pacu90min_cough = dplyr::case_match(
+        pacu90min_cough,
+        0 ~ "ingen hoste",
+        1 ~ "mild hoste",
+        2 ~ "moderat hoste",
+        3 ~ "alvorlig hoste"
+      ),
+      postOp4hour_cough = dplyr::case_match(
+        postOp4hour_cough,
+        0 ~ "ingen hoste",
+        1 ~ "mild hoste",
+        2 ~ "moderat hoste",
+        3 ~ "alvorlig hoste"
+      ),
+      pod1am_cough = dplyr::case_match(
+        pod1am_cough,
+        0 ~ "ingen hoste",
+        1 ~ "mild hoste",
+        2 ~ "moderat hoste",
+        3 ~ "alvorlig hoste"
+      ),
+      intraOp_surgerySize = dplyr::case_match(
+        intraOp_surgerySize,
+        1 ~ "liten",
+        2 ~ "medium",
+        3 ~ "stor"
+      )
+    )
 
-  data$preOp_calcBMI_cat <- cut(data$preOp_calcBMI,
-                                breaks = c(0, 18.5, 24.9, 29.9, 34.4, 39.9, 100),
-                                labels = c("undervektig", "normal", "overvektig", "fedme", "moderat fedme", "alvorlig fedme"))
+  data$preOp_calcBMI_cat <- cut(
+    data$preOp_calcBMI,
+    breaks = c(0, 18.5, 24.9, 29.9, 34.4, 39.9, 100),
+    labels = c("undervektig", "normal", "overvektig", "fedme", "moderat fedme", "alvorlig fedme")
+  )
 
-  return(data)
+  data
 }
 
 
@@ -81,12 +104,12 @@ utvalg_fordeling <- function(data, alder1, alder2, roek) {
 
 
   data <- data %>%
-      dplyr::filter(preOp_smoking == dplyr::case_when({{roek}} == "Naa" ~ "Naa",
-                                                      {{roek}} == "Foer" ~ "Foer",
-                                                      {{roek}} == "Aldri" ~ "Aldri",
-                                                      {{roek}} == "alle_valg" ~ preOp_smoking))
-
-  return(data)
+    dplyr::filter(preOp_smoking == dplyr::case_when(
+      {{roek}} == "Naa" ~ "Naa",
+      {{roek}} == "Foer" ~ "Foer",
+      {{roek}} == "Aldri" ~ "Aldri",
+      {{roek}} == "alle_valg" ~ preOp_smoking
+    ))
 
 }
 
@@ -102,12 +125,12 @@ utvalg_fordeling <- function(data, alder1, alder2, roek) {
 lag_fordeling_tabell <- function(data, var, valg_sammenligne_grupper, var_sammenligne) {
 
   if (valg_sammenligne_grupper == "Ja") {
-    tabell <- data %>%
+    data %>%
       dplyr::group_by(.data[[var_sammenligne]]) %>%
       dplyr::count(.data[[var]]) %>%
       dplyr::rename("antall" = "n")
   } else {
-    tabell <- data %>%
+    data %>%
       dplyr::count(.data[[var]]) %>%
       dplyr::rename("antall" = "n")
   }
@@ -124,11 +147,11 @@ lag_fordeling_tabell <- function(data, var, valg_sammenligne_grupper, var_sammen
 
 lag_fordeling_plot <- function(data, var, valg_sammenligne_grupper, var_sammenligne) {
 
-  fordeling_plot <- ggplot2::ggplot(data = data, aes(x = .data[[var]])) +
-    ggplot2::geom_bar(fill = "#6CACE4", alpha = .7)+
-    ggplot2::ylab("Antall")+
-    ggplot2::xlab("")+
-    ggplot2::theme_bw()+
+  fordeling_plot <- ggplot2::ggplot(data = data, ggplot2::aes(x = .data[[var]])) +
+    ggplot2::geom_bar(fill = "#6CACE4", alpha = .7) +
+    ggplot2::ylab("Antall") +
+    ggplot2::xlab("") +
+    ggplot2::theme_bw() +
     ggplot2::theme(axis.title.y = ggplot2::element_text(vjust = 3, size = 15, face = "bold"))
 
   if (valg_sammenligne_grupper == "Ja") {

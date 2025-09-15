@@ -4,42 +4,57 @@
 #' @return An shiny app ui object
 #' @export
 
-mod_over_tid_UI <- function (id) {
-  ns <- NS(id)
+mod_over_tid_ui <- function(id) {
+  ns <- shiny::NS(id)
   shiny::tagList(
     shiny::sidebarLayout(
 
       shiny::sidebarPanel(
         width = 4,
 
-        selectInput( # valg en
+        shiny::selectInput( # valg en
           inputId = ns("var"),
           label = "Velg variabel",
-          choices = c("Meslinger rate pr. 1000000" = "measles_incidence_rate_per_1000000_total_population",
-                      "Røde hunder rate pr. 1000000" = "rubella_incidence_rate_per_1000000_total_population",
-                      "Forkastede prøver meslinger og røde hunder rate pr. 1000000" = "discarded_non_measles_rubella_cases_per_100000_total_population"),
-          selected = "Meslinger rate pr. 1000000"),
+          choices = c(
+            "Meslinger rate pr. 1000000" = "measles_incidence_rate_per_1000000_total_population",
+            "Røde hunder rate pr. 1000000" = "rubella_incidence_rate_per_1000000_total_population",
+            "Forkastede prøver meslinger og røde hunder rate pr. 1000000" =
+              "discarded_non_measles_rubella_cases_per_100000_total_population"
+          ),
+          selected = "Meslinger rate pr. 1000000"
+        ),
 
-        selectInput(# valg to
+        shiny::selectInput(# valg to
           inputId = ns("region"),
           label = "Velg region",
-          choices = c("Alle regioner samlet" = "Alle",
-                      "Alle regioner delt" = "Alle_delt",
-                      "Region Afrika (AFRO)" = "AFRO",
-                      "Region Amerika (AMRO" = "AMRO",
-                      "Region Sør-Øst Asia (SEARO)" = "SEARO",
-                      "Region Europa (EURO)" = "EURO",
-                      "Region østlige Middelhavet (EMRO)" = "EMRO",
-                      "Region vestlige Stillehavet (WPRO)" = "WPRO"),
-        selected = "AFRO")
+          choices = c(
+            "Alle regioner samlet" = "Alle",
+            "Alle regioner delt" = "Alle_delt",
+            "Region Afrika (AFRO)" = "AFRO",
+            "Region Amerika (AMRO" = "AMRO",
+            "Region Sør-Øst Asia (SEARO)" = "SEARO",
+            "Region Europa (EURO)" = "EURO",
+            "Region østlige Middelhavet (EMRO)" = "EMRO",
+            "Region vestlige Stillehavet (WPRO)" = "WPRO"
+          ),
+          selected = "AFRO"
+        )
       ),
 
       shiny::mainPanel(
-        tabsetPanel(id = ns("tab"),
-                    tabPanel("Figur", value = "Fig",
-                             plotOutput(outputId = ns("over_tid_plot")),
-                             downloadButton(ns("nedlastning_over_tid_plot"),
-                                            "Last ned figur"))))
+        shiny::tabsetPanel(
+          id = ns("tab"),
+          shiny::tabPanel(
+            "Figur",
+            value = "Fig",
+            shiny::plotOutput(outputId = ns("over_tid_plot")),
+            shiny::downloadButton(
+              ns("nedlastning_over_tid_plot"),
+              "Last ned figur"
+            )
+          )
+        )
+      )
     )
   )
 }
@@ -50,27 +65,25 @@ mod_over_tid_UI <- function (id) {
 #'
 #'@export
 
-mod_over_tid_server <- function (id, data) {
-  moduleServer(
+mod_over_tid_server <- function(id, data) {
+  shiny::moduleServer(
     id,
-    function(input, output, session){
+    function(input, output, session) {
 
-      #a <- over_tid_utvalg(test_data, "measles_incidence_rate_per_1000000_total_population", "AFRO")
-      data_over_tid_reactive <- reactive({
+      data_over_tid_reactive <- shiny::reactive({
         rapRegTemplate::over_tid_utvalg(data, input$var, input$region)
       })
 
-      #c <- over_tid_plot(a, "AFRO")
-      plot_over_tid_reactive <- reactive({
+      plot_over_tid_reactive <- shiny::reactive({
         rapRegTemplate::over_tid_plot(data_over_tid_reactive(), input$region)
       })
 
-      output$over_tid_plot <- renderPlot({
+      output$over_tid_plot <- shiny::renderPlot({
         plot_over_tid_reactive()
       })
 
       # Lag nedlastning
-      output$nedlastning_over_tid_plot <-  downloadHandler(
+      output$nedlastning_over_tid_plot <-  shiny::downloadHandler(
         filename = function() {
           paste("plot_over_tid", Sys.Date(), ".pdf", sep = "")
         },
@@ -80,10 +93,6 @@ mod_over_tid_server <- function (id, data) {
           dev.off()
         }
       )
-
-
-
-
     }
   )
 }

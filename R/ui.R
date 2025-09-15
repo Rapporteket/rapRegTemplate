@@ -27,21 +27,23 @@ app_ui <- function() {
       ),
       shiny::tabPanel(
         "Fordeling",
-        mod_fordeling_plot_UI("fordeling")
+        mod_fordeling_plot_ui("fordeling")
       ),
       shiny::tabPanel(
         "Over tid",
-        mod_over_tid_UI("over_tid")
+        mod_over_tid_ui("over_tid")
       ),
       shiny::tabPanel(
         "Samlerapport",
         samlerapport_ui("samlerapport")
       ),
-      # shiny::tabPanel(
-      #   shiny::span("Abonnement",
-      #               title = "Bestill tilsending av rapporter p\u00e5 e-post"),
-      #   abonnement_ui("abonnement")
-      # ),
+      shiny::tabPanel(
+        shiny::span(
+          "Abonnement",
+          title = "Bestill tilsending av rapporter p\u00e5 e-post"
+        ),
+        abonnement_ui("abonnement")
+      ),
       shiny::tabPanel(
         "Pivot-tabell",
         pivot_ui("pivot")

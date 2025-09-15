@@ -11,7 +11,7 @@
 over_tid_utvalg <- function(data, var, valg_region) {
 
   data <- data %>%
-    select(year, region, all_of(!!var))
+    dplyr::select(year, region, dplyr::all_of(!!var))
 
   gj_alle <- data %>%
     dplyr::rename(variabelen = {{var}}) %>%
@@ -31,12 +31,12 @@ over_tid_utvalg <- function(data, var, valg_region) {
                                              {{valg_region}} == "Alle_delt" ~ region))
 
   gj <- data %>%
-      dplyr::rename(variabelen = {{var}}) %>%
-      dplyr::group_by(year, region) %>%
-      dplyr::summarize(gjennomsnitt = mean(variabelen)) %>%
-      dplyr::mutate(gjennomsnitt = round(gjennomsnitt, 2))
+    dplyr::rename(variabelen = {{var}}) %>%
+    dplyr::group_by(year, region) %>%
+    dplyr::summarize(gjennomsnitt = mean(variabelen)) %>%
+    dplyr::mutate(gjennomsnitt = round(gjennomsnitt, 2))
 
-  gj <- left_join(gj, gj_alle)
+  gj <- dplyr::left_join(gj, gj_alle)
 
   if (valg_region == "Alle") {
     return(gj_alle)
@@ -57,33 +57,32 @@ over_tid_plot <- function(data, valg_region) {
 
   tid_plot <- ggplot2::ggplot()
 
-  if(valg_region == "Alle_delt") {
+  if (valg_region == "Alle_delt") {
     tid_plot <- tid_plot +
-      ggplot2::geom_col(data = data, ggplot2::aes(x = year, y = gjennomsnitt, fill = region))+
-      ggplot2::scale_fill_brewer(palette = "Set3")+
+      ggplot2::geom_col(data = data, ggplot2::aes(x = year, y = gjennomsnitt, fill = region)) +
+      ggplot2::scale_fill_brewer(palette = "Set3") +
       ggplot2::labs(fill = "Region")
   } else {
-    if(valg_region == "Alle") {
+    if (valg_region == "Alle") {
       tid_plot <- tid_plot +
         ggplot2::geom_col(data = data, ggplot2::aes(x = year, y = gj_alle), fill = "#6CACE4", alpha = .7)
     } else {
       data <- data %>%
-        mutate(Verden = "Verden (gj.snitt)")
+        dplyr::mutate(Verden = "Verden (gj.snitt)")
       tid_plot <- tid_plot +
-        ggplot2::geom_col(data = data, ggplot2::aes(x = year, y = gjennomsnitt, fill = region), alpha = .7)+
-        ggplot2::geom_point(data = data, ggplot2::aes(x = year, y = gj_alle, color = Verden))+
-        ggplot2::scale_color_manual(values = c("Verden (gj.snitt)" = "#003087"))+
+        ggplot2::geom_col(data = data, ggplot2::aes(x = year, y = gjennomsnitt, fill = region), alpha = .7) +
+        ggplot2::geom_point(data = data, ggplot2::aes(x = year, y = gj_alle, color = Verden)) +
+        ggplot2::scale_color_manual(values = c("Verden (gj.snitt)" = "#003087")) +
         ggplot2::scale_fill_manual(values = c("#6CACE4"))
     }
   }
 
   tid_plot <- tid_plot +
-    ggplot2::ylab("")+
-    ggplot2::xlab("År")+
-    ggplot2::theme_bw()+
+    ggplot2::ylab("") +
+    ggplot2::xlab("År") +
+    ggplot2::theme_bw() +
     ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10),
                    legend.position = "right",
                    legend.title = ggplot2::element_blank())
 
-  return(tid_plot)
 }
