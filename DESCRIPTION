@@ -17,6 +17,7 @@ Depends:
 Imports:
   magrittr,
   rapbase,
+  rpivotTable,
   shiny,
   shinyalert
 Remotes:
