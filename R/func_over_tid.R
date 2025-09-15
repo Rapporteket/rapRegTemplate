@@ -85,4 +85,5 @@ over_tid_plot <- function(data, valg_region) {
                    legend.position = "right",
                    legend.title = ggplot2::element_blank())
 
+  return(tid_plot)
 }
