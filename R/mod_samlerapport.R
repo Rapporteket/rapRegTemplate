@@ -57,8 +57,7 @@ samlerapport_server <- function(id) {
           system.file("samlerapport.Rmd", package = "rapRegTemplate"),
           outputType = "html_fragment",
           params = list(type = "html",
-                        var = input$varS,
-                        bins = input$binsS)
+                        var = input$varS)
         )
       })
 

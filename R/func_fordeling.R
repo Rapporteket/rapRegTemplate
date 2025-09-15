@@ -84,7 +84,7 @@ forbered_data_fordeling <- function(data) {
     labels = c("undervektig", "normal", "overvektig", "fedme", "moderat fedme", "alvorlig fedme")
   )
 
-  data
+  return(data)
 }
 
 
@@ -110,7 +110,7 @@ utvalg_fordeling <- function(data, alder1, alder2, roek) {
       {{roek}} == "Aldri" ~ "Aldri",
       {{roek}} == "alle_valg" ~ preOp_smoking
     ))
-
+  return(data)
 }
 
 
@@ -125,15 +125,16 @@ utvalg_fordeling <- function(data, alder1, alder2, roek) {
 lag_fordeling_tabell <- function(data, var, valg_sammenligne_grupper, var_sammenligne) {
 
   if (valg_sammenligne_grupper == "Ja") {
-    data %>%
+    tabell <- data %>%
       dplyr::group_by(.data[[var_sammenligne]]) %>%
       dplyr::count(.data[[var]]) %>%
       dplyr::rename("antall" = "n")
   } else {
-    data %>%
+    tabell <- data %>%
       dplyr::count(.data[[var]]) %>%
       dplyr::rename("antall" = "n")
   }
+  return(tabell)
 }
 
 
