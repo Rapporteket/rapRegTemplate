@@ -4,7 +4,7 @@
 \alias{lag_fordeling_tabell}
 \title{Tabell}
 \usage{
-lag_fordeling_tabell(data, var)
+lag_fordeling_tabell(data, var, valg_sammenligne_grupper, var_sammenligne)
 }
 \description{
 Tabell

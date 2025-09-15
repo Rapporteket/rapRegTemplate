@@ -18,7 +18,7 @@ Denne kan også vise noen figurer og tabeller lagd i R.
 ```{r pressure, echo=FALSE}
 
 pressure %>% 
-  ggplot2::ggplot(aes(x = temperature, y = pressure))+
+  ggplot2::ggplot(ggplot2::aes(x = temperature, y = pressure))+
   ggplot2::geom_point(colour = "#003087", size = 3)+
   ggplot2::geom_point(colour = "#6CACE4", size = 1.5)+
   ggplot2::ylab("Trykk")+

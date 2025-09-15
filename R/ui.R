@@ -26,8 +26,12 @@ app_ui <- function() {
         rapbase::navbarWidgetInput("navbar-widget", selectOrganization = TRUE)
       ),
       shiny::tabPanel(
-        "Figur og tabell",
+        "Fordeling",
         mod_fordeling_plot_UI("fordeling")
+      ),
+      shiny::tabPanel(
+        "Over tid",
+        mod_over_tid_UI("over_tid")
       ),
       shiny::tabPanel(
         "Samlerapport",
