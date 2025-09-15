@@ -5,6 +5,8 @@
 
 
 #' Preprosessering
+#' @param data datasett "licorice gargle"
+#' @return datasett med norske nivåer og verdier
 #' @export
 
 forbered_data_fordeling <- function(data) {
@@ -62,7 +64,6 @@ forbered_data_fordeling <- function(data) {
   return(data)
 }
 
-#a <- forbered_data_fordeling(data)
 
 #' Funksjon som gjør utvalg basert på  ui-valg
 #' @param data datafil som utgangspunkt
@@ -90,12 +91,12 @@ utvalg_fordeling <- function(data, alder1, alder2, roek) {
 }
 
 
-#b <- utvalg(a, 10, 100, "Aldri")
-
-
-
-
-#' Tabell
+#' Tabell som viser fordeling, med villkår basert på ui-valg
+#' @param data datafil som har vært gjennom forbered_data_fordeling() og utvalg_fordeling()
+#' @param var variabel valgt av bruker i ui-delen
+#' @param valg_sammenligne_grupper "ja" eller "nei" valg av bruker i ui-delen
+#' @param var_sammenligne variabel for sammenligning valg av bruker i ui-delen
+#' @return datasett med antall i hver gruppe
 #' @export
 
 lag_fordeling_tabell <- function(data, var, valg_sammenligne_grupper, var_sammenligne) {
@@ -112,9 +113,13 @@ lag_fordeling_tabell <- function(data, var, valg_sammenligne_grupper, var_sammen
   }
 }
 
-#c <- lag_fordeling_tabell(b, "preOp_calcBMI_cat", "Nei", "treat")
 
-#' Plot
+#' Plot: fordeling
+#' @param data datafil som har vært gjennom forbered_data_fordeling() og utvalg_fordeling()
+#' @param var variabel valgt av bruker i ui-delen
+#' @param valg_sammenligne_grupper "ja" eller "nei" valg av bruker i ui-delen
+#' @param var_sammenligne variabel for sammenligning valg av bruker i ui-delen
+#' @return ggplot2-object som viser fordeling pr. gruppe
 #' @export
 
 lag_fordeling_plot <- function(data, var, valg_sammenligne_grupper, var_sammenligne) {
@@ -134,9 +139,3 @@ lag_fordeling_plot <- function(data, var, valg_sammenligne_grupper, var_sammenli
   return(fordeling_plot)
 
 }
-
-
-#plot <- lag_fordeling_plot(b, "preOp_pain", "Nei", "preOp_gender")
-#plot
-
-

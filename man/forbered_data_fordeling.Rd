@@ -6,6 +6,12 @@
 \usage{
 forbered_data_fordeling(data)
 }
+\arguments{
+\item{data}{datasett "licorice gargle"}
+}
+\value{
+datasett med norske nivåer og verdier
+}
 \description{
 Preprosessering
 }
