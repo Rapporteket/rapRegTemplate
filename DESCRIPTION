@@ -3,11 +3,10 @@ Type: Package
 Title: Template to be used for Making New Registries at Rapportekt
 Version: 1.2.0
 Authors@R: c(
-    person(given = "Are",
-           family = "Edvardsen",
+    person(given = "Arnfinn",
+           family = "Steindal",
            role = c("aut", "cre"),
-           email = "biorakel@gmail.com",
-           comment = c(ORCID = "0000-0002-5210-3656")))
+           email = "arnfinn.steindal@gmail.com"))
 Maintainer: Are Edvardsen <biorakel@gmail.com>
 Description: Boilerplate R code for making result services for registries at
   Rapporteket. May be used as templalte for establishin such services or as
