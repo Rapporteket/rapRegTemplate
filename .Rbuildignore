@@ -10,3 +10,4 @@
 ^\.github$
 ^renovate.json$
 ^dev$
+^data-raw$
