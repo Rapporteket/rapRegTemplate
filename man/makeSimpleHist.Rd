@@ -7,14 +7,14 @@
 makeSimpleHist(df, var, bins, makeTable = FALSE)
 }
 \arguments{
-\item{df}{dataframe from which output is to be made}
+\item{df}{data frame from which output is to be made}
 
-\item{var}{string defining which varable in the data frame to use}
+\item{var}{string defining which variable in the data frame to use}
 
 \item{bins}{numeric vector defining the number of equally large groups}
 
 \item{makeTable}{Logical that if TRUE function will return a data frame
-containin the bin borders and count within each bin}
+containing the bin borders and count within each bin}
 }
 \value{
 a graphical object or data frame
@@ -23,5 +23,5 @@ a graphical object or data frame
 Short demo on how to produce dynamic content in a shiny app at Rapporteket
 }
 \examples{
-makeHist(df = mtcars, var = "mpg", bins = 5, makeTable = FALSE)
+makeSimpleHist(df = mtcars, var = "mpg", bins = 5, makeTable = FALSE)
 }
