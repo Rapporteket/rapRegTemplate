@@ -15,63 +15,63 @@ forbered_data_fordeling <- function(data) {
   data <- data %>%
     dplyr::mutate(
       preOp_gender = dplyr::case_match(
-        preOp_gender,
+        .data$preOp_gender,
         0 ~ "mann",
         1 ~ "kvinne"
       ),
       preOp_smoking = dplyr::case_match(
-        preOp_smoking,
+        .data$preOp_smoking,
         1 ~ "Naa",
         2 ~ "Foer",
         3 ~ "Aldri"
       ),
       preOp_pain = dplyr::case_match(
-        preOp_pain,
+        .data$preOp_pain,
         0 ~ "Nei",
         1 ~ "Ja"
       ),
       treat = dplyr::case_match(
-        treat,
+        .data$treat,
         0 ~ "Sukker",
         1 ~ "Lakris"
       ),
       extubation_cough = dplyr::case_match(
-        extubation_cough,
+        .data$extubation_cough,
         0 ~ "ingen hoste",
         1 ~ "mild hoste",
         2 ~ "moderat hoste",
         3 ~ "alvorlig hoste"
       ),
       pacu30min_cough = dplyr::case_match(
-        pacu30min_cough,
+        .data$pacu30min_cough,
         0 ~ "ingen hoste",
         1 ~ "mild hoste",
         2 ~ "moderat hoste",
         3 ~ "alvorlig hoste"
       ),
       pacu90min_cough = dplyr::case_match(
-        pacu90min_cough,
+        .data$pacu90min_cough,
         0 ~ "ingen hoste",
         1 ~ "mild hoste",
         2 ~ "moderat hoste",
         3 ~ "alvorlig hoste"
       ),
       postOp4hour_cough = dplyr::case_match(
-        postOp4hour_cough,
+        .data$postOp4hour_cough,
         0 ~ "ingen hoste",
         1 ~ "mild hoste",
         2 ~ "moderat hoste",
         3 ~ "alvorlig hoste"
       ),
       pod1am_cough = dplyr::case_match(
-        pod1am_cough,
+        .data$pod1am_cough,
         0 ~ "ingen hoste",
         1 ~ "mild hoste",
         2 ~ "moderat hoste",
         3 ~ "alvorlig hoste"
       ),
       intraOp_surgerySize = dplyr::case_match(
-        intraOp_surgerySize,
+        .data$intraOp_surgerySize,
         1 ~ "liten",
         2 ~ "medium",
         3 ~ "stor"
@@ -100,11 +100,11 @@ forbered_data_fordeling <- function(data) {
 utvalg_fordeling <- function(data, alder1, alder2, roek) {
 
   data <- data %>%
-    dplyr::filter(dplyr::between(preOp_age, {{alder1}}, {{alder2}}))
+    dplyr::filter(dplyr::between(.data$preOp_age, {{alder1}}, {{alder2}}))
 
 
   data <- data %>%
-    dplyr::filter(preOp_smoking == dplyr::case_when(
+    dplyr::filter(.data$preOp_smoking == dplyr::case_when(
       {{roek}} == "Naa" ~ "Naa",
       {{roek}} == "Foer" ~ "Foer",
       {{roek}} == "Aldri" ~ "Aldri",

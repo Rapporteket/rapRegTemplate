@@ -13,7 +13,7 @@ mod_fordeling_plot_ui <- function(id) {
         width = 4,
         # Select variable for x-axis
         shiny::selectInput( # First select
-          inputId = shiny::NS(id, "x_var"),
+          inputId = ns("x_var"),
           label = "Variabel:",
           choices = c(
             "Kjoenn" = "preOp_gender",
@@ -37,7 +37,7 @@ mod_fordeling_plot_ui <- function(id) {
         ),
         # Filtrere på alder
         shiny::sliderInput( # fourth select
-          inputId = shiny::NS(id, "alder_var"),
+          inputId = ns("alder_var"),
           label = "Aldersintervall:",
           min = 0,
           max = 100,
@@ -47,7 +47,7 @@ mod_fordeling_plot_ui <- function(id) {
 
         # Filtrere på Røyking
         shiny::radioButtons(
-          inputId = shiny::NS(id, "roeking"),
+          inputId = ns("roeking"),
           label = "Røyker?",
           choices = c(
             "Nå" = "Naa",
@@ -60,7 +60,7 @@ mod_fordeling_plot_ui <- function(id) {
 
         # Sammenligne grupper
         shiny::radioButtons(
-          inputId = shiny::NS(id, "sammenligne_grupper"),
+          inputId = ns("sammenligne_grupper"),
           label = "Sammenligne fordeling mellom grupper?",
           choices = c("Ja", "Nei"),
           selected = "Nei"
@@ -69,7 +69,7 @@ mod_fordeling_plot_ui <- function(id) {
         shiny::conditionalPanel(
           condition = "input.sammenligne_grupper == 'Ja'",
           shiny::selectInput(
-            inputId = shiny::NS(id, "var_sammenligning"),
+            inputId = ns("var_sammenligning"),
             label = "Sammenligne grupper",
             choices = c(
               "Kjoenn" = "preOp_gender",
