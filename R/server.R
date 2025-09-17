@@ -13,19 +13,9 @@ app_server <- function(input, output, session) {
     orgName = "pilot"
   )
 
-  meslinger_data <- tryCatch({
-    readr::read_csv(
-      "https://raw.githubusercontent.com/rfordatascience/tidytuesday/main/data/2025/2025-06-24/cases_year.csv"
-    )
-  }, error = function(e) {
-    message("No Internet")
-    data.frame()
-  })
+  meslinger_data <- getFakeRegData()
 
-  data_licorice_gargle <- readr::read_csv2(system.file(
-    "data_licorice_gargle.csv",
-    package = "rapRegTemplate"
-  ))
+  data_licorice_gargle <- licorice_gargle
 
   info_server("info")
   samlerapport_server("samlerapport")
