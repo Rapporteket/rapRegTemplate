@@ -23,7 +23,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 
 # Samlerapport
-Dette er eksempel på en samlerapport som er egnet til å kobinere presentasjon
+Dette er eksempel på en samlerapport som er egnet til å kombinere presentasjon
 av dynamisk tekst, tabeller og figurer. Samlerapporter kan vises i selve
 Rapporeket, lastes ned eller sendes (rutinemessig) per epost til de som ønsker
 det.
@@ -35,7 +35,7 @@ Idag, `r format(Sys.Date(), "%A %d. %b %Y")` er det
 
 
 ## Eksempel på tabell
-Tabell \@ref(tab:eksTab) under er kjedelig, men illustrerer poenget.
+Tabell \@ref(tab:eksTab) under er fin, og illustrerer poenget.
 
 ```{r eksTab}
 dt <- mtcars[1:6, ][params$var]
