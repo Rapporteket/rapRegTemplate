@@ -5,20 +5,13 @@
 
 app_ui <- function() {
 
-  shiny::addResourcePath("rap", system.file("www", package = "rapbase"))
   regTitle <- "rapRegTemplate"
 
   shiny::tagList(
     shiny::navbarPage(
-      title = shiny::div(
-        shiny::a(shiny::includeHTML(
-          system.file("www/logo.svg", package = "rapbase")
-        )
-        ),
-        regTitle
-      ),
+      title = rapbase::title(regTitle),
       windowTitle = regTitle,
-      theme = "rap/bootstrap.css",
+      theme = rapbase::theme(),
       id = "tabs",
       shiny::tabPanel(
         "Informasjon",
