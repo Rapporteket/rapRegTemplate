@@ -5,12 +5,14 @@ LABEL maintainer="Arnfinn Hykkerud Steindal <arnfinn.hykkerud.steindal@helse-nor
 
 LABEL no.rapporteket.cd.enable="true"
 
+ARG GH_PAT
+ENV GITHUB_PAT=${GH_PAT}
+
 WORKDIR /app/R
 
 COPY *.tar.gz .
 
-RUN --mount=type=secret,id=GITHUB_PAT,env=GITHUB_PAT \
-    R -e "remotes::install_local(list.files(pattern = \"*.tar.gz\"))" \
+RUN R -e "remotes::install_local(list.files(pattern = \"*.tar.gz\"))" \
     && rm ./*.tar.gz
 
 EXPOSE 3838
