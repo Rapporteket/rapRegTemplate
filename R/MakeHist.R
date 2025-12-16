@@ -49,7 +49,7 @@ makeSimpleHist <- function(df, var, bins, makeTable = FALSE) {
     ylab = "Antall"
   )
   if (makeTable) {
-    data.frame(GruppeMin = t$breaks[seq_len(length(t$mids))],
+    data.frame(GruppeMin = t$breaks[seq_along(t$mids)],
                GruppeMax = t$breaks[2:(length(t$mids) + 1)], Antall = t$counts)
   } else {
     t
