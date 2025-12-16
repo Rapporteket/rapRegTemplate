@@ -12,7 +12,7 @@
 forbered_data_fordeling <- function(data) {
 
   # Endre nivåene
-  data <- data %>%
+  data <- data |>
     dplyr::mutate(
       preOp_gender = dplyr::case_match(
         .data$preOp_gender,
@@ -99,11 +99,11 @@ forbered_data_fordeling <- function(data) {
 
 utvalg_fordeling <- function(data, alder1, alder2, roek) {
 
-  data <- data %>%
+  data <- data |>
     dplyr::filter(dplyr::between(.data$preOp_age, {{alder1}}, {{alder2}}))
 
 
-  data <- data %>%
+  data <- data |>
     dplyr::filter(.data$preOp_smoking == dplyr::case_when(
       {{roek}} == "Naa" ~ "Naa",
       {{roek}} == "Foer" ~ "Foer",
@@ -125,13 +125,13 @@ utvalg_fordeling <- function(data, alder1, alder2, roek) {
 lag_fordeling_tabell <- function(data, var, valg_sammenligne_grupper, var_sammenligne) {
 
   if (valg_sammenligne_grupper == "Ja") {
-    tabell <- data %>%
-      dplyr::group_by(.data[[var_sammenligne]]) %>%
-      dplyr::count(.data[[var]]) %>%
+    tabell <- data |>
+      dplyr::group_by(.data[[var_sammenligne]]) |>
+      dplyr::count(.data[[var]]) |>
       dplyr::rename("antall" = "n")
   } else {
-    tabell <- data %>%
-      dplyr::count(.data[[var]]) %>%
+    tabell <- data |>
+      dplyr::count(.data[[var]]) |>
       dplyr::rename("antall" = "n")
   }
   return(tabell)

@@ -17,7 +17,7 @@ Se på dataene
 ```{r}
 
 
-data %>% 
+data |> 
   ggplot(aes(x = pacu30min_swallowPain)) +
   geom_histogram()
 
@@ -28,7 +28,7 @@ Filtrere
 # på alder
 # på røyking før operasjon
 
-test <- data %>% 
+test <- data |> 
   filter(between(preOp_age, 25,100))
 
 

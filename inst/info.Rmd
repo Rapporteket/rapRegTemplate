@@ -17,7 +17,7 @@ Denne kan også vise noen figurer og tabeller lagd i R.
 
 ```{r pressure, echo=FALSE}
 
-pressure %>%
+pressure |>
   ggplot2::ggplot(ggplot2::aes(x = temperature, y = pressure)) +
   ggplot2::geom_point(colour = "#003087", size = 3) +
   ggplot2::geom_point(colour = "#6CACE4", size = 1.5) +
@@ -36,14 +36,14 @@ pressure %>%
 ### Eksempel på tabell
 
 ```{r cars, echo=FALSE}
-table <- head(pressure) %>%
+table <- head(pressure) |>
   dplyr::rename(
     temperatur = temperature,
     trykk = pressure
-  ) %>%
-  kableExtra::kbl() %>%
-  kableExtra::kable_styling(c("striped", "hover")) %>%
-  kableExtra::column_spec(1, border_right = TRUE, width = "10em") %>%
+  ) |>
+  kableExtra::kbl() |>
+  kableExtra::kable_styling(c("striped", "hover")) |>
+  kableExtra::column_spec(1, border_right = TRUE, width = "10em") |>
   kableExtra::column_spec(2, border_right = TRUE, width = "15em")
 table
 ```
