@@ -10,17 +10,17 @@
 
 over_tid_utvalg <- function(data, var, valg_region) {
 
-  data <- data %>%
+  data <- data |>
     dplyr::select(.data$year, .data$region, dplyr::all_of(!!var))
 
-  gj_alle <- data %>%
-    dplyr::rename(variabelen = {{var}}) %>%
-    dplyr::group_by(.data$year) %>%
-    dplyr::summarize(gjennomsnitt = mean(.data$variabelen)) %>%
-    dplyr::mutate(gjennomsnitt = round(.data$gjennomsnitt, 2)) %>%
+  gj_alle <- data |>
+    dplyr::rename(variabelen = {{var}}) |>
+    dplyr::group_by(.data$year) |>
+    dplyr::summarize(gjennomsnitt = mean(.data$variabelen)) |>
+    dplyr::mutate(gjennomsnitt = round(.data$gjennomsnitt, 2)) |>
     dplyr::rename(gj_alle = .data$gjennomsnitt)
 
-  data <- data %>%
+  data <- data |>
     dplyr::filter(.data$region == dplyr::case_when(
       {{valg_region}} == "AFRO" ~ "AFRO",
       {{valg_region}} == "AMRO" ~ "AMRO",
@@ -32,10 +32,10 @@ over_tid_utvalg <- function(data, var, valg_region) {
       {{valg_region}} == "Alle_delt" ~ region
     ))
 
-  gj <- data %>%
-    dplyr::rename(variabelen = {{var}}) %>%
-    dplyr::group_by(.data$year, .data$region) %>%
-    dplyr::summarize(gjennomsnitt = mean(.data$variabelen)) %>%
+  gj <- data |>
+    dplyr::rename(variabelen = {{var}}) |>
+    dplyr::group_by(.data$year, .data$region) |>
+    dplyr::summarize(gjennomsnitt = mean(.data$variabelen)) |>
     dplyr::mutate(gjennomsnitt = round(.data$gjennomsnitt, 2))
 
   gj <- dplyr::left_join(gj, gj_alle)
@@ -69,7 +69,7 @@ over_tid_plot <- function(data, valg_region) {
       tid_plot <- tid_plot +
         ggplot2::geom_col(data = data, ggplot2::aes(x = .data$year, y = .data$gj_alle), fill = "#6CACE4", alpha = .7)
     } else {
-      data <- data %>%
+      data <- data |>
         dplyr::mutate(Verden = "Verden (gj.snitt)")
       tid_plot <- tid_plot +
         ggplot2::geom_col(
