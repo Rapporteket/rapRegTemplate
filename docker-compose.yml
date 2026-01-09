@@ -19,7 +19,15 @@ services:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - ./dev/db:/docker-entrypoint-initdb.d
+
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
     platform: "linux/amd64"
+    environment:
+      MSSQL_SA_PASSWORD: "Your_password123"
+      ACCEPT_EULA: "Y"
+    volumes:
+      - ./dev/db:/docker-entrypoint-initdb.d
 
   app:
     image: rapporteket/rapregtemplate:main
@@ -32,7 +40,8 @@ services:
   dev:
     depends_on:
       - db
-    image: rapporteket/dev:main
+      - mssql
+    image: rstudio:latest
     volumes:
       - ~/.ssh:/home/rstudio/.ssh
       - ~/.gitconfig:/home/rstudio/.gitconfig
@@ -41,7 +50,6 @@ services:
     ports:
       - "8787:8787"
     restart: "no"
-    platform: "linux/amd64"
     environment:
       << : *environment
       DISABLE_AUTH: "true"
@@ -50,10 +58,10 @@ services:
   adminer:
     depends_on:
       - db
+      - mssql
     image: adminer
     restart: "no"
     environment:
       ADMINER_PLUGINS: frames
     ports:
       - 8888:8080
-    platform: "linux/amd64"
