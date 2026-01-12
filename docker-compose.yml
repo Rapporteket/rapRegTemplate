@@ -28,7 +28,8 @@ services:
       ACCEPT_EULA: "Y"
     volumes:
       - ./dev/db:/docker-entrypoint-initdb.d
-
+    ports:
+      - 1433:1433
   app:
     image: rapporteket/rapregtemplate:main
     ports:
@@ -41,7 +42,8 @@ services:
     depends_on:
       - db
       - mssql
-    image: rstudio:latest
+    image: rstudio
+    pull_policy: if_not_present
     volumes:
       - ~/.ssh:/home/rstudio/.ssh
       - ~/.gitconfig:/home/rstudio/.gitconfig
