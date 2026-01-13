@@ -8,16 +8,24 @@
 #' @export
 
 app_server <- function(input, output, session) {
+
+  # data.frame som mapper ReshID og sykehusnavn
+  map_orgname <- data.frame(
+    UnitId = c(111, 222, 333),
+    orgname = c("Sykehus 1", "Sykehus 2", "Sykehus 3")
+  )
   user <- rapbase::navbarWidgetServer2(
     "navbar-widget",
-    orgName = "pilot"
+    orgName = "pilot",
+    map_orgname = map_orgname,
+    caller = "rapRegTemplate"
   )
 
   meslinger_data <- getFakeRegData()
 
   data_licorice_gargle <- licorice_gargle
 
-  info_server("info")
+  info_server("info", user = user)
   samlerapport_server("samlerapport")
   pivot_server("pivot", user = user)
   mod_fordeling_plot_server("fordeling", data = data_licorice_gargle)
