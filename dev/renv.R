@@ -12,13 +12,11 @@ Sys.setenv(FALK_EXTENDED_USER_RIGHTS = "[
 Sys.setenv(FALK_APP_ID = "80")
 
 Sys.setenv(MYSQL_DB_LOG = "db_log")
-Sys.setenv(MYSQL_DB_AUTOREPORT = "autoreport")
+Sys.setenv(MYSQL_DB_AUTOREPORT = "db_autoreport")
 Sys.setenv(MYSQL_DB_DATA = "deformitet")
-Sys.setenv(MYSQL_HOST = "a858b665e0bd")
-Sys.setenv(MYSQL_USER = "sa")
-Sys.setenv(MYSQL_PASSWORD = "Your_password123")
-Sys.setenv(DB_TYPE = "mssql")
-Sys.setenv(MYSQL_PORT = 1433)
+Sys.setenv(MYSQL_HOST = "localhost")
+Sys.setenv(MYSQL_USER = "root")
+Sys.setenv(MYSQL_PASSWORD = "root")
 
 Sys.setenv(SHINYPROXY_USERNAME = "rapporteket")
 Sys.setenv(FALK_USER_FULLNAME = "Rapp O. R. Teket")

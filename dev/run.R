@@ -1,8 +1,9 @@
 
 
-devtools::install(".", upgrade = FALSE)
 devtools::install("../rapbase", upgrade = FALSE)
+devtools::install(".", upgrade = FALSE)
 source("dev/renv.R")
+source("dev/renv_mssql.R")
 rapRegTemplate::run_app(browser = TRUE)
 
 
