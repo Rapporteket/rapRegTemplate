@@ -1,13 +1,13 @@
 Sys.setenv(FALK_EXTENDED_USER_RIGHTS = "[
-{\"A\":80,\"R\":\"SC\",\"U\":111961},
-{\"A\":80,\"R\":\"LU\",\"U\":111961},
-{\"A\":81,\"R\":\"LC\",\"U\":111961},
-{\"A\":80,\"R\":\"SC\",\"U\":102467},
-{\"A\":80,\"R\":\"LC\",\"U\":102467},
-{\"A\":81,\"R\":\"LC\",\"U\":102467},
-{\"A\":80,\"R\":\"SC\",\"U\":103240},
-{\"A\":80,\"R\":\"LC\",\"U\":103240},
-{\"A\":81,\"R\":\"LC\",\"U\":103240}
+{\"A\":80,\"R\":\"SC\",\"U\":111},
+{\"A\":80,\"R\":\"LU\",\"U\":111},
+{\"A\":81,\"R\":\"LC\",\"U\":111},
+{\"A\":80,\"R\":\"SC\",\"U\":222},
+{\"A\":80,\"R\":\"LC\",\"U\":222},
+{\"A\":81,\"R\":\"LC\",\"U\":222},
+{\"A\":80,\"R\":\"SC\",\"U\":333},
+{\"A\":80,\"R\":\"LC\",\"U\":333},
+{\"A\":81,\"R\":\"LC\",\"U\":333}
 ]")
 Sys.setenv(FALK_APP_ID = "80")
 
@@ -20,3 +20,7 @@ Sys.setenv(MYSQL_PASSWORD = "Your_password123")
 Sys.setenv(DB_TYPE = "mssql")
 Sys.setenv(MYSQL_PORT = 1433)
 
+Sys.setenv(SHINYPROXY_USERNAME = "rapporteket")
+Sys.setenv(FALK_USER_FULLNAME = "Rapp O. R. Teket")
+Sys.setenv(FALK_USER_EMAIL = "rapporteket@skde.no")
+Sys.setenv(FALK_USER_PHONE = "+4747474747")
