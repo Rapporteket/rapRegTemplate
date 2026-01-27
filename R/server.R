@@ -104,7 +104,6 @@ app_server <- function(input, output, session) {
   )
 
   org <- rapbase::autoReportOrgServer("dispatchment", orgs)
-  disFormat <- rapbase::autoReportFormatServer("dispatchment")
 
   disParamNames <- shiny::reactive(c("reshID"))
   disParamValues <- shiny::reactive(c(org$value()))
