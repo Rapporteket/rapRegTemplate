@@ -31,6 +31,10 @@ app_server <- function(input, output, session) {
   mod_fordeling_plot_server("fordeling", data = data_licorice_gargle)
   mod_over_tid_server("over_tid", data = meslinger_data)
 
+  #################
+  # Subscriptions #
+  #################
+
   subParamNames <- shiny::reactive(c("reshID"))
   subParamValues <- shiny::reactive(user$org())
 
@@ -50,7 +54,8 @@ app_server <- function(input, output, session) {
         paramValues = c("Alder", 1, 999999)
       ),
       `Automatisk samlerapport2` = list(
-        synopsis = "Automatisk samlerapport2 som inneholder enda mer spennende statistikk
+        synopsis = "Automatisk samlerapport2 som inneholder
+        enda mer spennende statistikk
         om pasienter og operasjoner, i tillegg til BMI",
         fun = "samlerapport2Fun",
         paramNames = c("p1", "p2", "reshID"),
@@ -60,4 +65,78 @@ app_server <- function(input, output, session) {
     freq = "quarter",
     user = user
   )
+
+  #################
+  # Dispatchments #
+  #################
+
+  shiny::observeEvent(
+    shiny::req(user$role()), {
+      if (user$role() != "SC") {
+        shiny::removeTab("tabs", target = "Utsending")
+      } else {
+        message("Adding dispatchment tab for user with role ", user$role())
+        shiny::insertTab(
+          "tabs",
+          shiny::tabPanel(
+            "Utsending",
+            shiny::sidebarLayout(
+              shiny::sidebarPanel(
+                rapbase::autoReportFormatInput("dispatchment"),
+                rapbase::autoReportOrgInput("dispatchment"),
+                rapbase::autoReportInput("dispatchment")
+              ),
+              shiny::mainPanel(
+                rapbase::autoReportUI("dispatchment")
+              )
+            )
+          ),
+          target = "Pivot-tabell",
+          position = "after"
+        )
+      }
+    }
+  )
+
+  orgs <- list(
+    OrgOne = 100082,
+    OrgTwo = 102966
+  )
+
+  org <- rapbase::autoReportOrgServer("dispatchment", orgs)
+  disFormat <- rapbase::autoReportFormatServer("dispatchment")
+
+  disParamNames <- shiny::reactive(c("reshID"))
+  disParamValues <- shiny::reactive(c(org$value()))
+
+  rapbase::autoReportServer(
+    id = "dispatchment",
+    registryName = "rapRegTemplate",
+    type = "dispatchment",
+    org = org$value,
+    paramNames = disParamNames,
+    paramValues = disParamValues,
+    reports = list(
+      `Automatisk samlerapport1` = list(
+        synopsis = "
+        Automatisk samlerapport1 som inneholder spennende statistikk
+        om pasienter og operasjoner",
+        fun = "samlerapport1Fun",
+        paramNames = c("p1", "p2", "reshID"),
+        paramValues = c("Alder", 1, 999999)
+      ),
+      `Automatisk samlerapport2` = list(
+        synopsis = "Automatisk samlerapport2 som inneholder
+        enda mer spennende statistikk
+        om pasienter og operasjoner, i tillegg til BMI",
+        fun = "samlerapport2Fun",
+        paramNames = c("p1", "p2", "reshID"),
+        paramValues = c("BMI", 1, 999999)
+      )
+    ),
+    orgs = orgs,
+    user = user
+  )
+
+
 }
