@@ -19,7 +19,6 @@ services:
       MYSQL_ROOT_PASSWORD: root
     volumes:
       - ./dev/db:/docker-entrypoint-initdb.d
-    platform: "linux/amd64"
 
   app:
     image: rapporteket/rapregtemplate:main
@@ -56,4 +55,3 @@ services:
       ADMINER_PLUGINS: frames
     ports:
       - 8888:8080
-    platform: "linux/amd64"
