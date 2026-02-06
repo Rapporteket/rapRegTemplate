@@ -42,8 +42,7 @@ services:
     depends_on:
       - db
       - mssql
-    image: rstudio
-    pull_policy: if_not_present
+    image: rapporteket/rstudio:weekly
     volumes:
       - ~/.ssh:/home/rstudio/.ssh
       - ~/.gitconfig:/home/rstudio/.gitconfig
