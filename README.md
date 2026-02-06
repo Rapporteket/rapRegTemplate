@@ -77,3 +77,24 @@ docker run -p 3838:3838 some_image_name
 docker compose up
 ```
 6. Åpne siden http://localhost:3838/ og se resultatet
+
+## Docker compose
+
+Ved å bruke vedlagt `docker-compose.yml`-fil kan man få opp et miljø med databaser (både mysql og mssql), RStudio og Adminer. I tillegg kjøres det i gang en container basert på applikasjonens docker-image som er dyttet opp til docker-hub. Dette miljøet vil ligne på produksjonsmiljøet.
+
+For å kjøre opp dette miljøet kan man gjøre følgende i en terminal
+```bash
+docker compose up
+```
+Ctrl-c for å slå av igjen. Data du eventuelt har lagt inn i databasen og pakker du har installert i RStudio vil som regel fremdeles være der neste gang du snurrer opp miljøet, så lenge du ikke har kjørt en `docker compose down` (slette containere) eller `docker compose pull` (oppdatere image).
+
+RStudio vil kunne nås http://localhost:8787/, app-imaget vil nås på http://localhost:3838/ og Adminer vil nås på http://localhost:8888/.
+
+### mssql
+
+For å logge inn på mssql-server i Adminer (http://localhost:8888/) brukes brukernavn `sa`, server `mssql` og passord `Your_password123`. De to sistnevnte er definert i `docker-compose.yml`-fila. Databasenavn kan stå tomt. System må settes til `MS SQL`.
+
+### mysql
+
+For å logge inn på mysql-server i Adminer (http://localhost:8888/) brukes server `db`, brukernavn `root` og passord `root`. Disse er definert i `docker-compose.yml`-fila. Databasenavn kan stå tomt. System må settes til `MySQL/MariaDB`.
+
