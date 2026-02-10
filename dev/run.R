@@ -16,6 +16,7 @@ con <- rapbase::rapOpenDbConnection("autoreport")$con
 
 conf <- rapbase:::getDbConfig("autoreport")
 
+install.packages("odbc")
 con <- DBI::dbConnect(
   odbc::odbc(),
   driver = "FreeTDS",

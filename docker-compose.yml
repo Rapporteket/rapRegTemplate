@@ -27,9 +27,12 @@ services:
       MSSQL_SA_PASSWORD: "Your_password123"
       ACCEPT_EULA: "Y"
     volumes:
-      - ./dev/db:/docker-entrypoint-initdb.d
+      - ./dev/mssql/init.sql:/db/init.sql
+      - ./dev/mssql/entrypoint.sh:/entrypoint.sh
+    entrypoint: ["/bin/bash", "/entrypoint.sh"]
     ports:
       - 1433:1433
+
   app:
     image: rapporteket/rapregtemplate:main
     ports:
@@ -42,7 +45,7 @@ services:
     depends_on:
       - db
       - mssql
-    image: rapporteket/rstudio:weekly
+    image: rapporteket/rstudio:main
     volumes:
       - ~/.ssh:/home/rstudio/.ssh
       - ~/.gitconfig:/home/rstudio/.gitconfig
