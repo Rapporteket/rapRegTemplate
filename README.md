@@ -86,9 +86,9 @@ For å kjøre opp dette miljøet kan man gjøre følgende i en terminal
 ```bash
 docker compose up
 ```
-Ctrl-c for å slå av igjen. Data du eventuelt har lagt inn i databasen og pakker du har installert i RStudio vil som regel fremdeles være der neste gang du snurrer opp miljøet, så lenge du ikke har kjørt en `docker compose down` (slette containere) eller `docker compose pull` (oppdatere image).
+<kbd>Ctrl</kbd> + <kbd>c</kbd> for å slå av igjen. Data du eventuelt har lagt inn i databasen og pakker du har installert i RStudio vil som regel fremdeles være der neste gang du snurrer opp miljøet, så lenge du ikke har kjørt en `docker compose down` (slette containere) eller `docker compose pull` (oppdatere image).
 
-RStudio vil kunne nås http://localhost:8787/, app-imaget vil nås på http://localhost:3838/ og Adminer vil nås på http://localhost:8888/.
+RStudio vil kunne nås på http://localhost:8787/, app-imaget vil nås på http://localhost:3838/ og Adminer vil nås på http://localhost:8888/.
 
 ### mssql
 
@@ -97,4 +97,3 @@ For å logge inn på mssql-server i Adminer (http://localhost:8888/) brukes bruk
 ### mysql
 
 For å logge inn på mysql-server i Adminer (http://localhost:8888/) brukes server `db`, brukernavn `root` og passord `root`. Disse er definert i `docker-compose.yml`-fila. Databasenavn kan stå tomt. System må settes til `MySQL/MariaDB`.
-
