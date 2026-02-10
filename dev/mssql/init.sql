@@ -1,7 +1,3 @@
--- Source - https://stackoverflow.com/a/79576410
--- Posted by The Lemon, modified by community. See post 'Timeline' for change history
--- Retrieved 2026-02-10, License - CC BY-SA 4.0
-
 IF NOT EXISTS (SELECT name FROM sys.databases WHERE name = N'mydatabase')
 BEGIN
     CREATE DATABASE [mydatabase];
