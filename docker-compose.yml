@@ -20,6 +20,17 @@ services:
     volumes:
       - ./dev/db:/docker-entrypoint-initdb.d
 
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    platform: "linux/amd64"
+    environment:
+      MSSQL_SA_PASSWORD: "Your_password123"
+      ACCEPT_EULA: "Y"
+    volumes:
+      - ./dev/mssql/init.sql:/db/init.sql
+      - ./dev/mssql/entrypoint.sh:/entrypoint.sh
+    entrypoint: ["/bin/bash", "/entrypoint.sh"]
+
   app:
     image: rapporteket/rapregtemplate:main
     ports:
@@ -31,7 +42,8 @@ services:
   dev:
     depends_on:
       - db
-    image: rapporteket/rstudio:weekly
+      - mssql
+    image: rapporteket/rstudio:main
     volumes:
       - ~/.ssh:/home/rstudio/.ssh
       - ~/.gitconfig:/home/rstudio/.gitconfig
@@ -48,6 +60,7 @@ services:
   adminer:
     depends_on:
       - db
+      - mssql
     image: adminer
     restart: "no"
     environment:
