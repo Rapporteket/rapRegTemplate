@@ -51,5 +51,4 @@ CREATE TABLE reportLog (
   PRIMARY KEY (id)
 ) ;
 
-
 GO

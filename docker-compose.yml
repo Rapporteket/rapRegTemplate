@@ -30,8 +30,6 @@ services:
       - ./dev/mssql/init.sql:/db/init.sql
       - ./dev/mssql/entrypoint.sh:/entrypoint.sh
     entrypoint: ["/bin/bash", "/entrypoint.sh"]
-    ports:
-      - 1433:1433
 
   app:
     image: rapporteket/rapregtemplate:main
