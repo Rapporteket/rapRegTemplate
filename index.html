@@ -159,6 +159,25 @@
 <li>Åpne siden <a href="http://localhost:3838/" class="external-link uri">http://localhost:3838/</a> og se resultatet</li>
 </ol>
 </div>
+<div class="section level2">
+<h2 id="docker-compose">Docker compose<a class="anchor" aria-label="anchor" href="#docker-compose"></a>
+</h2>
+<p>Ved å bruke vedlagt <code>docker-compose.yml</code>-fil kan man få opp et miljø med databaser (både mysql og mssql), RStudio og Adminer. I tillegg kjøres det i gang en container basert på applikasjonens docker-image som er dyttet opp til docker-hub. Dette miljøet vil ligne på produksjonsmiljøet.</p>
+<p>For å kjøre opp dette miljøet kan man gjøre følgende i en terminal</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">docker</span> compose up</span></code></pre></div>
+<p><kbd>Ctrl</kbd> + <kbd>c</kbd> for å slå av igjen. Data du eventuelt har lagt inn i databasen og pakker du har installert i RStudio vil som regel fremdeles være der neste gang du snurrer opp miljøet, så lenge du ikke har kjørt en <code>docker compose down</code> (slette containere) eller <code>docker compose pull</code> (oppdatere image).</p>
+<p>RStudio vil kunne nås på <a href="http://localhost:8787/" class="external-link uri">http://localhost:8787/</a>, app-imaget vil nås på <a href="http://localhost:3838/" class="external-link uri">http://localhost:3838/</a> og Adminer vil nås på <a href="http://localhost:8888/" class="external-link uri">http://localhost:8888/</a>.</p>
+<div class="section level3">
+<h3 id="mssql">mssql<a class="anchor" aria-label="anchor" href="#mssql"></a>
+</h3>
+<p>For å logge inn på mssql-server i Adminer (<a href="http://localhost:8888/" class="external-link uri">http://localhost:8888/</a>) brukes brukernavn <code>sa</code>, server <code>mssql</code> og passord <code>Your_password123</code>. De to sistnevnte er definert i <code>docker-compose.yml</code>-fila. Databasenavn kan stå tomt. System må settes til <code>MS SQL</code>.</p>
+</div>
+<div class="section level3">
+<h3 id="mysql">mysql<a class="anchor" aria-label="anchor" href="#mysql"></a>
+</h3>
+<p>For å logge inn på mysql-server i Adminer (<a href="http://localhost:8888/" class="external-link uri">http://localhost:8888/</a>) brukes server <code>db</code>, brukernavn <code>root</code> og passord <code>root</code>. Disse er definert i <code>docker-compose.yml</code>-fila. Databasenavn kan stå tomt. System må settes til <code>MySQL/MariaDB</code>.</p>
+</div>
+</div>
 </div>
 
   </div>
