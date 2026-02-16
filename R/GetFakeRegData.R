@@ -20,6 +20,7 @@ getFakeRegData2 <- function() {
       male         = .data$sex == "male"
     )
   attr(penguin_bool, "kvalIndGrenser") <- list(
+    # fikive kvalitetsindikatorer 
     heavy        = c(0, 30, 60, 100),
     long_bill    = NA,
     deep_bill    = NA,

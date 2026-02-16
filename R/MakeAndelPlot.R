@@ -12,7 +12,7 @@
 PlotAndelerGrVar <- function(RegData,
                              Variabel,
                              grVar = "ShNavn",
-                             hovedgrTxt = "",
+                             hovedgrTxt = "Total andel",
                              kvalIndGrenser = NA,
                              tittel = "tittel",
                              utvalgTxt = "",
@@ -24,18 +24,17 @@ PlotAndelerGrVar <- function(RegData,
                              bestKvalInd = "lav", # "høy" for omvendt rekkfølge på indikatorfarger
                              nTicks = 5,
                              fargepalett = "BlaaOff",
-                             grtxt = "",
-                             outfile = "") {
+                             grtxt = "") {
   library(ggplot2)
 
-  OffAlleFarger <- c("#c6dbef", "#6baed6", "#4292c6", "#2171b5", "#084594", "#000059",
+  offAlleFarger <- c("#c6dbef", "#6baed6", "#4292c6", "#2171b5", "#084594", "#000059",
                      "#FF7260", "#4D4D4D", "#737373", "#A6A6A6", "#DADADA")
   farger <- switch(
     fargepalett,
-    BlaaOff = OffAlleFarger[rev(c(1, 2, 4, 5))],
-    BlaaOffAlle = OffAlleFarger[6:1],
-    StotteOff = OffAlleFarger[7:11],
-    OffAlleFarger = OffAlleFarger
+    BlaaOff = offAlleFarger[rev(c(1, 2, 4, 5))],
+    BlaaOffAlle = offAlleFarger[6:1],
+    StotteOff = offAlleFarger[7:11],
+    offAlleFarger = offAlleFarger
   )
 
   dummy0 <- NA  # -0.001
@@ -247,13 +246,13 @@ PlotAndelerGrVar <- function(RegData,
       ) +
 
       # Plot stolper horisontalt
-      ggplot2::coord_flip() +
+      ggplot2::coord_flip(clip = "off") +
 
       # Prosentakse
       ggplot2::scale_y_continuous(
         breaks = prettyVals,
-        limits = c(0, ovreGrense * 1.15),
-        expand = expansion(mult = c(0, 0))
+        limits = c(0, ovreGrense),
+        expand = expansion(mult = c(0, 0.0))
       ) +
 
       # Tittel og undertittel
@@ -268,6 +267,7 @@ PlotAndelerGrVar <- function(RegData,
       ggplot2::theme_minimal() +
       ggplot2::theme(
         panel.grid = element_blank(),
+        plot.margin = margin(r = 30),
         axis.ticks.x = element_line(color = "black"),
         axis.line.x  = element_line(color = "black"),
         legend.position = "top",
