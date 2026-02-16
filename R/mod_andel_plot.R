@@ -4,27 +4,29 @@
 #' @return An shiny app ui object
 #' @export
 
-AND_VAR_CHOICES <- c(
+.private <- new.env(parent = emptyenv())
+.private$andVarChoices <- c(
   "Tung (>= 4000g)"        = "heavy",
   "Langt nebb (>= 45mm)"   = "long_bill",
   "Dype nebb (>= 18mm)"    = "deep_bill",
-  "Lang flipper (>= 200mm)"= "long_flipper",
+  "Lang flipper (>= 200mm)" = "long_flipper",
   "Hann"                   = "male"
 )
 
-AND_BINS_CHOICES <- c(
+.private$andBinChoices <- c(
   "Art"    = "species",
   "Øy"     = "island",
   "Kjønn"  = "sex",
   "År"     = "year"
 )
 
+
 mod_andeler_ui <- function(id) {
   ns <- shiny::NS(id)
-	
-	
-	
-	shiny::tagList(
+
+
+
+  shiny::tagList(
 
     "Andel basert på variabel og grenser",
     shiny::sidebarLayout(
@@ -33,24 +35,19 @@ mod_andeler_ui <- function(id) {
         shiny::selectInput(
           inputId = ns("varS"),
           label = "Variabel:",
-          choices = AND_VAR_CHOICES
+          choices = .private$andVarChoices
         ),
         shiny::selectInput(
           inputId = ns("binsS"),
           label = "Sortert etter:",
-          choices = AND_BINS_CHOICES
+          choices = .private$andBinChoices
         ),
         shiny::sliderInput(
-            inputId = ns("limitS"),
-            label = "Inklusjonskriterie (>n):",
-            min = 0,
-            max = 100,
-						value = 1
-        ),
-        shiny::selectInput(
-          inputId = ns("formatS"),
-          label = "Velg format for nedlasting:",
-          choices = list(PDF = "pdf", HTML = "html")
+          inputId = ns("limitS"),
+          label = "Inklusjonskriterie (>n):",
+          min = 0,
+          max = 100,
+          value = 1
         ),
         shiny::downloadButton(
           outputId = ns("downloadandelPlot"),
@@ -83,23 +80,23 @@ mod_andeler_server <- function(id, data) {
         bins <- input$binsS
         limit <- input$limitS
 
-				var_label  <- names(AND_VAR_CHOICES)[AND_VAR_CHOICES == input$varS]
-				bins_label <- names(AND_BINS_CHOICES)[AND_BINS_CHOICES == input$binsS]
+        var_label  <- names(.private$andVarChoices)[.private$andVarChoices == input$varS]
+        bins_label <- names(.private$andBinChoices)[.private$andBinChoices == input$binsS]
 
-				tittel <- paste(
-					"Andel", var_label,
-					"etter", bins_label,
-					"med mer enn", input$limitS, "registreringer"
-				)
+        tittel <- paste(
+          "Andel", var_label,
+          "etter", bins_label,
+          "med mer enn", input$limitS, "registreringer"
+        )
 
         rapRegTemplate::PlotAndelerGrVar(
           RegData = data,
           Variabel = data[[var]],
           grVar = bins,
-					Ngrense = limit,
-					tittel = tittel,
-					kvalIndGrenser = attr(data, "kvalIndGrenser")[[var]],
-					bestKvalInd = 'høy'
+          Ngrense = limit,
+          tittel = tittel,
+          kvalIndGrenser = attr(data, "kvalIndGrenser")[[var]],
+          bestKvalInd = "høy"
         )
       })
 
@@ -107,7 +104,7 @@ mod_andeler_server <- function(id, data) {
         plotReactive()
       })
 
-			output$downloadandelPlot <-  shiny::downloadHandler(
+      output$downloadandelPlot <-  shiny::downloadHandler(
         filename = function() {
           paste("plot_andeler", Sys.Date(), ".pdf", sep = "")
         },
@@ -118,7 +115,7 @@ mod_andeler_server <- function(id, data) {
         }
       )
 
-  
+
     }
   )
 }
