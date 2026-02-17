@@ -184,14 +184,14 @@ PlotAndelerGrVar <- function(RegData,
     }
 
     # 6) Plot
-    p <- ggplot2::ggplot(ggDataFrame, aes(x = .data$gruppeNavn, y = andelerPlot))
+    p <- ggplot2::ggplot(ggDataFrame, ggplot2::aes(x = .data$gruppeNavn, y = andelerPlot))
 
     # Legg til bakgrunnsbånd først slik at de ligger bak stolpene
     if (visKvalIndGrenser) {
       p <- p +
         ggplot2::geom_rect(
           data = indikatorBand,
-          aes(xmin = .data$xmin, xmax = .data$xmax, ymin = .data$ymin, ymax = .data$ymax, fill = .data$indLevels),
+          ggplot2::aes(xmin = .data$xmin, xmax = .data$xmax, ymin = .data$ymin, ymax = .data$ymax, fill = .data$indLevels),
           inherit.aes = FALSE,
           alpha = 0.20
         ) +
@@ -214,7 +214,7 @@ PlotAndelerGrVar <- function(RegData,
           yend = gjennomsnittY,
           lab = gjennomsnittEtikett
         ),
-        aes(x = .data$x, xend = .data$xend, y = .data$y, yend = .data$yend, linetype = .data$lab),
+        ggplot2::aes(x = .data$x, xend = .data$xend, y = .data$y, yend = .data$yend, linetype = .data$lab),
         color = farger[2],
         linewidth = 1,
         inherit.aes = FALSE
@@ -238,7 +238,7 @@ PlotAndelerGrVar <- function(RegData,
       ggplot2::scale_y_continuous(
         breaks = prettyVals,
         limits = c(0, ovreGrense),
-        expand = expansion(mult = c(0, 0.0))
+        expand = ggplot2::expansion(mult = c(0, 0.0))
       ) +
 
       # Tittel og undertittel
@@ -252,17 +252,17 @@ PlotAndelerGrVar <- function(RegData,
       # Layout
       ggplot2::theme_minimal() +
       ggplot2::theme(
-        panel.grid = element_blank(),
-        plot.margin = margin(r = 30),
-        axis.ticks.x = element_line(color = "black"),
-        axis.line.x  = element_line(color = "black"),
-        axis.line.y  = element_line(color = "black"),
+        panel.grid = ggplot2::element_blank(),
+        plot.margin = ggplot2::margin(r = 30),
+        axis.ticks.x = ggplot2::element_line(color = "black"),
+        axis.line.x  = ggplot2::element_line(color = "black"),
+        axis.line.y  = ggplot2::element_line(color = "black"),
         legend.position = "top",
         legend.justification = "center",
-        legend.text = element_text(size = legendSize),
-        plot.subtitle = element_text(size = subtitleSize, color = farger[1]),
-        plot.title = element_text(size = titleSize),
-        axis.text.y = element_text(size = axisTextSize)
+        legend.text = ggplot2::element_text(size = legendSize),
+        plot.subtitle = ggplot2::element_text(size = subtitleSize, color = farger[1]),
+        plot.title = ggplot2::element_text(size = titleSize),
+        axis.text.y = ggplot2::element_text(size = axisTextSize)
       )
   }
   return(p)
