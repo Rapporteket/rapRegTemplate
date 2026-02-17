@@ -18,8 +18,6 @@ abstract: Om rapporten trenger et sammendrag kan det settes inn her
 library(knitr)
 library(kableExtra)
 library(rapbase)
-library(ggplot2)
-library(plotly)
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
