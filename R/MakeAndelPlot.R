@@ -27,7 +27,6 @@ PlotAndelerGrVar <- function(RegData,
   nTicks = 5
 ) {
   library(ggplot2)
-  library(plotly)
   offAlleFarger <- c("#c6dbef", "#6baed6", "#4292c6", "#2171b5", "#084594", "#000059",
                      "#FF7260", "#4D4D4D", "#737373", "#A6A6A6", "#DADADA")
   farger <- switch(
