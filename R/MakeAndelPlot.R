@@ -191,7 +191,8 @@ PlotAndelerGrVar <- function(RegData,
       p <- p +
         ggplot2::geom_rect(
           data = indikatorBand,
-          ggplot2::aes(xmin = .data$xmin, xmax = .data$xmax, ymin = .data$ymin, ymax = .data$ymax, fill = .data$indLevels),
+          ggplot2::aes(xmin = .data$xmin, xmax = .data$xmax,
+                       ymin = .data$ymin, ymax = .data$ymax, fill = .data$indLevels),
           inherit.aes = FALSE,
           alpha = 0.20
         ) +
@@ -226,7 +227,7 @@ PlotAndelerGrVar <- function(RegData,
 
       # Verdietiketter til høyre for stolpene
       ggplot2::geom_text(
-        aes(label = .data$andelTekst),
+        ggplot2::aes(label = .data$andelTekst),
         color = farger[1],
         hjust = -0.2
       ) +
