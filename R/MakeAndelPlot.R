@@ -10,23 +10,24 @@
 #'          the structure of the input data and the specific implementation of the function.
 #' @export
 PlotAndelerGrVar <- function(RegData,
-                             Variabel,
-                             grVar = "ShNavn",
-                             hovedgrTxt = "Total andel",
-                             kvalIndGrenser = NA,
-                             tittel = "tittel",
-                             utvalgTxt = "",
-                             Ngrense = 10,
-                             titleSize = 20,
-                             subtitleSize = 15,
-                             legendSize = 12,
-                             axisTextSize = 10,
-                             bestKvalInd = "lav", # "høy" for omvendt rekkfølge på indikatorfarger
-                             nTicks = 5,
-                             fargepalett = "BlaaOff",
-                             grtxt = "") {
+  Variabel,
+  grVar = "ShNavn",
+  hovedgrTxt = "Total andel",
+  kvalIndGrenser = NA,
+  tittel = "tittel",
+  utvalgTxt = "",
+  Ngrense = 10,
+  bestKvalInd = "lav", # "høy" for omvendt rekkfølge på indikatorfarger
+  fargepalett = "BlaaOff",
+  grtxt = "",
+  titleSize = 20,
+  subtitleSize = 15,
+  legendSize = 12,
+  axisTextSize = 12,
+  nTicks = 5
+) {
   library(ggplot2)
-
+  library(plotly)
   offAlleFarger <- c("#c6dbef", "#6baed6", "#4292c6", "#2171b5", "#084594", "#000059",
                      "#FF7260", "#4D4D4D", "#737373", "#A6A6A6", "#DADADA")
   farger <- switch(
@@ -43,7 +44,7 @@ PlotAndelerGrVar <- function(RegData,
   Variabel <- as.numeric(Variabel)
   grVar <- as.character(grVar)[1]
 
-  # Gruppestørrelser og summer per gruppe (robust ved N == 0)
+  # Gruppestørrelser og summer per gruppe
   if (N > 0) {
     Ngr  <- table(RegData[, grVar])
     Nvar <- tapply(Variabel, RegData[, grVar], sum, na.rm = TRUE)
@@ -121,22 +122,9 @@ PlotAndelerGrVar <- function(RegData,
       andelTekst   = as.character(andeltxt)
     )
 
-    # Litt triksing for å sikre at "(N)" alltid kommer sist (øverst i plottet etter coord_flip)
-    ggDataFrame <- rbind(
-      ggDataFrame,
-      data.frame(
-        andelProsent = NA,
-        andelerPlot  = 0,
-        gruppeNavn   = "(N)",
-        andelTekst   = ""
-      )
-    )
-    # ---- Sorter alle "(N)" ----
-    rest <- ggDataFrame[ggDataFrame$gruppeNavn != "(N)", ]
-    rest <- rest[order(-ifelse(is.na(rest$andelProsent), -Inf, rest$andelProsent)), ]
+    ggDataFrame <- ggDataFrame[order(-ifelse(is.na(ggDataFrame$andelProsent), -Inf, ggDataFrame$andelProsent)), ]
 
-    # Legg "(N)" sist i datasettet for å sikre at det plottes sist (øverst etter coord_flip)
-    ggDataFrame <- rbind(rest, ggDataFrame[ggDataFrame$gruppeNavn == "(N)", ])
+
     # ---- Lås rekkefølge ----
     ggDataFrame$gruppeNavn <- factor(
       ggDataFrame$gruppeNavn,
@@ -191,7 +179,7 @@ PlotAndelerGrVar <- function(RegData,
 
       # fjern kvalitetsindikator-bånd for (N)-label
       indikatorBand$xmin <- 0.5
-      indikatorBand$xmax <- (nLevels - 1) + 0.5
+      indikatorBand$xmax <- nLevels + 0.5
 
       # Fjern bånd som ender opp tomme
       indikatorBand <- indikatorBand[indikatorBand$ymax > indikatorBand$ymin, ]
@@ -223,7 +211,7 @@ PlotAndelerGrVar <- function(RegData,
       ggplot2::geom_segment(
         data = data.frame(
           x = 0.5,
-          xend = (nLevels - 1) + 0.5,
+          xend = nLevels + 0.5,
           y = gjennomsnittY,
           yend = gjennomsnittY,
           lab = gjennomsnittEtikett
@@ -270,6 +258,7 @@ PlotAndelerGrVar <- function(RegData,
         plot.margin = margin(r = 30),
         axis.ticks.x = element_line(color = "black"),
         axis.line.x  = element_line(color = "black"),
+        axis.line.y  = element_line(color = "black"),
         legend.position = "top",
         legend.justification = "center",
         legend.text = element_text(size = legendSize),
