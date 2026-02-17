@@ -4,6 +4,7 @@
 <url><loc>/authors.html</loc></url>
 <url><loc>/index.html</loc></url>
 <url><loc>/news/index.html</loc></url>
+<url><loc>/reference/PlotAndelerGrVar.html</loc></url>
 <url><loc>/reference/abonnement_ui.html</loc></url>
 <url><loc>/reference/app_server.html</loc></url>
 <url><loc>/reference/app_ui.html</loc></url>
@@ -17,6 +18,8 @@
 <url><loc>/reference/lag_fordeling_tabell.html</loc></url>
 <url><loc>/reference/makeHist.html</loc></url>
 <url><loc>/reference/makeSimpleHist.html</loc></url>
+<url><loc>/reference/mod_andeler_server.html</loc></url>
+<url><loc>/reference/mod_andeler_ui.html</loc></url>
 <url><loc>/reference/mod_fordeling_plot_UI.html</loc></url>
 <url><loc>/reference/mod_fordeling_plot_server.html</loc></url>
 <url><loc>/reference/mod_over_tid_UI.html</loc></url>
