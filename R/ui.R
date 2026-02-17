@@ -27,6 +27,10 @@ app_ui <- function() {
         mod_over_tid_ui("over_tid")
       ),
       shiny::tabPanel(
+        "Andeler",
+        mod_andeler_ui("andeler")
+      ),
+      shiny::tabPanel(
         "Samlerapport",
         samlerapport_ui("samlerapport")
       ),

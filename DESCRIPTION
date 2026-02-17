@@ -30,6 +30,7 @@ Imports:
     ggplot2,
     kableExtra,
     knitr,
+    palmerpenguins,
     rapbase,
     rlang,
     rpivotTable,
