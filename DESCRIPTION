@@ -1,7 +1,7 @@
 Package: rapRegTemplate
 Type: Package
 Title: Template to be used for Making New Registries at Rapportekt
-Version: 1.2.0
+Version: 1.5.0
 Authors@R: c(
     person(given = "Ingrid",
            family = "Bondevik",
@@ -13,6 +13,15 @@ Authors@R: c(
            role = c("aut"),
            email = "biorakel@gmail.com",
            comment = c(ORCID = "0000-0002-5210-3656")),
+    person(given = "Stein-Kato",
+           family = "Lindberg",
+           role = c("aut"),
+           email = "stein-kato.lindberg@helse-nord.no",
+           comment = c(ORCID = "0000-0001-6088-255X")),
+    person(given = "Petter",
+           family = "Linberg",
+           role = c("aut"),
+           email = "petter.linberg@helse-nord.no"),
     person(given = "Arnfinn Hykkerud",
            family = "Steindal",
            role = c("aut", "cre"),
