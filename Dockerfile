@@ -10,7 +10,8 @@ WORKDIR /app/R
 COPY *.tar.gz .
 
 RUN R -e "remotes::install_local(list.files(pattern = \"*.tar.gz\"))" \
-    && rm ./*.tar.gz
+    && rm ./*.tar.gz \
+    && R -e "remotes::install_github(\"Rapporteket/rapbase\", ref = \"email_autoreport\")"
 
 EXPOSE 3838
 
