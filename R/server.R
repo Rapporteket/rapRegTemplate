@@ -65,7 +65,8 @@ app_server <- function(input, output, session) {
       )
     ),
     freq = "quarter",
-    user = user
+    user = user,
+    runAutoReportButton = TRUE
   )
 
   #################
