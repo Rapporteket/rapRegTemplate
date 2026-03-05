@@ -136,7 +136,8 @@ app_server <- function(input, output, session) {
       )
     ),
     orgs = orgs,
-    user = user
+    user = user,
+    runAutoReportButton = TRUE
   )
 
 
