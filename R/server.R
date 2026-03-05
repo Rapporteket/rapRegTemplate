@@ -149,7 +149,7 @@ app_server <- function(input, output, session) {
       if (user$role() != "SC") {
         shiny::removeTab("tabs", target = "Eksport")
       } else {
-        message("Adding dispatchment tab for user with role ", user$role())
+        message("Adding export tab for user with role ", user$role())
         shiny::appendTab(
           "tabs",
           shiny::tabPanel(
