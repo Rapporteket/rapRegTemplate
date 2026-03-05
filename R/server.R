@@ -140,5 +140,34 @@ app_server <- function(input, output, session) {
     runAutoReportButton = TRUE
   )
 
+  ###############
+  # Export data #
+  ###############
 
+  shiny::observeEvent(
+    shiny::req(user$role()), {
+      if (user$role() != "SC") {
+        shiny::removeTab("tabs", target = "Eksport")
+      } else {
+        message("Adding dispatchment tab for user with role ", user$role())
+        shiny::appendTab(
+          "tabs",
+          shiny::tabPanel(
+            "Eksport",
+            shiny::sidebarPanel(
+              rapbase::exportUCInput("export")
+            ),
+            shiny::mainPanel(
+              rapbase::exportGuideUI("exportGuide")
+            )
+          )
+        )
+      }
+    }
+  )
+  #----------- Eksport ----------------
+  ## brukerkontroller
+  rapbase::exportUCServer("export", dbName = "data", teamName = "tech")
+  ## veiledning
+  rapbase::exportGuideServer("exportGuide", dbName = "data")
 }
