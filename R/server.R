@@ -78,7 +78,7 @@ app_server <- function(input, output, session) {
         shiny::removeTab("tabs", target = "Utsending")
       } else {
         message("Adding dispatchment tab for user with role ", user$role())
-        shiny::insertTab(
+        shiny::appendTab(
           "tabs",
           shiny::tabPanel(
             "Utsending",
@@ -92,9 +92,7 @@ app_server <- function(input, output, session) {
                 rapbase::autoReportUI("dispatchment")
               )
             )
-          ),
-          target = "Pivot-tabell",
-          position = "after"
+          )
         )
       }
     }
