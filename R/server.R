@@ -68,14 +68,17 @@ app_server <- function(input, output, session) {
     user = user
   )
 
-  #################
-  # Dispatchments #
-  #################
+  ################
+  # SC user tabs #
+  ################
 
   shiny::observeEvent(
     shiny::req(user$role()), {
       if (user$role() != "SC") {
+        message("Removing dispatchment tab for user with role ", user$role())
         shiny::removeTab("tabs", target = "Utsending")
+        message("Removing export tab for user with role ", user$role())
+        shiny::removeTab("tabs", target = "Eksport")
       } else {
         message("Adding dispatchment tab for user with role ", user$role())
         shiny::appendTab(
@@ -94,9 +97,27 @@ app_server <- function(input, output, session) {
             )
           )
         )
+        message("Adding export tab for user with role ", user$role())
+        shiny::appendTab(
+          "tabs",
+          shiny::tabPanel(
+            "Eksport",
+            shiny::sidebarPanel(
+              rapbase::exportUCInput("export")
+            ),
+            shiny::mainPanel(
+              rapbase::exportGuideUI("exportGuide")
+            )
+          )
+        )
       }
     }
   )
+
+
+  #################
+  # Dispatchments #
+  #################
 
   orgs <- list(
     OrgOne = 100082,
@@ -138,5 +159,16 @@ app_server <- function(input, output, session) {
     runAutoReportButton = TRUE
   )
 
+  ###############
+  # Export data #
+  ###############
 
+  ## brukerkontroller
+  rapbase::exportUCServer(
+    "export",
+    dbName = "data",
+    teamName = Sys.getenv("SHINYPROXY_APPID", unset = "unknown")
+  )
+  ## veiledning
+  rapbase::exportGuideServer("exportGuide", dbName = "data")
 }
