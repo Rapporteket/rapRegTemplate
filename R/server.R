@@ -164,7 +164,11 @@ app_server <- function(input, output, session) {
   ###############
 
   ## brukerkontroller
-  rapbase::exportUCServer("export", dbName = "data", teamName = "tech")
+  rapbase::exportUCServer(
+    "export",
+    dbName = "data",
+    teamName = Sys.getenv("SHINYPROXY_APPID", unset = "unknown")
+  )
   ## veiledning
   rapbase::exportGuideServer("exportGuide", dbName = "data")
 }
