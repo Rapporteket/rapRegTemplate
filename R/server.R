@@ -102,11 +102,13 @@ app_server <- function(input, output, session) {
           "tabs",
           shiny::tabPanel(
             "Eksport",
-            shiny::sidebarPanel(
-              rapbase::exportUCInput("export")
-            ),
-            shiny::mainPanel(
-              rapbase::exportGuideUI("exportGuide")
+            shiny::sidebarLayout(
+              shiny::sidebarPanel(
+                rapbase::exportUCInput("export")
+              ),
+              shiny::mainPanel(
+                rapbase::exportGuideUI("exportGuide")
+              )
             )
           )
         )
