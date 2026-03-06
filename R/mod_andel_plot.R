@@ -1,9 +1,3 @@
-#' Shiny module providing GUI and server logic for the Andeler tab
-#'
-#' @param id Character string module namespace
-#' @return An shiny app ui object
-#' @export
-
 .private <- new.env(parent = emptyenv())
 .private$andVarChoices <- c(
   "Tung (>= 4000g)"        = "heavy",
@@ -20,6 +14,11 @@
   "År"     = "year"
 )
 
+#' Shiny module providing GUI and server logic for the Andeler tab
+#'
+#' @param id Character string module namespace
+#' @return An shiny app ui object
+#' @export
 
 mod_andeler_ui <- function(id) {
   ns <- shiny::NS(id)
