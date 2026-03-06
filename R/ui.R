@@ -11,7 +11,7 @@ app_ui <- function() {
     shiny::navbarPage(
       title = rapbase::title(regTitle),
       windowTitle = regTitle,
-      theme = rapbase::theme(),
+      theme = rapbase::theme(version = 5),
       id = "tabs",
       shiny::tabPanel(
         "Informasjon",
