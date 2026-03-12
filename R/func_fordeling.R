@@ -146,14 +146,19 @@ lag_fordeling_tabell <- function(data, var, valg_sammenligne_grupper, var_sammen
 #' @return ggplot2-object som viser fordeling pr. gruppe
 #' @export
 
-lag_fordeling_plot <- function(data, var, valg_sammenligne_grupper, var_sammenligne) {
+lag_fordeling_plot <- function(data, var, valg_sammenligne_grupper, var_sammenligne,
+                               y_lab_size = 12, x_lab_size = 12) {
 
   fordeling_plot <- ggplot2::ggplot(data = data, ggplot2::aes(x = .data[[var]])) +
     ggplot2::geom_bar(fill = "#6CACE4", alpha = .7) +
     ggplot2::ylab("Antall") +
     ggplot2::xlab("") +
     ggplot2::theme_bw() +
-    ggplot2::theme(axis.title.y = ggplot2::element_text(vjust = 3, size = 15, face = "bold"))
+    ggplot2::theme(
+      axis.title.y = ggplot2::element_text(vjust = 3, size = 15, face = "bold"),
+      axis.text.x = ggplot2::element_text(size = y_lab_size),
+      axis.text.y = ggplot2::element_text(size = x_lab_size)
+    )
 
   if (valg_sammenligne_grupper == "Ja") {
     fordeling_plot <- fordeling_plot +
