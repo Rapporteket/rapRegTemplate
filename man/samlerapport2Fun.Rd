@@ -6,6 +6,15 @@
 \usage{
 samlerapport2Fun(file = NULL, p1 = "Alder", p2 = 1, reshID = 999999)
 }
+\arguments{
+\item{file}{Path to the output file. If NULL, a temporary file will be created.}
+
+\item{p1}{Parameter 1 (default: "Alder")}
+
+\item{p2}{Parameter 2 (default: 1)}
+
+\item{reshID}{ReshID (default: 999999)}
+}
 \value{
 Path to the generated report file
 }

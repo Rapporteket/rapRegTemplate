@@ -89,10 +89,12 @@ forbered_data_fordeling <- function(data) {
 
 
 #' Funksjon som gjør utvalg basert på  ui-valg
+#'
 #' @param data datafil som utgangspunkt
 #' @param alder1 minste alder
+#' @param roek røykestatus
 #' @param alder2 høyeste alder
-#' @param roek_1_2_3 røyking 1 = nå, 2 = før, 3 = aldri
+#'
 #' @return datafil der utvalg er gjort
 #' @export
 
@@ -139,10 +141,14 @@ lag_fordeling_tabell <- function(data, var, valg_sammenligne_grupper, var_sammen
 
 
 #' Plot: fordeling
+#'
 #' @param data datafil som har vært gjennom forbered_data_fordeling() og utvalg_fordeling()
 #' @param var variabel valgt av bruker i ui-delen
 #' @param valg_sammenligne_grupper "ja" eller "nei" valg av bruker i ui-delen
+#' @param y_lab_size størrelse på y-akse tekst
+#' @param x_lab_size størrelse på x-akse tekst
 #' @param var_sammenligne variabel for sammenligning valg av bruker i ui-delen
+#'
 #' @return ggplot2-object som viser fordeling pr. gruppe
 #' @export
 

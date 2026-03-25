@@ -6,6 +6,14 @@
 \usage{
 info_server(id, user)
 }
+\arguments{
+\item{id}{Character string module namespace}
+
+\item{user}{Shiny user object, som defineres av shiny-modulen
+rapbase::navbarWidgetServer2. Denne inneholder informasjon om pålogget
+bruker, og kan brukes til å tilpasse innholdet i appen basert på brukerens
+rolle eller organisasjon.}
+}
 \value{
 A shiny app server object
 }

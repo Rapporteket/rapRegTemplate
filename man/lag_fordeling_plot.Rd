@@ -21,6 +21,10 @@ lag_fordeling_plot(
 \item{valg_sammenligne_grupper}{"ja" eller "nei" valg av bruker i ui-delen}
 
 \item{var_sammenligne}{variabel for sammenligning valg av bruker i ui-delen}
+
+\item{y_lab_size}{størrelse på y-akse tekst}
+
+\item{x_lab_size}{størrelse på x-akse tekst}
 }
 \value{
 ggplot2-object som viser fordeling pr. gruppe
