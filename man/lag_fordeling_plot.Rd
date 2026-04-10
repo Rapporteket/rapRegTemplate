@@ -4,7 +4,14 @@
 \alias{lag_fordeling_plot}
 \title{Plot: fordeling}
 \usage{
-lag_fordeling_plot(data, var, valg_sammenligne_grupper, var_sammenligne)
+lag_fordeling_plot(
+  data,
+  var,
+  valg_sammenligne_grupper,
+  var_sammenligne,
+  y_lab_size = 12,
+  x_lab_size = 12
+)
 }
 \arguments{
 \item{data}{datafil som har vært gjennom forbered_data_fordeling() og utvalg_fordeling()}
@@ -14,6 +21,10 @@ lag_fordeling_plot(data, var, valg_sammenligne_grupper, var_sammenligne)
 \item{valg_sammenligne_grupper}{"ja" eller "nei" valg av bruker i ui-delen}
 
 \item{var_sammenligne}{variabel for sammenligning valg av bruker i ui-delen}
+
+\item{y_lab_size}{størrelse på y-akse tekst}
+
+\item{x_lab_size}{størrelse på x-akse tekst}
 }
 \value{
 ggplot2-object som viser fordeling pr. gruppe

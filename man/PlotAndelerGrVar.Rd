@@ -24,14 +24,67 @@ PlotAndelerGrVar(
 )
 }
 \arguments{
-\item{RegData}{A data frame containing the registry data to be used for plotting.}
+\item{RegData}{A data frame containing the registry data to be used for
+plotting.}
+
+\item{Variabel}{A numeric vector representing the variable of interest for
+which the proportions or distributions are to be calculated and plotted.}
+
+\item{grVar}{A character string specifying the grouping variable in the
+registry data (default is "ShNavn"). This variable will be used to group the
+data for plotting.}
+
+\item{hovedgrTxt}{A character string for the main group text to be displayed
+in the plot (default is "Total andel").}
+
+\item{kvalIndGrenser}{A numeric vector of length 4 specifying the quality
+indicator thresholds for coloring the background of the plot. The values
+should be in ascending order and represent the boundaries for different
+quality levels (e.g., low, medium, high).}
+
+\item{tittel}{A character string for the title of the plot .}
+
+\item{utvalgTxt}{A character vector containing text to be displayed as a
+subtitle or additional information in the plot (default is an empty string).}
+
+\item{Ngrense}{A numeric value specifying the minimum group size required
+for a group to be included in the plot (default is 10). Groups with fewer
+observations than this threshold will be marked differently in the plot.}
+
+\item{bestKvalInd}{A character string indicating the direction of the
+quality indicator coloring. Use "lav" for low values being better
+(green for low, red for high) and "høy" for high values being better
+(red for low, green for high). The default is "lav".}
+
+\item{fargepalett}{A character string specifying the color palette to be
+used for the plot. Options include "BlaaOff", "BlaaOffAlle", "StotteOff",
+and "offAlleFarger" (default is "BlaaOff"). Each palette corresponds to a
+predefined set of colors for the plot elements.}
+
+\item{grtxt}{A character string for additional group text to be displayed
+in the plot (default is an empty string).}
+
+\item{titleSize}{A numeric value specifying the font size for the plot title
+(default is 20).}
+
+\item{subtitleSize}{A numeric value specifying the font size for the plot
+subtitle (default is 15).}
+
+\item{legendSize}{A numeric value specifying the font size for the plot
+legend (default is 12).}
+
+\item{axisTextSize}{A numeric value specifying the font size for the axis
+text (default is 12).}
+
+\item{nTicks}{A numeric value specifying the number of ticks to be displayed
+on the y-axis (default is 5).}
 }
 \value{
 A plot object visualizing the group-specific proportions or distributions.
 }
 \description{
-This function generates a plot for group-specific proportions or distributions
-             based on the provided registry data.
+This function generates a plot for group-specific proportions
+or distributions based on the provided registry data.
 }
 \details{
 This function is designed to work with registry data and create visualizations

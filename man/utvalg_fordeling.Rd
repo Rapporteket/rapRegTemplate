@@ -13,7 +13,7 @@ utvalg_fordeling(data, alder1, alder2, roek)
 
 \item{alder2}{høyeste alder}
 
-\item{roek_1_2_3}{røyking 1 = nå, 2 = før, 3 = aldri}
+\item{roek}{røykestatus}
 }
 \value{
 datafil der utvalg er gjort
