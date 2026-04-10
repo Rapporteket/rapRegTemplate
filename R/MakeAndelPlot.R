@@ -1,9 +1,49 @@
 
 
 #' @title PlotAndelerGrVar
-#' @description This function generates a plot for group-specific proportions or distributions
-#'              based on the provided registry data.
-#' @param RegData A data frame containing the registry data to be used for plotting.
+#' @description This function generates a plot for group-specific proportions
+#' or distributions based on the provided registry data.
+#'
+#' @param Variabel A numeric vector representing the variable of interest for
+#' which the proportions or distributions are to be calculated and plotted.
+#' @param grVar A character string specifying the grouping variable in the
+#' registry data (default is "ShNavn"). This variable will be used to group the
+#' data for plotting.
+#' @param hovedgrTxt A character string for the main group text to be displayed
+#' in the plot (default is "Total andel").
+#' @param kvalIndGrenser A numeric vector of length 4 specifying the quality
+#' indicator thresholds for coloring the background of the plot. The values
+#' should be in ascending order and represent the boundaries for different
+#' quality levels (e.g., low, medium, high).
+#' @param tittel A character string for the title of the plot .
+#' @param utvalgTxt A character vector containing text to be displayed as a
+#' subtitle or additional information in the plot (default is an empty string).
+#' @param Ngrense A numeric value specifying the minimum group size required
+#' for a group to be included in the plot (default is 10). Groups with fewer
+#' observations than this threshold will be marked differently in the plot.
+#' @param bestKvalInd A character string indicating the direction of the
+#' quality indicator coloring. Use "lav" for low values being better
+#' (green for low, red for high) and "høy" for high values being better
+#' (red for low, green for high). The default is "lav".
+#' @param fargepalett A character string specifying the color palette to be
+#' used for the plot. Options include "BlaaOff", "BlaaOffAlle", "StotteOff",
+#' and "offAlleFarger" (default is "BlaaOff"). Each palette corresponds to a
+#' predefined set of colors for the plot elements.
+#' @param grtxt A character string for additional group text to be displayed
+#' in the plot (default is an empty string).
+#' @param titleSize A numeric value specifying the font size for the plot title
+#' (default is 20).
+#' @param subtitleSize A numeric value specifying the font size for the plot
+#' subtitle (default is 15).
+#' @param legendSize A numeric value specifying the font size for the plot
+#' legend (default is 12).
+#' @param axisTextSize A numeric value specifying the font size for the axis
+#' text (default is 12).
+#' @param nTicks A numeric value specifying the number of ticks to be displayed
+#' on the y-axis (default is 5).
+#' @param RegData A data frame containing the registry data to be used for
+#' plotting.
+#'
 #' @return A plot object visualizing the group-specific proportions or distributions.
 #' @details This function is designed to work with registry data and create visualizations
 #'          that highlight group-specific metrics. The exact details of the plot depend on
