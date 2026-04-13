@@ -14,63 +14,63 @@ forbered_data_fordeling <- function(data) {
   # Endre nivåene
   data <- data |>
     dplyr::mutate(
-      preOp_gender = dplyr::case_match(
+      preOp_gender = dplyr::recode_values(
         .data$preOp_gender,
         0 ~ "mann",
         1 ~ "kvinne"
       ),
-      preOp_smoking = dplyr::case_match(
+      preOp_smoking = dplyr::recode_values(
         .data$preOp_smoking,
         1 ~ "Naa",
         2 ~ "Foer",
         3 ~ "Aldri"
       ),
-      preOp_pain = dplyr::case_match(
+      preOp_pain = dplyr::recode_values(
         .data$preOp_pain,
         0 ~ "Nei",
         1 ~ "Ja"
       ),
-      treat = dplyr::case_match(
+      treat = dplyr::recode_values(
         .data$treat,
         0 ~ "Sukker",
         1 ~ "Lakris"
       ),
-      extubation_cough = dplyr::case_match(
+      extubation_cough = dplyr::recode_values(
         .data$extubation_cough,
         0 ~ "ingen hoste",
         1 ~ "mild hoste",
         2 ~ "moderat hoste",
         3 ~ "alvorlig hoste"
       ),
-      pacu30min_cough = dplyr::case_match(
+      pacu30min_cough = dplyr::recode_values(
         .data$pacu30min_cough,
         0 ~ "ingen hoste",
         1 ~ "mild hoste",
         2 ~ "moderat hoste",
         3 ~ "alvorlig hoste"
       ),
-      pacu90min_cough = dplyr::case_match(
+      pacu90min_cough = dplyr::recode_values(
         .data$pacu90min_cough,
         0 ~ "ingen hoste",
         1 ~ "mild hoste",
         2 ~ "moderat hoste",
         3 ~ "alvorlig hoste"
       ),
-      postOp4hour_cough = dplyr::case_match(
+      postOp4hour_cough = dplyr::recode_values(
         .data$postOp4hour_cough,
         0 ~ "ingen hoste",
         1 ~ "mild hoste",
         2 ~ "moderat hoste",
         3 ~ "alvorlig hoste"
       ),
-      pod1am_cough = dplyr::case_match(
+      pod1am_cough = dplyr::recode_values(
         .data$pod1am_cough,
         0 ~ "ingen hoste",
         1 ~ "mild hoste",
         2 ~ "moderat hoste",
         3 ~ "alvorlig hoste"
       ),
-      intraOp_surgerySize = dplyr::case_match(
+      intraOp_surgerySize = dplyr::recode_values(
         .data$intraOp_surgerySize,
         1 ~ "liten",
         2 ~ "medium",
