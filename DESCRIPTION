@@ -42,7 +42,6 @@ Imports:
     palmerpenguins,
     rapbase,
     rlang,
-    rpivotTable,
     shiny,
     shinyalert
 Remotes:
