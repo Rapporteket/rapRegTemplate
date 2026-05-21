@@ -6,7 +6,7 @@ figure
 docs/
 *.tar.gz
 
-# All kind of data files
+# Many kinds of data files
 *.rda
 *.csv
 *.tsv
@@ -17,3 +17,8 @@ docs/
 *.sas7bdat
 *.rds
 *.RData
+*.sql
+
+*.zip
+*.tar
+*.gz
