@@ -174,3 +174,149 @@ lag_fordeling_plot <- function(data, var, valg_sammenligne_grupper, var_sammenli
   return(fordeling_plot)
 
 }
+
+
+#' Plot: gruppert fordeling
+#'
+#' @param data datafil som har vært gjennom forbered_data_fordeling() og utvalg_fordeling()
+#' @param fordelingsVariabel variabel for fordeling, NULL for totalt
+#' @param binVariabel variabel for binning
+#' @param binNavn optional mapping for bin values
+#' @param colors optional color palette
+#' @param totalLabel label for total row
+#' @param yLabel label for y-axis
+#' @param fillLabel label for fill legend
+#'
+#' @return ggplot2-object som viser fordeling pr. gruppe
+#' @export
+
+plotGruppertFordeling <- function(
+  data,
+  fordelingsVariabel = NULL,
+  binVariabel,
+  binNavn = NULL,
+  colors = NULL,
+  totalLabel = "Totalt",
+  yLabel = "Andel",
+  fillLabel = NULL
+) {
+  if (is.null(fillLabel)) {
+    fillLabel <- binVariabel
+  }
+
+  data_long <- data |>
+    dplyr::filter(!is.na(.data[[binVariabel]]))
+
+  if (is.null(fordelingsVariabel)) {
+    data_long <- data_long |>
+      dplyr::mutate(
+        group = totalLabel,
+        bin = as.character(.data[[binVariabel]])
+      )
+  } else {
+    data_long <- data_long |>
+      dplyr::filter(!is.na(.data[[fordelingsVariabel]])) |>
+      dplyr::mutate(
+        group = as.character(.data[[fordelingsVariabel]]),
+        bin = as.character(.data[[binVariabel]])
+      )
+  }
+
+  if (!is.null(binNavn)) {
+    data_long <- data_long |>
+      dplyr::mutate(
+        bin = dplyr::recode(.data$bin, !!!binNavn)
+      )
+  }
+
+  bin_levels <- unique(data_long$bin)
+
+  data_long <- data_long |>
+    dplyr::mutate(
+      bin = factor(.data$bin, levels = bin_levels)
+    )
+
+  if (is.null(fordelingsVariabel)) {
+    data_plot <- data_long
+  } else {
+    total_row <- data_long |>
+      dplyr::mutate(group = totalLabel)
+
+    data_plot <- dplyr::bind_rows(data_long, total_row)
+  }
+
+  data_plot <- data_plot |>
+    dplyr::count(.data$group, .data$bin, name = "n") |>
+    dplyr::group_by(.data$group) |>
+    dplyr::mutate(
+      prop = .data$n / sum(.data$n),
+      tooltip = paste0(
+        "<br>", .data$bin,
+        "<br>Antall: ", .data$n,
+        "<br>Andel: ", scales::percent(.data$prop, accuracy = 0.1)
+      )
+    ) |>
+    dplyr::ungroup()
+
+  if (is.null(fordelingsVariabel)) {
+    data_plot <- data_plot |>
+      dplyr::mutate(
+        group = factor(.data$group, levels = totalLabel)
+      )
+  } else {
+    data_plot <- data_plot |>
+      dplyr::mutate(
+        group = factor(
+          .data$group,
+          levels = c(
+            sort(unique(.data$group[.data$group != totalLabel])),
+            totalLabel
+          )
+        )
+      )
+  }
+
+  p <- ggplot2::ggplot(
+    data_plot,
+    ggplot2::aes(
+      x = .data$group,
+      y = .data$prop,
+      fill = .data$bin,
+      text = .data$tooltip
+    )
+  ) +
+    ggplot2::geom_col(width = 0.9) +
+    ggplot2::coord_flip() +
+    ggplot2::scale_y_continuous(labels = scales::percent) +
+    ggplot2::labs(
+      y = yLabel,
+      fill = fillLabel
+    ) +
+    ggplot2::theme_minimal() +
+    ggplot2::theme(
+      panel.grid = ggplot2::element_blank(),
+      axis.line.x = ggplot2::element_line(colour = "black"),
+      axis.text = ggplot2::element_text(size = 11),
+      axis.title.x = ggplot2::element_text(size = 11),
+      axis.title.y = ggplot2::element_blank(),
+      legend.position = "top",
+      legend.title = ggplot2::element_blank(),
+      plot.title = ggplot2::element_blank(),
+      plot.margin = ggplot2::margin(
+        t = 15,
+        r = 70,
+        b = 15,
+        l = 20
+      )
+    )
+
+  if (!is.null(colors)) {
+    p <- p +
+      ggplot2::scale_fill_manual(
+        values = colors,
+        drop = FALSE
+      )
+  }
+
+  p
+}

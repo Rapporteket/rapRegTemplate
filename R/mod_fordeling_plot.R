@@ -102,6 +102,10 @@ mod_fordeling_plot_ui <- function(id) {
               shiny::NS(id, "nedlastning_fordeling_tabell"),
               "Last ned tabell"
             )
+          ),
+          shiny::tabPanel(
+            "Gruppert fordeling", value = "GruppertFordeling",
+            shiny::plotOutput(outputId = shiny::NS(id, "gruppert_fordeling_plot"))
           )
         )
       )
@@ -152,12 +156,31 @@ mod_fordeling_plot_server <- function(id, data) {
         )
       })
 
+      plot_fordeling_reactive <- shiny::reactive({
+        shiny::req(c(input$sammenligne_grupper))
+        if (input$sammenligne_grupper == "Ja") {
+          shiny::req(c(input$var_sammenligning))
+          sammenlign_var <- input$var_sammenligning
+        } else {
+          sammenlign_var <- NULL
+        }
+        plotGruppertFordeling(
+          data_reactive(),
+          sammenlign_var,
+          input$x_var
+        )
+      })
+
       output$fordeling_plot <- shiny::renderPlot({
         plot_reactive()
       })
 
       output$fordeling_tabell <- DT::renderDT({
         tabell_reactive()
+      })
+
+      output$gruppert_fordeling_plot <- shiny::renderPlot({
+        plot_fordeling_reactive()
       })
 
       # Lag nedlastning plot
