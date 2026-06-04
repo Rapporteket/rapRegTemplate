@@ -1,11 +1,26 @@
-FROM rapporteket/base-r:main
+FROM rapporteket/base-r-alpine:main
 
 LABEL maintainer="Arnfinn Hykkerud Steindal <arnfinn.hykkerud.steindal@helse-nord.no>"
 
-ARG GH_PAT
-ENV GITHUB_PAT=${GH_PAT}
+ARG GITHUB_PAT
 
 WORKDIR /app/R
+
+RUN installr -d \
+-t "curl-dev gcc musl-dev" \
+remotes \
+curl \
+kableExtra \
+bitops \
+sys \
+askpass \
+openssl \
+RCurl \
+httr \
+sendmailR \
+logger \
+bookdown \
+rmarkdown
 
 COPY *.tar.gz .
 
