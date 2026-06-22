@@ -47,4 +47,5 @@ jobs:
 
       - uses: r-lib/actions/check-r-package@v2
         with:
+          error-on: '"note"'
           args: c("--no-manual") # Avoid "--as-cran"

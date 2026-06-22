@@ -4,10 +4,11 @@
 ^docs$
 ^pkgdown$
 ^LICENSE\.md$
-^Rprofile.site$
+^Rprofile\.site$
 ^Dockerfile$
 ^\.lintr$
 ^\.github$
-^renovate.json$
+^renovate\.json$
 ^dev$
 ^data-raw$
+^docker-compose\.yml$
