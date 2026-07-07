@@ -2,15 +2,13 @@ FROM rapporteket/base-r-alpine-latex:main
 
 LABEL maintainer="Arnfinn Hykkerud Steindal <arnfinn.hykkerud.steindal@helse-nord.no>"
 
-ARG GITHUB_PAT
-
 WORKDIR /app/R
 
 COPY . pkg
 
-RUN R -e "remotes::install_local(path = './pkg')" \
+RUN --mount=type=secret,id=github_pat,env=GITHUB_PAT \
+    R -e "remotes::install_local(path = './pkg')" \
     && rm -rf ./pkg
-
 
 EXPOSE 3838
 
