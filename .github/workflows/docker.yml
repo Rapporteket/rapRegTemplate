@@ -32,8 +32,6 @@ jobs:
     with:
       output: image
       push: ${{ github.event_name != 'pull_request' }}
-      pull: true
-      context: .
       cache: true
       secrets: |
         "github_pat=${{ secrets.GITHUB_TOKEN }}"
@@ -48,3 +46,4 @@ jobs:
         - registry: docker.io
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      github-token: ${{ secrets.GITHUB_TOKEN }}
