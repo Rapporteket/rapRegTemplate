@@ -51,4 +51,5 @@ jobs:
           push: ${{ github.event_name == 'release' }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          build-args: GH_PAT=${{ secrets.GITHUB_TOKEN }}
+          secrets: |
+            "github_pat=${{ secrets.GITHUB_TOKEN }}"
