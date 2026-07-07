@@ -1,0 +1,52 @@
+name: Publish Docker image
+on:
+  release:
+    types: [published]
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule:
+    - cron: '0 21 * * 6' # run every Saturday at 21
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint_dockerfile:
+    runs-on: ubuntu-latest
+    name: Lint Dockerfile
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v7
+      - name: Lint Dockerfile
+        uses: hadolint/hadolint-action@v3.3.0
+        with:
+          dockerfile: "Dockerfile"
+  push_to_registries:
+    needs: lint_dockerfile
+    name: Push Docker image to docker hub
+    runs-on: ubuntu-latest
+    uses: docker/github-builder/.github/workflows/build.yml@v1
+    permissions:
+      contents: read
+      id-token: write
+    with:
+      output: image
+      push: ${{ github.event_name != 'pull_request' }}
+      pull: true
+      cache: true
+      secrets: |
+        "github_pat=${{ secrets.GITHUB_TOKEN }}"
+      meta-images: rapporteket/${{ github.repository }}
+      meta-tags: |
+        type=ref,event=branch
+        type=schedule,pattern=weekly
+        type=schedule,pattern=main
+        type=semver,pattern={{major}}.{{minor}}.{{patch}}
+    secrets:
+      registry-auths: |
+        - registry: docker.io
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
