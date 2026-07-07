@@ -26,8 +26,6 @@ jobs:
           dockerfile: "Dockerfile"
   push_to_registries:
     uses: docker/github-builder/.github/workflows/build.yml@v1
-    needs: lint_dockerfile
-    name: Push Docker image to docker hub
     permissions:
       contents: read
       id-token: write
