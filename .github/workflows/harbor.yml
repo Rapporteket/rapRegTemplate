@@ -34,7 +34,6 @@ jobs:
           tags: |
             type=ref,event=branch
             type=ref,event=pr
-            type=schedule,pattern=weekly
             type=semver,pattern={{version}}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
@@ -49,6 +48,7 @@ jobs:
           file: ./Dockerfile
           tags: ${{ secrets.HARBOR_REGISTRY }}/${{ steps.docker_meta.outputs.tags }}
           push: ${{ github.event_name == 'release' }}
+          pull: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
           secrets: |
