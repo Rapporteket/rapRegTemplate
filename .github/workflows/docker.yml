@@ -26,6 +26,7 @@ jobs:
           dockerfile: "Dockerfile"
   build_and_push:
     uses: docker/github-builder/.github/workflows/build.yml@v1
+    needs: lint_dockerfile
     permissions:
       contents: read
       id-token: write
