@@ -6,10 +6,11 @@ ARG GITHUB_PAT
 
 WORKDIR /app/R
 
-COPY *.tar.gz .
+COPY . pkg
 
-RUN R -e "remotes::install_local(list.files(pattern = \"*.tar.gz\"))" \
-    && rm ./*.tar.gz
+RUN R -e "remotes::install_local(path = './pkg')" \
+    && rm -rf ./pkg
+
 
 EXPOSE 3838
 
