@@ -56,27 +56,23 @@ Git er et verktøy for versjonskontroll som gir mulighet for å spore endringer 
 
 For å bygge og kjøre docker image lokalt kan man gjøre følgende:
 
-1. Bygg pakken til en `tar.gz`-fil
-```sh
-R CMD build .
-```
-2. Lag Github Personal Access Token. Dette kan enten gjøres direkte på github (https://github.com/settings/tokens) eller gjennom R (`usethis::create_github_token()`). Det tryggeste er å *ikke* gi den noe særlig med rettigheter (kun lese). Vi lager og bruker en token for å ikke få feil fordi man har for mange api-kall til github.
-3. Putt den i miljøvariablen `GITHUB_PAT`.
+1. Lag Github Personal Access Token. Dette kan enten gjøres direkte på github (https://github.com/settings/tokens) eller gjennom R (`usethis::create_github_token()`). Det tryggeste er å *ikke* gi den noe særlig med rettigheter (kun lese). Vi lager og bruker en token for å ikke få feil fordi man har for mange api-kall til github.
+2. Putt den i miljøvariablen `GITHUB_PAT`.
 ```sh
 export GITHUB_PAT=ghp_ETT_ELLER_ANNET # token du nettop lagde
 ```
-4. Bygg image med navn `some_image_name`. Bruker `--progress plain` for å få ut alt av `stdout`, og mater inn token som en hemmelighet
+3. Bygg image med navn `some_image_name`. Bruker `--progress plain` for å få ut alt av `stdout`, og mater inn token som en hemmelighet
 ```sh
-docker build -t some_image_name --progress plain --secret id=GITHUB_PAT .
+docker build -t some_image_name --progress plain --secret id=github_pat,env=GITHUB_PAT .
 ```
-5. Kjør image
+4. Kjør image. Hvis man kjører med `docker run` vil man sannsynligvis mangle databaser og miljøvariabler, slik at appen krasjer. Ved å legge inn `some_image_name` som `image` under `app` i `docker-compose.yml`-fila vil `docker compose up` fungere.
 ```sh
 # enten
 docker run -p 3838:3838 some_image_name
 # eller
 docker compose up
 ```
-6. Åpne siden http://localhost:3838/ og se resultatet
+5. Åpne siden http://localhost:3838/ og se resultatet
 
 ## Docker compose
 

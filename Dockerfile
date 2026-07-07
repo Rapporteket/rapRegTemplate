@@ -4,11 +4,9 @@ LABEL maintainer="Arnfinn Hykkerud Steindal <arnfinn.hykkerud.steindal@helse-nor
 
 WORKDIR /app/R
 
-COPY . pkg
-
 RUN --mount=type=secret,id=github_pat,env=GITHUB_PAT \
-    R -e "remotes::install_local(path = './pkg')" \
-    && rm -rf ./pkg
+    --mount=type=bind,source=.,target=/app/R/pkg \
+    R -e "remotes::install_local(path = './pkg')"
 
 EXPOSE 3838
 
