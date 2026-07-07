@@ -33,8 +33,6 @@ jobs:
       output: image
       push: ${{ github.event_name != 'pull_request' }}
       cache: true
-      secrets: |
-        "github_pat=${{ secrets.GITHUB_TOKEN }}"
       meta-images: rapporteket/${{ github.repository }}
       meta-tags: |
         type=ref,event=branch
@@ -46,4 +44,5 @@ jobs:
         - registry: docker.io
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      github-token: ${{ secrets.GITHUB_TOKEN }}
+      github-token: |
+        github_pat: ${{ secrets.GITHUB_TOKEN }}
