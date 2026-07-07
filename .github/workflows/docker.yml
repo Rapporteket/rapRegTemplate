@@ -24,7 +24,7 @@ jobs:
         uses: hadolint/hadolint-action@v3.3.0
         with:
           dockerfile: "Dockerfile"
-  push_to_registries:
+  build_and_push:
     uses: docker/github-builder/.github/workflows/build.yml@v1
     permissions:
       contents: read
