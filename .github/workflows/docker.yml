@@ -44,5 +44,3 @@ jobs:
         - registry: docker.io
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      github-token: |
-        github_pat: ${{ secrets.GITHUB_TOKEN }}
