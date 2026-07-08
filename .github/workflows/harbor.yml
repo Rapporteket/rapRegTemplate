@@ -51,5 +51,4 @@ jobs:
           pull: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          secrets: |
-            "github_pat=${{ secrets.GITHUB_TOKEN }}"
+          secrets: "github_pat=${{ secrets.GITHUB_TOKEN }}"
