@@ -43,7 +43,7 @@ Imports:
     rlang,
     shiny
 Remotes:
-  Rapporteket/rapbase
+  Rapporteket/rapbase@*release
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
