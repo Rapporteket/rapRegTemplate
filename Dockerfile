@@ -6,7 +6,8 @@ WORKDIR /app/R
 
 RUN --mount=type=secret,id=github_pat,env=GITHUB_PAT \
     --mount=type=bind,source=.,target=/app/R/pkg \
-    R -e "remotes::install_local(path = './pkg')"
+    R -e "remotes::install_local(path = './pkg')" \
+    R -e "library(rapRegTemplate)"
 
 EXPOSE 3838
 
