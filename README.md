@@ -13,44 +13,26 @@
 Beskrivelsen under er ikke nødvendigvis utfyllende og forutsetter kjennskap til R og bruk av git og GitHub.
 Som en ekstra støtte anbefales [R pacakges](http://r-pkgs.had.co.nz/) av Hadley Wickham og spesielt [beskrivelsen av git og GitHub](http://r-pkgs.had.co.nz/git.html#git-rstudio).
 
-## Prøv templatet
-
-1. Hent ned prosjektet [rapRegTemplate](https://github.com/Rapporteket/rapRegTemplate) (`git clone https://github.com/Rapporteket/rapRegTemplate.git` i en terminal).
-1. Åpne prosjektet i RStudio (åpne fila `rapRegTemplate.Rproj`)
-1. Installér pakken (`devtools::install()`)
-1. Definer noen miljøvariabler (`source("dev/renv.R")`)
-1. Start Shiny-applikasjonen (`run_app(browser = TRUE)`)
-1. Navigér i applikasjonen for å se på struktur og farger (innhold mangler)
-
 ## Lag ditt eget prosjekt basert på templatet
 
 Denne delen kan være relevant om det er ønskelig å benytte templatetet som utgangspunkt for etablering av nye registre på Rapporteket.
 
-1. Hent ned prosjektet [rapRegTemplate](https://github.com/Rapporteket/rapRegTemplate)
-2. Slett mappen `.git`
-3. Initiér nytt git-repositor 
-```bash
-  git init .
-  git add .
-  git commit -m "init commit"
-  ```
-4. Erstatt `rapRegTemplate` med valgfritt pakkenavn i koden og rydd i prosjektet (f.eks. ved bruk av *vscode*).
-5. Bygg, installér og last pakken i R
-6. Test gjerne at innebygget Shiny-applikasjon fungerer på samme vis som i prosjektet "rapRegTemplate"
+1. [Opprett et nytt repository](https://github.com/new). Under *Configuration* velger man *Start with a template*. Velg `Rapporteket/rapRegTemplate`.
+2. Klon repository til lokal maskin.
+3. Erstatt `rapRegTemplate` med valgfritt pakkenavn i koden og rydd i prosjektet (f.eks. ved bruk av *vscode*).
+4. Bygg, installér og last pakken i R
+5. Test gjerne at innebygget Shiny-applikasjon fungerer på samme vis som i prosjektet `rapRegTemplate`
 
-## Sjekk inn endringer i git
-Git er et verktøy for versjonskontroll som gir mulighet for å spore endringer og samarbeide om kode. Basale funksjoner i git er svært nyttinge, men kan virke forvirrende i starten. Sørg for at egen kode (bestandig) versjonshåndteres (i git) og at koden finnes sentralisert og tilgjengelig for deg selv og andre (på GitHub).
+## Prøv templatet
 
-1. Sett opp git lokalt og etabler et sentralt repository for din R-pakke gjennom å følge [Hadley Wickhams veiledning](http://r-pkgs.had.co.nz/git.html#git-rstudio)
-1. Om du ikke har det fra før, etabler et ssh-nøkkelpar for sikker kommunikasjon med GitHub
+Hvis du ikke ønsker å lage et helt nytt repository, kan du prøve ut koden.
 
-
-## Dytt (push) R-pakken til GitHub
-1. Om du ikke allerede har gjort det, lag din egen bruker på GitHub (se over)
-1. Om du ikke allerede har gjort det, [legg ut den offentlige delen av ditt ssh-nøkkelpar på din github-konto](https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account) 
-1. Om du ikke allerede har gjort det, bli medlem av organisasjonen Rapporteket på GitHub
-1. Under din egen side på GitHub, opprett et Repository med navn tilsvarende din egen pakke (_e.g._ "testRegister")
-1. I RStudio, push pakken til ditt nye Repository på GitHub
+1. Hent ned prosjektet [rapRegTemplate](https://github.com/Rapporteket/rapRegTemplate) (`git clone https://github.com/Rapporteket/rapRegTemplate.git` i en terminal).
+1. Åpne prosjektet i RStudio (åpne fila `rapRegTemplate.Rproj`)
+1. Installér pakken (`devtools::install()` eller <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>b</kbd>)
+1. Definer noen miljøvariabler (`source("dev/renv.R")`)
+1. Start Shiny-applikasjonen (`run_app(browser = TRUE)`)
+1. Navigér i applikasjonen for å se på struktur og farger (innhold mangler)
 
 ## Bygg docker image lokalt
 
@@ -76,7 +58,7 @@ docker compose up
 
 ## Docker compose
 
-Ved å bruke vedlagt `docker-compose.yml`-fil kan man få opp et miljø med databaser (både mysql og mssql), RStudio og Adminer. I tillegg kjøres det i gang en container basert på applikasjonens docker-image som er dyttet opp til docker-hub. Dette miljøet vil ligne på produksjonsmiljøet.
+Ved å bruke vedlagt `docker-compose.yml`-fil kan man få opp et miljø med databaser (mysql), RStudio og Adminer. I tillegg kjøres det i gang en container basert på applikasjonens docker-image som er dyttet opp til docker-hub. Dette miljøet vil ligne på produksjonsmiljøet.
 
 For å kjøre opp dette miljøet kan man gjøre følgende i en terminal
 ```bash
@@ -85,11 +67,5 @@ docker compose up
 <kbd>Ctrl</kbd> + <kbd>c</kbd> for å slå av igjen. Data du eventuelt har lagt inn i databasen og pakker du har installert i RStudio vil som regel fremdeles være der neste gang du snurrer opp miljøet, så lenge du ikke har kjørt en `docker compose down` (slette containere) eller `docker compose pull` (oppdatere image).
 
 RStudio vil kunne nås på http://localhost:8787/, app-imaget vil nås på http://localhost:3838/ og Adminer vil nås på http://localhost:8888/.
-
-### mssql
-
-For å logge inn på mssql-server i Adminer (http://localhost:8888/) brukes brukernavn `sa`, server `mssql` og passord `Your_password123`. De to sistnevnte er definert i `docker-compose.yml`-fila. Databasenavn kan stå tomt. System må settes til `MS SQL`.
-
-### mysql
 
 For å logge inn på mysql-server i Adminer (http://localhost:8888/) brukes server `db`, brukernavn `root` og passord `root`. Disse er definert i `docker-compose.yml`-fila. Databasenavn kan stå tomt. System må settes til `MySQL/MariaDB`.
