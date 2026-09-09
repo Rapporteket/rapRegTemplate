@@ -1,7 +1,5 @@
 FROM rapporteket/base-r-alpine-latex:main
 
-LABEL maintainer="Arnfinn Hykkerud Steindal <arnfinn.hykkerud.steindal@helse-nord.no>"
-
 WORKDIR /app/R
 
 RUN --mount=type=secret,id=github_pat,env=GITHUB_PAT \
