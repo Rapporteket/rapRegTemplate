@@ -1,0 +1,66 @@
+name: Initialize New Repository
+
+# Trigger only on the initial creation of the repository
+on: [create]
+
+jobs:
+  setup-template-variables:
+    # Ensure this runs on the newly created repository, not the template itself
+    if: github.event.repository.name != 'rapRegTemplate'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v7
+
+      - name: Replace Placeholder Variables
+        run: |
+          # Define some variables from GitHub context
+          REPO_NAME="${{ github.event.repository.name }}"
+          name=`git log --reverse --pretty=format:"%an" | head -n 1`
+          email=`git log --reverse --pretty=format:"%ae" | head -n 1`
+          last="${name##* }"
+          first="${name% *}"
+          
+          # Use sed to search and replace template placeholders with GitHub metadata
+          find . -type f -not -path '*/.git/*' -exec sed -i "s/rapRegTemplate/$REPO_NAME/g" {} +
+          # Rename the R project file to match the new repository name
+          mv rapRegTemplate.Rproj ${REPO_NAME}.Rproj
+
+          # Update DESCRIPTION file with repository-specific information
+          sed -i "s/Version.*/Version: 0.1.0/g" DESCRIPTION
+          sed -i "s/Title:.*/Title: Rapporteket application for $REPO_NAME/g" DESCRIPTION
+          sed -i "/Author/,/Maintainer/c\
+          Authors@R: c(\n\
+              person(given = \"${first}\",\n\
+                     family = \"${last}\",\n\
+                     role = c(\"aut\", \"cre\"),\n\
+                     email = \"${email}\"))\n\
+          Maintainer: ${name} <${email}>" DESCRIPTION
+
+          # Delete stuff from README.md
+          sed -i '/<!-- badges: end -->/q' README.md
+          echo "" >> README.md
+          echo "# Rapportek for ${REPO_NAME}" >> README.md
+          echo "" >> README.md
+
+          # Remove unnecessary files and directories
+          rm -rf docker-compose.yml
+          rm -rf dev/db
+          rm -rf dev/mssql
+          rm .github/workflows/docker.yml
+
+      - name: Clean Up This Workflow File
+        run: |
+          # Delete this workflow file so it doesn't run again
+          rm .github/workflows/init-repo.yml
+
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add .
+          git commit -m "Initialize repository with template variables"
+          git push
