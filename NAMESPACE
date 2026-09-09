@@ -26,7 +26,9 @@ export(samlerapport2Fun)
 export(samlerapport_server)
 export(samlerapport_ui)
 export(utvalg_fordeling)
-importFrom(grDevices,dev.off)
-importFrom(grDevices,pdf)
+importFrom(grDevices,
+  dev.off,
+  pdf
+)
 importFrom(rlang,.data)
 importFrom(stats,setNames)
