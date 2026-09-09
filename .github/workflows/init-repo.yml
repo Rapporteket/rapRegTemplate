@@ -1,7 +1,7 @@
 name: Initialize New Repository
 
 # Trigger only on the initial creation of the repository
-on: [create]
+on: [push]
 
 jobs:
   setup-template-variables:
