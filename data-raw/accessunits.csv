@@ -1,0 +1,18 @@
+"UnitId";"ParentUnitId";"ExternalId";"HealthUnitId";"Title";"TitleWithPath";"Inactive";"ExtraData";"Comment";"HealthUnitShortName";"HealthUnitName";"HealthUnitNameWithPath";"HealthUnitOrgNr";"HealthUnitType"
+0;;"";;"Nasjonal instans";"Nasjonal instans";0;"Norsk Register";;;;;;
+100065;0;"100065";40;"Helgelandssykehuset HF";"Helgelandssykehuset HF";0;"Helgelandssykehuset";;;"Helgelandssykehuset HF";"Helse Nord RHF / Helgelandssykehuset HF";"983974929";2
+100082;0;"100082";22;"Helse Bergen HF";"Helse Bergen HF";0;"Helse Bergen";;;"Helse Bergen HF";"Helse Vest RHF / Helse Bergen HF";"983974724";2
+100083;0;"100083";20;"Helse Stavanger HF";"Helse Stavanger HF";0;"Stavanger universitetssykehus";;;"Helse Stavanger HF";"Helse Vest RHF / Helse Stavanger HF";"983974678";2
+100084;0;"100084";21;"Helse Fonna HF";"Helse Fonna HF";0;"Helse Fonna";;;"Helse Fonna HF";"Helse Vest RHF / Helse Fonna HF";"983974694";2
+100085;0;"100085";23;"Helse Førde HF";"Helse Førde HF";0;"Helse Førde";;;"Helse Førde HF";"Helse Vest RHF / Helse Førde HF";"983974732";2
+100089;0;"100089";61;"Akershus Universitetssykehus HF";"Akershus Universitetssykehus HF";0;"Akershus universitetssykehus";;;"Akershus universitetssykehus HF";"Helse Sør-Øst RHF / Akershus universitetssykehus HF";"983971636";2
+100091;0;"100091";66;"Sykehuset Innlandet HF";"Sykehuset Innlandet HF";0;"Sykehuset Innlandet";;;"Sykehuset Innlandet HF";"Helse Sør-Øst RHF / Sykehuset Innlandet HF";"983971709";2
+100092;0;"100092";68;"Sykehuset Østfold HF";"Sykehuset Østfold HF";0;"Sykehuset Østfold";;;"Sykehuset Østfold HF";"Helse Sør-Øst RHF / Sykehuset Østfold HF";"983971768";2
+100100;0;"700461";65;"Sykehuset i Vestfold HF";"Sykehuset i Vestfold HF";0;"Nevrologisk poliklinikk ved Sykehuset i Vestfold";;;"Sykehuset i Vestfold HF";"Helse Sør-Øst RHF / Sykehuset i Vestfold HF";"983975259";2
+100132;0;"100132";67;"Sykehuset Telemark HF";"Sykehuset Telemark HF";0;"Sykehuset Telemark";;;"Sykehuset Telemark HF";"Helse Sør-Øst RHF / Sykehuset Telemark HF";"983975267";2
+100133;0;"100133";69;"Sørlandet sykehus HF";"Sørlandet sykehus HF";0;"Sørlandet Sykehus";;;"Sørlandet sykehus HF";"Helse Sør-Øst RHF / Sørlandet sykehus HF";"983975240";2
+100317;0;"100317";33;"Helse Nord-Trøndelag HF";"Helse Nord-Trøndelag HF";0;"Helse Nord-Trøndelag";;;"Helse Nord-Trøndelag HF";"Helse Midt-Norge RHF / Helse Nord-Trøndelag HF";"983974791";2
+100320;0;"100320";32;"St. Olavs Hospital HF";"St. Olavs Hospital HF";0;"St. Olavs Hospital";;;"St. Olavs Hospital HF";"Helse Midt-Norge RHF / St. Olavs Hospital HF";"883974832";2
+101051;0;"101051";41;"Nordlandssykehuset HF";"Nordlandssykehuset HF";0;"Nordlandssykehuset";;;"Nordlandssykehuset HF";"Helse Nord RHF / Nordlandssykehuset HF";"983974910";2
+101719;0;"101719";42;"Universitetssykehuset i Nord-Norge HF";"Universitetssykehuset i Nord-Norge HF";0;"Universitetssykehuset Nord-Norge";;;"Universitetssykehuset Nord-Norge HF";"Helse Nord RHF / Universitetssykehuset Nord-Norge HF";"983974899";2
+101971;0;"101971";43;"Finnmarkssykehuset HF";"Finnmarkssykehuset HF";0;"Finnmarkssykehuset";;;"Finnmarkssykehuset HF";"Helse Nord RHF / Finnmarkssykehuset HF";"983974880";2
