@@ -4,12 +4,7 @@
 \alias{reportProcessor}
 \title{Common report processor for rapRegTemplate}
 \usage{
-reportProcessor(
-  report,
-  outputType = "pdf",
-  var = "unknown variable",
-  bins = 10
-)
+reportProcessor(report, outputType = "pdf", var = "mpg", bins = 10)
 }
 \arguments{
 \item{report}{The type of report to generate. Currently only "local_monthly" is supported.}
