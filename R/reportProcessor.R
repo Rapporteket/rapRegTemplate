@@ -12,7 +12,7 @@
 #' @export
 reportProcessor <- function(report,
                             outputType = "pdf",
-                            var = "unknown variable",
+                            var = "mpg",
                             bins = 10) {
   stopifnot(report %in% c("local_monthly"))
   stopifnot(outputType %in% c("html", "html_fragment", "pdf"))
