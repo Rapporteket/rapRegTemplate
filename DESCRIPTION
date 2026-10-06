@@ -37,8 +37,11 @@ Imports:
     dplyr,
     DT,
     ggplot2,
+    httr,
+    jsonlite,
     knitr,
     rapbase (>= 3.6.0),
+    rapFigurer,
     rlang,
     shiny
 Remotes:
