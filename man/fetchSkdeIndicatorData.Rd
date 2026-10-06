@@ -2,24 +2,23 @@
 % Please edit documentation in R/GetExampleDataAPI.R
 \name{fetchSkdeIndicatorData}
 \alias{fetchSkdeIndicatorData}
-\title{Fetch and flatten nested indicator data from SKDE API}
+\title{Hent og flatt ut nestede SKDE-indikatordata}
 \usage{
 fetchSkdeIndicatorData(registryShortname = "hjertestans", indicator_id = NULL)
 }
 \arguments{
-\item{registryShortname}{Short name of the registry to fetch, e.g. "hjertestans".}
+\item{registryShortname}{Kort navn på registret som skal hentes, for eksempel "hjertestans".}
 
-\item{indicator_id}{Optional indicator ID to filter on.}
-
-\item{url}{Optional explicit API endpoint to request. If provided, it overrides the generated URL.}
-
-\item{payload}{Optional parsed JSON payload. If provided, the API call is skipped.}
+\item{indicator_id}{Valgfri indikator-ID som brukes til å filtrere data før flattening.}
 }
 \value{
-Data frame with flattened indicator rows.
+En data.frame med én rad per registrering og kolonner: year, orgnr,
+var, denominator, ind_id, context, title, short_description, levelDirection
+og kvalIndgrenser. Hvis ingen treff finnes, returneres en tom data.frame med
+samme kolonner.
 }
 \description{
-Retrieves the payload from the provided SKDE endpoint and converts each nested
-observation into a one-row-per-record data frame with the expected columns:
-year, orgnr, var, denominator, ind_id and context.
+Henter indikatorpayload for et register fra SKDE-API-et og omformer hver
+nestet observasjon til en rad per registrering i en data.frame med relevante
+indikatorverdier og metadata.
 }

@@ -1,14 +1,15 @@
-#' Fetch and flatten nested indicator data from SKDE API
+#' Hent og flatt ut nestede SKDE-indikatordata
 #'
-#' Retrieves the payload from the provided SKDE endpoint and converts each nested
-#' observation into a one-row-per-record data frame with the expected columns:
-#' year, orgnr, var, denominator, ind_id and context.
+#' Henter indikatorpayload for et register fra SKDE-API-et og omformer hver
+#' nestet observasjon til en rad per registrering i en data.frame med relevante
+#' indikatorverdier og metadata.
 #'
-#' @param registryShortname Short name of the registry to fetch, e.g. "hjertestans".
-#' @param url Optional explicit API endpoint to request. If provided, it overrides the generated URL.
-#' @param payload Optional parsed JSON payload. If provided, the API call is skipped.
-#' @param indicator_id Optional indicator ID to filter on.
-#' @return Data frame with flattened indicator rows.
+#' @param registryShortname Kort navn på registret som skal hentes, for eksempel "hjertestans".
+#' @param indicator_id Valgfri indikator-ID som brukes til å filtrere data før flattening.
+#' @return En data.frame med én rad per registrering og kolonner: year, orgnr,
+#' var, denominator, ind_id, context, title, short_description, levelDirection
+#' og kvalIndgrenser. Hvis ingen treff finnes, returneres en tom data.frame med
+#' samme kolonner.
 #' @export
 fetchSkdeIndicatorData <- function(
   registryShortname = "hjertestans",
