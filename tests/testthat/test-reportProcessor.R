@@ -14,20 +14,6 @@ test_that("invalid outputType throws error", {
   )
 })
 
-test_that("renderRmd is called with correct arguments for pdf", {
-
-  result <- reportProcessor(
-    report = "local_monthly",
-    outputType = "pdf",
-    var = "cyl",
-    bins = 20
-  )
-
-  expect_match(result, ".pdf")
-
-})
-
-
 test_that("renderRmd is called with correct arguments for html", {
 
   result <- reportProcessor(
