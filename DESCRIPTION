@@ -38,7 +38,6 @@ Imports:
     DT,
     ggplot2,
     knitr,
-    palmerpenguins,
     rapbase (>= 3.6.0),
     rlang,
     shiny
