@@ -46,6 +46,7 @@ Imports:
     shiny
 Remotes:
   Rapporteket/rapbase@*release
+  Rapporteket/rapFigurer@main
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
