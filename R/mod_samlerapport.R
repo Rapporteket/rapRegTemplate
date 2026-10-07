@@ -56,12 +56,11 @@ samlerapport_server <- function(id) {
       # Samlerapport
       ## vis
       output$samlerapport <- shiny::renderUI({
-        rapbase::renderRmd(
-          system.file("samlerapport.Rmd", package = "rapRegTemplate"),
+        reportProcessor(
+          report = "local_monthly",
           outputType = "html_fragment",
-          params = list(type = "html",
-                        var = input$varS,
-                        bins = input$binsS)
+          var = input$varS,
+          bins = input$binsS
         )
       })
 
@@ -72,12 +71,12 @@ samlerapport_server <- function(id) {
                             fileext = paste0(".", input$formatS)))
         },
         content = function(file) {
-          srcFile <-
-            normalizePath(system.file("samlerapport.Rmd", package = "rapRegTemplate"))
-          fn <- rapbase::renderRmd(srcFile, outputType = input$formatS,
-                                   params = list(type = input$formatS,
-                                                 var = input$varS,
-                                                 bins = input$binsS))
+          fn <- reportProcessor(
+            report = "local_monthly",
+            outputType = input$formatS,
+            var = input$varS,
+            bins = input$binsS
+          )
           file.rename(fn, file)
         }
       )
