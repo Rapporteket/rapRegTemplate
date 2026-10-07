@@ -30,7 +30,7 @@ test_that("mod_andeler_server renders the indicator selection and plot output", 
     fetchSkdeIndicatorData = function(...) test_data
   )
 
-  testServer(mod_andeler_server, args = list(id = "test", data = test_data), {
+  shiny::testServer(mod_andeler_server, args = list(id = "test", data = test_data), {
     session$setInputs(ind_id = "ind_1")
     session$flushReact()
 
