@@ -26,11 +26,20 @@ test_that("mod_andeler_server renders the indicator selection and plot output", 
     kvalIndgrenser = I(list(c(0.2, 0.6), c(0.2, 0.6), c(0.2, 0.6)))
   )
 
+  indicator_meta <- data.frame(
+    ind_id = "ind_1",
+    title = "Indikator A",
+    short_description = "Kort tekst",
+    levelDirection = 1,
+    kvalIndgrenser = I(list(c(0.2, 0.6))),
+    stringsAsFactors = FALSE
+  )
+
   local_mocked_bindings(
     fetchSkdeIndicatorData = function(...) test_data
   )
 
-  shiny::testServer(mod_andeler_server, args = list(id = "test", data = test_data), {
+  shiny::testServer(mod_andeler_server, args = list(id = "test", data = test_data, indicator_meta = indicator_meta), {
     session$setInputs(ind_id = "ind_1")
     session$flushReact()
 
