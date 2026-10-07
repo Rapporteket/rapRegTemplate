@@ -10,6 +10,12 @@ plotSPC(data, title = NULL, subtitle = NULL)
 \item{data}{Dataramme med kolonnene \code{year}, \code{orgnr}, \code{var},
 \code{denominator} og \code{ind_id}. Metadata som \code{title} og
 \code{short_description} brukes dersom de finnes.}
+
+\item{title}{Valgfri tittel for diagrammet. Hvis ikke spesifisert, brukes
+standardtittel "SPC-diagram".}
+
+\item{subtitle}{Valgfri undertittel for diagrammet. Hvis ikke spesifisert
+brukes undertittel fra metadata dersom tilgjengelig, ellers ingen undertittel.}
 }
 \value{
 Et ggplot-objekt med SPC-diagram for valgt indikator.

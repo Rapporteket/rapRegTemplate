@@ -8,6 +8,10 @@
 #' @param data Dataramme med kolonnene \code{year}, \code{orgnr}, \code{var},
 #'   \code{denominator} og \code{ind_id}. Metadata som \code{title} og
 #'   \code{short_description} brukes dersom de finnes.
+#' @param title Valgfri tittel for diagrammet. Hvis ikke spesifisert, brukes
+#'   standardtittel "SPC-diagram".
+#' @param subtitle Valgfri undertittel for diagrammet. Hvis ikke spesifisert
+#'   brukes undertittel fra metadata dersom tilgjengelig, ellers ingen undertittel.
 #'
 #' @return Et ggplot-objekt med SPC-diagram for valgt indikator.
 plotSPC <- function(data, title = NULL, subtitle = NULL) {
