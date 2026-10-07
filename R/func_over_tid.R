@@ -58,9 +58,9 @@ plotSPC <- function(data, title = NULL, subtitle = NULL) {
   chart_subtitle <- if (!is.null(subtitle)) subtitle else NULL
 
   qicharts2::qic(
-    x = .data$aar,
-    y = .data$teller,
-    n = .data$nevner,
+    x = indikator_data$aar,
+    y = indikator_data$teller,
+    n = indikator_data$nevner,
     data = indikator_data,
     chart = "p",
     xlab = "År",
