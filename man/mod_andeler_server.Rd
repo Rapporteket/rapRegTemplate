@@ -10,6 +10,8 @@ mod_andeler_server(id, data, indicator_meta)
 \item{id}{Character string module namespace}
 
 \item{data}{Data frame containing the data to be plotted.}
+
+\item{indicator_meta}{Data frame containing metadata for the indicators.}
 }
 \value{
 A Shiny app server object

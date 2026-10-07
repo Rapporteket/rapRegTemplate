@@ -28,6 +28,7 @@ mod_andeler_ui <- function(id) {
 #'
 #' @param id Character string module namespace
 #' @param data Data frame containing the data to be plotted.
+#' @param indicator_meta Data frame containing metadata for the indicators.
 #'
 #' @return A Shiny app server object
 #' @export
