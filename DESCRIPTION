@@ -37,13 +37,16 @@ Imports:
     dplyr,
     DT,
     ggplot2,
+    httr,
+    jsonlite,
     knitr,
-    palmerpenguins,
     rapbase (>= 3.6.0),
+    rapFigurer,
     rlang,
     shiny
 Remotes:
-  Rapporteket/rapbase@*release
+  Rapporteket/rapbase@*release,
+  Rapporteket/rapFigurer@main
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

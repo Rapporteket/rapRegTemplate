@@ -1,19 +1,3 @@
-.private <- new.env(parent = emptyenv())
-.private$andVarChoices <- c(
-  "Tung (>= 4000g)"        = "heavy",
-  "Langt nebb (>= 45mm)"   = "long_bill",
-  "Dype nebb (>= 18mm)"    = "deep_bill",
-  "Lang flipper (>= 200mm)" = "long_flipper",
-  "Hann"                   = "male"
-)
-
-.private$andBinChoices <- c(
-  "Art"    = "species",
-  "Øy"     = "island",
-  "Kjønn"  = "sex",
-  "År"     = "year"
-)
-
 #' Shiny module providing GUI and server logic for the Andeler tab
 #'
 #' @param id Character string module namespace
@@ -22,32 +6,12 @@
 
 mod_andeler_ui <- function(id) {
   ns <- shiny::NS(id)
-
-
-
   shiny::tagList(
-
     "Andel basert på variabel og grenser",
     shiny::sidebarLayout(
       shiny::sidebarPanel(
         width = 3,
-        shiny::selectInput(
-          inputId = ns("varS"),
-          label = "Variabel:",
-          choices = .private$andVarChoices
-        ),
-        shiny::selectInput(
-          inputId = ns("binsS"),
-          label = "Sortert etter:",
-          choices = .private$andBinChoices
-        ),
-        shiny::sliderInput(
-          inputId = ns("limitS"),
-          label = "Inklusjonskriterie (>n):",
-          min = 0,
-          max = 100,
-          value = 1
-        ),
+        shiny::uiOutput(outputId = ns("ind_ids")),
         shiny::downloadButton(
           outputId = ns("downloadandelPlot"),
           label = "Last ned!"
@@ -74,38 +38,58 @@ mod_andeler_server <- function(id, data) {
     function(input, output, session) {
 
       data_reactive <- shiny::reactive({
+        data <- fetchSkdeIndicatorData("parkinson")
         data
+      })
+      indicator_meta <- shiny::reactive({
+        unique(
+          data_reactive()[
+            ,
+            c("ind_id", "title", "short_description", "kvalIndgrenser", "levelDirection"),
+            drop = FALSE
+          ]
+        )
+      })
+
+      output$ind_ids <- shiny::renderUI({
+        choices <- stats::setNames(
+          indicator_meta()$ind_id,
+          indicator_meta()$title
+        )
+        shiny::selectInput(
+          inputId = session$ns("ind_id"),
+          label = "Indikator:",
+          choices = choices
+        )
       })
 
       plotReactive <- shiny::reactive({
-        data <- as.data.frame(data_reactive())
-        var <- input$varS
-        bins <- input$binsS
-        limit <- input$limitS
+        shiny::req(input$ind_id)
+        selected_indicator <- indicator_meta()[indicator_meta()$ind_id == input$ind_id, , drop = FALSE]
 
-        var_label  <- names(.private$andVarChoices)[.private$andVarChoices == input$varS]
-        bins_label <- names(.private$andBinChoices)[.private$andBinChoices == input$binsS]
+        data <- data_reactive() |>
+          dplyr::filter(.data$ind_id == input$ind_id)
 
-        tittel <- paste(
-          "Andel", var_label,
-          "etter", bins_label,
-          "med mer enn", input$limitS, "registreringer"
-        )
-
-        rapRegTemplate::PlotAndelerGrVar(
-          RegData = data,
-          Variabel = data[[var]],
-          grVar = bins,
-          Ngrense = limit,
-          tittel = tittel,
-          kvalIndGrenser = attr(data, "kvalIndGrenser")[[var]],
-          bestKvalInd = "høy"
+        rapFigurer::plotIndikator(
+          data,
+          title = selected_indicator$title[[1]],
+          shortDescription = selected_indicator$short_description[[1]],
+          showYear = max(data$year, na.rm = TRUE),
+          kvalIndgrenser = selected_indicator$kvalIndgrenser[[1]],
+          levelDirection = selected_indicator$levelDirection[[1]]
         )
       })
 
       output$andelPlot <- shiny::renderPlot({
         plotReactive()
-      })
+      },
+      height = function() {
+        shiny::req(input$ind_id)
+        selected_data <- data_reactive()[data_reactive()$ind_id == input$ind_id, , drop = FALSE]
+        n_bins <- length(unique(selected_data$orgnr))
+        min(700, n_bins * 30)
+      }
+      )
 
       output$downloadandelPlot <-  shiny::downloadHandler(
         filename = function() {
