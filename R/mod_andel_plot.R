@@ -73,7 +73,7 @@ mod_andeler_server <- function(id, data) {
         rapFigurer::plotIndikator(
           data,
           title = selected_indicator$title[[1]],
-          short_description = selected_indicator$short_description[[1]],
+          shortDescription = selected_indicator$short_description[[1]],
           showYear = max(data$year, na.rm = TRUE),
           kvalIndgrenser = selected_indicator$kvalIndgrenser[[1]],
           levelDirection = selected_indicator$levelDirection[[1]]
