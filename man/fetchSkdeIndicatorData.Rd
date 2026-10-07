@@ -12,10 +12,12 @@ fetchSkdeIndicatorData(registryShortname = "hjertestans", indicator_id = NULL)
 \item{indicator_id}{Valgfri indikator-ID som brukes til å filtrere data før flattening.}
 }
 \value{
-En data.frame med én rad per registrering og kolonner: year, orgnr,
-var, denominator, ind_id, context, title, short_description, levelDirection
-og kvalIndgrenser. Hvis ingen treff finnes, returneres en tom data.frame med
-samme kolonner.
+En liste med to data.frames: \code{data} (én rad per registrering,
+med kolonnene year, orgnr, var, denominator, ind_id, context, title,
+short_description, levelDirection og kvalIndgrenser) og
+\code{indicator_meta} (unik metadata per indikator med kolonnene ind_id,
+title, short_description, kvalIndgrenser og levelDirection). Hvis ingen
+treff finnes, returneres begge som tomme data.frames med samme skjema.
 }
 \description{
 Henter indikatorpayload for et register fra SKDE-API-et og omformer hver

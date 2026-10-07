@@ -6,15 +6,40 @@
 #'
 #' @param registryShortname Kort navn på registret som skal hentes, for eksempel "hjertestans".
 #' @param indicator_id Valgfri indikator-ID som brukes til å filtrere data før flattening.
-#' @return En data.frame med én rad per registrering og kolonner: year, orgnr,
-#' var, denominator, ind_id, context, title, short_description, levelDirection
-#' og kvalIndgrenser. Hvis ingen treff finnes, returneres en tom data.frame med
-#' samme kolonner.
+#' @return En liste med to data.frames: \code{data} (én rad per registrering,
+#' med kolonnene year, orgnr, var, denominator, ind_id, context, title,
+#' short_description, levelDirection og kvalIndgrenser) og
+#' \code{indicator_meta} (unik metadata per indikator med kolonnene ind_id,
+#' title, short_description, kvalIndgrenser og levelDirection). Hvis ingen
+#' treff finnes, returneres begge som tomme data.frames med samme skjema.
 #' @export
 fetchSkdeIndicatorData <- function(
   registryShortname = "hjertestans",
   indicator_id = NULL
 ) {
+
+  empty_data <- data.frame(
+    year = integer(),
+    orgnr = character(),
+    var = numeric(),
+    denominator = numeric(),
+    ind_id = character(),
+    context = character(),
+    title = character(),
+    short_description = character(),
+    levelDirection = numeric(),
+    kvalIndgrenser = list(),
+    stringsAsFactors = FALSE
+  )
+
+  empty_indicator_meta <- data.frame(
+    ind_id = character(),
+    title = character(),
+    short_description = character(),
+    kvalIndgrenser = list(),
+    levelDirection = numeric(),
+    stringsAsFactors = FALSE
+  )
 
   url <- paste0("https://prod-api.skde.org/data/", registryShortname, "/nestedData")
 
@@ -66,19 +91,7 @@ fetchSkdeIndicatorData <- function(
   }))
 
   if (is.null(rows) || nrow(rows) == 0) {
-    return(data.frame(
-      year = integer(),
-      orgnr = character(),
-      var = numeric(),
-      denominator = numeric(),
-      ind_id = character(),
-      context = character(),
-      title = character(),
-      short_description = character(),
-      levelDirection = numeric(),
-      kvalIndgrenser = list(),
-      stringsAsFactors = FALSE
-    ))
+    return(list(data = empty_data, indicator_meta = empty_indicator_meta))
   }
 
   data <- rows[, c("year", "orgnr", "var", "denominator",
