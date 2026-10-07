@@ -5,13 +5,13 @@
 #' It will create the necessary tables within these files.
 #' Please be aware that this will delete any existing tables
 #' with the same names!
-#' 
+#'
 #' @return No return value, called for side effects
 #' (creates SQLite database files and tables)
 #' @export
 create_sqlite_db <- function() {
   if (!requireNamespace("RSQLite", quietly = TRUE)) {
-    install.packages("RSQLite")
+    stop("Missing RSQLite package! Please install.packages('RSQLite').")
   }
   if (Sys.getenv("DB_TYPE") != "sqlite") {
     return()
