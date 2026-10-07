@@ -63,7 +63,7 @@ create_sqlite_db <- function() {
     "  `group` varchar(255) DEFAULT NULL,",
     "  role varchar(255) DEFAULT NULL,",
     "  resh_id varchar(255) DEFAULT NULL,",
-    "  message text",
+    "  message text DEFAULT NULL",
     ");"
   )
 
@@ -85,7 +85,7 @@ create_sqlite_db <- function() {
     "  resh_id varchar(255) DEFAULT NULL,",
     "  environment varchar(255) DEFAULT NULL,",
     "  `call` varchar(2047) DEFAULT NULL,",
-    "  message varchar(2047) DEFAULT NULL",
+    "  message text DEFAULT NULL",
     ");"
   )
 
