@@ -35,12 +35,14 @@ Depends:
   R (>= 4.1.0)
 Imports:
     dplyr,
+    DBI,
     DT,
     ggplot2,
     knitr,
     palmerpenguins,
     rapbase (>= 3.6.0),
     rlang,
+    RSQLite,
     shiny
 Remotes:
   Rapporteket/rapbase@*release
