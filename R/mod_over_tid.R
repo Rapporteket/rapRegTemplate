@@ -11,34 +11,8 @@ mod_over_tid_ui <- function(id) {
 
       shiny::sidebarPanel(
         width = 4,
-
-        shiny::selectInput( # valg en
-          inputId = ns("var"),
-          label = "Velg variabel",
-          choices = c(
-            "Meslinger rate pr. 1000000" = "measles_incidence_rate_per_1000000_total_population",
-            "Røde hunder rate pr. 1000000" = "rubella_incidence_rate_per_1000000_total_population",
-            "Forkastede prøver meslinger og røde hunder rate pr. 1000000" =
-              "discarded_non_measles_rubella_cases_per_100000_total_population"
-          ),
-          selected = "Meslinger rate pr. 1000000"
-        ),
-
-        shiny::selectInput(# valg to
-          inputId = ns("region"),
-          label = "Velg region",
-          choices = c(
-            "Alle regioner samlet" = "Alle",
-            "Alle regioner delt" = "Alle_delt",
-            "Region Afrika (AFRO)" = "AFRO",
-            "Region Amerika (AMRO" = "AMRO",
-            "Region Sør-Øst Asia (SEARO)" = "SEARO",
-            "Region Europa (EURO)" = "EURO",
-            "Region østlige Middelhavet (EMRO)" = "EMRO",
-            "Region vestlige Stillehavet (WPRO)" = "WPRO"
-          ),
-          selected = "AFRO"
-        )
+        shiny::uiOutput(outputId = ns("ind_ids")),
+        shiny::uiOutput(outputId = ns("orgnr"))
       ),
 
       shiny::mainPanel(
@@ -68,20 +42,86 @@ mod_over_tid_ui <- function(id) {
 #'
 #'@export
 
-mod_over_tid_server <- function(id, data) {
+mod_over_tid_server <- function(id, data, indicator_meta) {
   shiny::moduleServer(
     id,
     function(input, output, session) {
+      data_reactive <- shiny::reactive({
+        data
+      })
 
-      data_over_tid_reactive <- shiny::reactive({
-        rapRegTemplate::over_tid_utvalg(data, input$var, input$region)
+      valid_spc_data_reactive <- shiny::reactive({
+        shiny::req(data_reactive())
+        data_reactive() |>
+          dplyr::filter(
+            !is.na(.data$var),
+            !is.na(.data$denominator),
+            .data$var != 0,
+            .data$denominator != 0
+          ) |>
+          dplyr::mutate(orgnr = as.character(.data$orgnr))
+      })
+
+      selected_spc_data_reactive <- shiny::reactive({
+        shiny::req(input$ind_id, input$orgnr)
+        valid_spc_data_reactive() |>
+          dplyr::filter(.data$orgnr == input$orgnr, .data$ind_id == input$ind_id)
+      })
+
+      output$ind_ids <- shiny::renderUI({
+        choices <- stats::setNames(
+          indicator_meta$ind_id,
+          indicator_meta$title
+        )
+        shiny::selectInput(
+          inputId = session$ns("ind_id"),
+          label = "Indikator:",
+          choices = choices
+        )
+      })
+
+      output$orgnr <- shiny::renderUI({
+        shiny::req(input$ind_id)
+        org_choices <- valid_spc_data_reactive() |>
+          dplyr::filter(.data$ind_id == input$ind_id) |>
+          dplyr::pull(.data$orgnr) |>
+          as.character() |>
+          unique() |>
+          sort()
+
+        choices <- stats::setNames(
+          org_choices,
+          org_choices
+        )
+
+        selected_orgnr <- if (!is.null(input$orgnr) && input$orgnr %in% org_choices) {
+          input$orgnr
+        } else {
+          org_choices[[1]]
+        }
+
+        shiny::selectInput(
+          inputId = session$ns("orgnr"),
+          label = "Sykehus:",
+          choices = choices,
+          selected = selected_orgnr,
+        )
       })
 
       plot_over_tid_reactive <- shiny::reactive({
-        rapRegTemplate::over_tid_plot(data_over_tid_reactive(), input$region)
+        shiny::req(input$orgnr, input$ind_id, cancelOutput = TRUE)
+        shiny::req(nrow(selected_spc_data_reactive()) > 0, cancelOutput = TRUE)
+        selected_indicator <- indicator_meta[indicator_meta$ind_id == input$ind_id, , drop = FALSE]
+        plotSPC(
+          selected_spc_data_reactive(),
+          title = selected_indicator$title,
+          subtitle = selected_indicator$short_description
+        )
       })
 
       output$over_tid_plot <- shiny::renderPlot({
+        shiny::req(input$orgnr, input$ind_id, cancelOutput = TRUE)
+        shiny::req(nrow(selected_spc_data_reactive()) > 0, cancelOutput = TRUE)
         plot_over_tid_reactive()
       })
 

@@ -21,15 +21,14 @@ app_server <- function(input, output, session) {
     caller = "rapRegTemplate"
   )
 
-  meslinger_data <- getFakeRegData()
-
   data_licorice_gargle <- licorice_gargle
 
+  APIdata <- fetchSkdeIndicatorData()
   info_server("info", user = user)
   samlerapport_server("samlerapport")
   mod_fordeling_plot_server("fordeling", data = data_licorice_gargle)
-  mod_over_tid_server("over_tid", data = meslinger_data)
-  mod_andeler_server("andeler")
+  mod_over_tid_server("over_tid", data = APIdata$data, indicator_meta = APIdata$indicator_meta)
+  mod_andeler_server("andeler", data = APIdata$data, indicator_meta = APIdata$indicator_meta)
 
   #################
   # Subscriptions #

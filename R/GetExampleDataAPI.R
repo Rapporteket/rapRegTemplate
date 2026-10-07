@@ -81,7 +81,15 @@ fetchSkdeIndicatorData <- function(
     ))
   }
 
-  rows[, c("year", "orgnr", "var", "denominator",
-           "ind_id", "context", "title", "short_description",
-           "levelDirection", "kvalIndgrenser")]
+  data <- rows[, c("year", "orgnr", "var", "denominator",
+                   "ind_id", "context", "title", "short_description",
+                   "levelDirection", "kvalIndgrenser")]
+  indicator_meta <- unique(
+    data[
+      ,
+      c("ind_id", "title", "short_description", "kvalIndgrenser", "levelDirection"),
+      drop = FALSE
+    ]
+  )
+  return(list(data = data, indicator_meta = indicator_meta))
 }
