@@ -17,10 +17,10 @@ run_app <- function(browser = FALSE, logAsJson = FALSE) {
   if (!capabilities()["cairo"]) {
     knitr::opts_chunk$set(dev = "svglite") # To make it work without cairo.
   }
-  if (Sys.getenv("DB_TYPE") == "sqlite") {
-    # Create SQLite database when using SQLite as the database type
-    # For testing purposes.
-    create_sqlite_db()
+  if (Sys.getenv("R_RAP_INSTANCE") == "azure") {
+    # Prepare the environment and create necessary SQLite databases
+    # for running a test application at Azure Cloud Service.
+    azure_prep()
   }
   shiny::shinyApp(
     ui = app_ui,
