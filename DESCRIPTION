@@ -38,14 +38,18 @@ Imports:
     DBI,
     DT,
     ggplot2,
+    httr,
+    jsonlite,
     knitr,
-    palmerpenguins,
+    qicharts2,
     rapbase (>= 3.6.0),
+    rapFigurer,
     rlang,
     RSQLite,
     shiny
 Remotes:
-  Rapporteket/rapbase@*release
+  Rapporteket/rapbase@*release,
+  Rapporteket/rapFigurer@main
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
