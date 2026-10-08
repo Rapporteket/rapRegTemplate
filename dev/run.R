@@ -6,9 +6,7 @@ devtools::install("../rapFigurer", upgrade = FALSE, dependencies = FALSE)
 source("dev/renv.R")
 source("../../!Sikker lagring/renv.R")
 
-# sqlite database setup
-#Sys.setenv(DB_TYPE = "sqlite")
-#Sys.setenv(MYSQL_DB_DATA = ":memory:")
-#rapRegTemplate::create_sqlite_db()
+# For lokal testing (vil kjøre uten databaser)
+# Sys.setenv(R_RAP_INSTANCE = "azure")
 
 rapRegTemplate::run_app(browser = TRUE)
