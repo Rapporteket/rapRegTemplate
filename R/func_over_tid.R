@@ -1,94 +1,83 @@
-###--------------------------------------------------------------------------###
-# Funksjoner til modulen "Over Tid"
-###--------------------------------------------------------------------------###
 
-#' Funksjon for å gjøre utvalg basert på ui-valg om variabel og region
-#' @param data dataramme (her brukes data på meslinger)
-#' @param var variabelen som velges av bruker i ui-delen
-#' @param valg_region valg av region gjort av bruker i ui-delen
-#' @export
+##' Lag et SPC-diagram for valgt indikator og sykehus
+#'
+#' Lager et p-diagram med
+#' \code{qicharts2} basert på indikatorverdier filtrert på valgt sykehus
+#' og indikator.
+#'
+#' @param data Dataramme med kolonnene \code{year}, \code{orgnr}, \code{var},
+#'   \code{denominator} og \code{ind_id}. Metadata som \code{title} og
+#'   \code{short_description} brukes dersom de finnes.
+#' @param title Valgfri tittel for diagrammet. Hvis ikke spesifisert, brukes
+#'   standardtittel "SPC-diagram".
+#' @param subtitle Valgfri undertittel for diagrammet. Hvis ikke spesifisert
+#'   brukes undertittel fra metadata dersom tilgjengelig, ellers ingen undertittel.
+#'
+#' @return Et ggplot-objekt med SPC-diagram for valgt indikator.
+plotSPC <- function(data, title = NULL, subtitle = NULL) {
 
-over_tid_utvalg <- function(data, var, valg_region) {
+  required_columns <- c("year", "orgnr", "var", "denominator", "ind_id")
+  missing_columns <- setdiff(required_columns, names(data))
 
-  data <- data |>
-    dplyr::select(.data$year, .data$region, dplyr::all_of(!!var))
-
-  gj_alle <- data |>
-    dplyr::rename(variabelen = {{var}}) |>
-    dplyr::group_by(.data$year) |>
-    dplyr::summarize(gjennomsnitt = mean(.data$variabelen)) |>
-    dplyr::mutate(gjennomsnitt = round(.data$gjennomsnitt, 2)) |>
-    dplyr::rename(gj_alle = .data$gjennomsnitt)
-
-  data <- data |>
-    dplyr::filter(.data$region == dplyr::case_when(
-      {{valg_region}} == "AFRO" ~ "AFRO",
-      {{valg_region}} == "AMRO" ~ "AMRO",
-      {{valg_region}} == "EMRO" ~ "EMRO",
-      {{valg_region}} == "EURO" ~ "EURO",
-      {{valg_region}} == "SEARO" ~ "SEARO",
-      {{valg_region}} == "WPRO" ~ "WPRO",
-      {{valg_region}} == "Alle" ~ region,
-      {{valg_region}} == "Alle_delt" ~ region
-    ))
-
-  gj <- data |>
-    dplyr::rename(variabelen = {{var}}) |>
-    dplyr::group_by(.data$year, .data$region) |>
-    dplyr::summarize(gjennomsnitt = mean(.data$variabelen)) |>
-    dplyr::mutate(gjennomsnitt = round(.data$gjennomsnitt, 2))
-
-  gj <- dplyr::left_join(gj, gj_alle)
-
-  if (valg_region == "Alle") {
-    return(gj_alle)
-  } else {
-    return(gj)
+  if (length(missing_columns) > 0L) {
+    stop(
+      "plotSPC() requires columns: ",
+      paste(required_columns, collapse = ", "),
+      ". Missing: ",
+      paste(missing_columns, collapse = ", "),
+      call. = FALSE
+    )
   }
 
-}
 
+  indikator_data <- data |>
+    dplyr::mutate(
+      aar = as.integer(.data$year),
+      sykehusnavn = as.character(.data$orgnr),
+      teller = as.numeric(.data$var) * as.numeric(.data$denominator),
+      nevner = as.numeric(.data$denominator),
+      prosent = as.numeric(.data$var)
+    ) |>
+    dplyr::filter(!is.na(.data$aar), !is.na(.data$teller), !is.na(.data$nevner), .data$nevner > 0) |>
+    dplyr::group_by(.data$aar) |>
+    dplyr::summarize(
+      teller = sum(.data$teller, na.rm = TRUE),
+      nevner = sum(.data$nevner, na.rm = TRUE),
+      .groups = "drop"
+    ) |>
+    dplyr::filter(.data$nevner > 0) |>
+    dplyr::mutate(
+      prosent = .data$teller / .data$nevner
+    ) |>
+    dplyr::arrange(.data$aar)
 
-#' Funksjon for å lage kolonne-figur for datasettet med meslinger
-#' @param data datasett som har vært gjennom over_tid_utvalg()
-#' @param valg_region valg av region-visning gjort av bruker i ui-delen
-#' @return en "stacked columns"-figur
-#' @export
-
-over_tid_plot <- function(data, valg_region) {
-
-  tid_plot <- ggplot2::ggplot()
-
-  if (valg_region == "Alle_delt") {
-    tid_plot <- tid_plot +
-      ggplot2::geom_col(data = data, ggplot2::aes(x = .data$year, y = .data$gjennomsnitt, fill = .data$region)) +
-      ggplot2::scale_fill_brewer(palette = "Set3") +
-      ggplot2::labs(fill = "Region")
-  } else {
-    if (valg_region == "Alle") {
-      tid_plot <- tid_plot +
-        ggplot2::geom_col(data = data, ggplot2::aes(x = .data$year, y = .data$gj_alle), fill = "#6CACE4", alpha = .7)
-    } else {
-      data <- data |>
-        dplyr::mutate(Verden = "Verden (gj.snitt)")
-      tid_plot <- tid_plot +
-        ggplot2::geom_col(
-          data = data,
-          ggplot2::aes(x = .data$year, y = .data$gjennomsnitt, fill = .data$region), alpha = .7
-        ) +
-        ggplot2::geom_point(data = data, ggplot2::aes(x = .data$year, y = .data$gj_alle, color = .data$Verden)) +
-        ggplot2::scale_color_manual(values = c("Verden (gj.snitt)" = "#003087")) +
-        ggplot2::scale_fill_manual(values = c("#6CACE4"))
-    }
+  if (nrow(indikator_data) == 0L) {
+    stop("plotSPC() has no observations after filtering.", call. = FALSE)
   }
 
-  tid_plot <- tid_plot +
-    ggplot2::ylab("") +
-    ggplot2::xlab("År") +
-    ggplot2::theme_bw() +
-    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10),
-                   legend.position = "right",
-                   legend.title = ggplot2::element_blank())
+  chart_title <- if (!is.null(title)) title else "SPC-diagram"
+  chart_subtitle <- if (!is.null(subtitle)) subtitle else NULL
 
-  return(tid_plot)
+  qicharts2::qic(
+    x = indikator_data$aar,
+    y = indikator_data$teller,
+    n = indikator_data$nevner,
+    data = indikator_data,
+    chart = "p",
+    xlab = "År",
+    ylab = "Andel (%)",
+    title = chart_title,
+    subtitle = chart_subtitle
+  ) +
+    ggplot2::scale_x_continuous(
+      breaks = indikator_data$aar,
+      labels = indikator_data$aar
+    ) +
+    ggplot2::theme(
+      panel.grid = ggplot2::element_blank(),
+      plot.margin = ggplot2::margin(r = 50, l = 20, t = 15, b = 15),
+      plot.subtitle = ggplot2::element_text(size = 14, color = "black"),
+      plot.title = ggplot2::element_text(size = 16, face = "bold"),
+      axis.text.y = ggplot2::element_text(size = 12)
+    )
 }

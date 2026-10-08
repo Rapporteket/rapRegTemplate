@@ -28,33 +28,24 @@ mod_andeler_ui <- function(id) {
 #'
 #' @param id Character string module namespace
 #' @param data Data frame containing the data to be plotted.
+#' @param indicator_meta Data frame containing metadata for the indicators.
 #'
 #' @return A Shiny app server object
 #' @export
 
-mod_andeler_server <- function(id, data) {
+mod_andeler_server <- function(id, data, indicator_meta) {
   shiny::moduleServer(
     id,
     function(input, output, session) {
 
       data_reactive <- shiny::reactive({
-        data <- fetchSkdeIndicatorData("parkinson")
         data
-      })
-      indicator_meta <- shiny::reactive({
-        unique(
-          data_reactive()[
-            ,
-            c("ind_id", "title", "short_description", "kvalIndgrenser", "levelDirection"),
-            drop = FALSE
-          ]
-        )
       })
 
       output$ind_ids <- shiny::renderUI({
         choices <- stats::setNames(
-          indicator_meta()$ind_id,
-          indicator_meta()$title
+          indicator_meta$ind_id,
+          indicator_meta$title
         )
         shiny::selectInput(
           inputId = session$ns("ind_id"),
@@ -65,7 +56,7 @@ mod_andeler_server <- function(id, data) {
 
       plotReactive <- shiny::reactive({
         shiny::req(input$ind_id)
-        selected_indicator <- indicator_meta()[indicator_meta()$ind_id == input$ind_id, , drop = FALSE]
+        selected_indicator <- indicator_meta[indicator_meta$ind_id == input$ind_id, , drop = FALSE]
 
         data <- data_reactive() |>
           dplyr::filter(.data$ind_id == input$ind_id)
