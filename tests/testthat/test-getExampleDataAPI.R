@@ -8,7 +8,7 @@ test_that("fetchSkdeIndicatorData returns a data frame with the expected schema"
 
   expect_s3_class(result$data, "data.frame")
   expect_true(all(c(
-    "year", "orgnr", "var", "denominator", "ind_id", "context",
+    "year", "unitName", "var", "denominator", "ind_id", "context",
     "title", "short_description", "levelDirection", "kvalIndgrenser"
   ) %in% names(result$data)))
 
@@ -29,7 +29,7 @@ test_that("fetchSkdeIndicatorData returns empty list payload for a non-existent 
   expect_s3_class(result$data, "data.frame")
   expect_equal(nrow(result$data), 0)
   expect_true(all(c(
-    "year", "orgnr", "var", "denominator", "ind_id", "context"
+    "year", "orgnr", "unitName", "var", "denominator", "ind_id", "context"
   ) %in% names(result$data)))
 
   expect_s3_class(result$indicator_meta, "data.frame")

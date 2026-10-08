@@ -21,6 +21,7 @@ fetchSkdeIndicatorData <- function(
   empty_data <- data.frame(
     year = integer(),
     orgnr = character(),
+    unitName = character(),
     var = numeric(),
     denominator = numeric(),
     ind_id = character(),
@@ -45,6 +46,9 @@ fetchSkdeIndicatorData <- function(
 
   response <- httr::GET(url)
   payload <- jsonlite::fromJSON(httr::content(response, as = "text", encoding = "UTF-8"), simplifyVector = FALSE)
+
+  unitNametoOrgNr <- list()
+  orgnr_counter <- 100
 
   rows <- do.call(rbind, lapply(payload, function(register) {
     do.call(rbind, lapply(register$indicatorData, function(indicator) {
@@ -71,9 +75,16 @@ fetchSkdeIndicatorData <- function(
           return(NULL)
         }
 
+        unitName <- as.character(row$unitName)
+        if (!unitName %in% names(unitNametoOrgNr)) {
+          unitNametoOrgNr[[unitName]] <<- as.character(orgnr_counter)
+          orgnr_counter <<- orgnr_counter + 1
+        }
+
         data.frame(
           year = as.integer(row$year),
-          orgnr = as.character(row$unitName),
+          orgnr = unitNametoOrgNr[[unitName]],
+          unitName = unitName,
           var = as.numeric(row$var),
           denominator = as.numeric(row$denominator),
           ind_id = as.character(indicator$indicatorID),
@@ -94,7 +105,7 @@ fetchSkdeIndicatorData <- function(
     return(list(data = empty_data, indicator_meta = empty_indicator_meta))
   }
 
-  data <- rows[, c("year", "orgnr", "var", "denominator",
+  data <- rows[, c("year", "orgnr", "unitName", "var", "denominator",
                    "ind_id", "context", "title", "short_description",
                    "levelDirection", "kvalIndgrenser")]
   indicator_meta <- unique(

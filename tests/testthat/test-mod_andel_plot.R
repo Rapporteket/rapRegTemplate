@@ -15,7 +15,7 @@ test_that("mod_andeler_server is a valid Shiny module function", {
 test_that("mod_andeler_server renders the indicator selection and plot output", {
   test_data <- data.frame(
     year = c(2022L, 2023L, 2023L),
-    orgnr = c("org1", "org1", "org2"),
+    unitName = c("org1", "org1", "org2"),
     var = c(0.5, 0.6, 0.7),
     denominator = c(100, 100, 200),
     ind_id = c("ind_1", "ind_1", "ind_1"),
