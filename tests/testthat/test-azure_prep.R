@@ -89,7 +89,7 @@ test_that("create_sqlite_db creates SQLite files and required tables", {
   autoreport_con <- DBI::dbConnect(RSQLite::SQLite(), dbname = Sys.getenv("MYSQL_DB_AUTOREPORT"))
   on.exit(DBI::dbDisconnect(autoreport_con), add = TRUE)
 
-  expect_setequal(DBI::dbListTables(autoreport_con), "autoreport")
+  expect_setequal(DBI::dbListTables(autoreport_con), c("autoreport", "sqlite_sequence"))
   expect_true(all(c(
     "id",
     "synopsis",
@@ -111,7 +111,7 @@ test_that("create_sqlite_db creates SQLite files and required tables", {
   log_con <- DBI::dbConnect(RSQLite::SQLite(), dbname = Sys.getenv("MYSQL_DB_LOG"))
   on.exit(DBI::dbDisconnect(log_con), add = TRUE)
 
-  expect_setequal(DBI::dbListTables(log_con), c("appLog", "reportLog"))
+  expect_setequal(DBI::dbListTables(log_con), c("appLog", "reportLog", "sqlite_sequence"))
   expect_true(all(c("id", "time", "user", "name", "group", "role", "resh_id", "message") %in% DBI::dbListFields(log_con, "appLog")))
   expect_true(all(c("id", "time", "user", "name", "group", "role", "resh_id", "environment", "call", "message") %in% DBI::dbListFields(log_con, "reportLog")))
 })

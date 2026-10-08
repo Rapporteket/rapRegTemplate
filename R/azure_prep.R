@@ -79,7 +79,7 @@ create_sqlite_db <- function() {
 
   query <- paste0(
     "CREATE TABLE `autoreport` (",
-    "  id varchar(255) DEFAULT NULL,",
+    "  id INTEGER PRIMARY KEY AUTOINCREMENT,",
     "  synopsis varchar(255) DEFAULT NULL,",
     "  package varchar(255) DEFAULT NULL,",
     "  fun varchar(255) DEFAULT NULL,",
@@ -110,7 +110,7 @@ create_sqlite_db <- function() {
 
   query <- paste0(
     "CREATE TABLE `appLog` (",
-    "  id varchar(255) DEFAULT NULL,",
+    "  id INTEGER PRIMARY KEY AUTOINCREMENT,",
     " `time` datetime DEFAULT NULL,",
     "  `user` varchar(255) DEFAULT NULL,",
     "  name varchar(255) DEFAULT NULL,",
@@ -130,7 +130,7 @@ create_sqlite_db <- function() {
 
   query <- paste0(
     "CREATE TABLE `reportLog` (",
-    "  id varchar(255) DEFAULT NULL,",
+    "  id INTEGER PRIMARY KEY AUTOINCREMENT,",
     "  `time` datetime DEFAULT NULL,",
     "  `user` varchar(255) DEFAULT NULL,",
     "  name varchar(255) DEFAULT NULL,",
