@@ -35,6 +35,7 @@ Depends:
   R (>= 4.1.0)
 Imports:
     dplyr,
+    DBI,
     DT,
     ggplot2,
     httr,
@@ -44,6 +45,7 @@ Imports:
     rapbase (>= 3.6.0),
     rapFigurer,
     rlang,
+    RSQLite,
     shiny
 Remotes:
   Rapporteket/rapbase@*release,

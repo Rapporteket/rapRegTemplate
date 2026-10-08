@@ -27,11 +27,11 @@ Denne delen kan være relevant om det er ønskelig å benytte templatetet som ut
 Hvis du ikke ønsker å lage et helt nytt repository, kan du prøve ut koden.
 
 1. Hent ned prosjektet [rapRegTemplate](https://github.com/Rapporteket/rapRegTemplate) (`git clone https://github.com/Rapporteket/rapRegTemplate.git` i en terminal).
-1. Åpne prosjektet i RStudio (åpne fila `rapRegTemplate.Rproj`)
-1. Installér pakken (`devtools::install()` eller <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>b</kbd>)
-1. Definer noen miljøvariabler (`source("dev/renv.R")`)
-1. Start Shiny-applikasjonen (`run_app(browser = TRUE)`)
-1. Navigér i applikasjonen for å se på struktur og farger (innhold mangler)
+1. Åpne prosjektet i RStudio (åpne fila `rapRegTemplate.Rproj`).
+1. Installér pakken (`devtools::install()` eller <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>b</kbd>).
+1. Definer miljøvariabelen `R_RAP_INSTANCE` til `azure` (`Sys.setenv(R_RAP_INSTANCE = "azure")`). Applikasjonen vil da fungere uten databaseinfrastruktur.
+1. Start Shiny-applikasjonen (`rapRegTemplate::run_app(browser = TRUE)`).
+1. Navigér i applikasjonen.
 
 ## Bygg docker image lokalt
 
