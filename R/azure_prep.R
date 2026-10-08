@@ -79,7 +79,7 @@ create_sqlite_db <- function() {
 
   query <- paste0(
     "CREATE TABLE `autoreport` (",
-    "  id INTEGER PRIMARY KEY AUTOINCREMENT,",
+    "  id varchar(255) DEFAULT NULL,",
     "  synopsis varchar(255) DEFAULT NULL,",
     "  package varchar(255) DEFAULT NULL,",
     "  fun varchar(255) DEFAULT NULL,",

@@ -89,7 +89,7 @@ test_that("create_sqlite_db creates SQLite files and required tables", {
   autoreport_con <- DBI::dbConnect(RSQLite::SQLite(), dbname = Sys.getenv("MYSQL_DB_AUTOREPORT"))
   on.exit(DBI::dbDisconnect(autoreport_con), add = TRUE)
 
-  expect_setequal(DBI::dbListTables(autoreport_con), c("autoreport", "sqlite_sequence"))
+  expect_setequal(DBI::dbListTables(autoreport_con), "autoreport")
   expect_true(all(c(
     "id",
     "synopsis",
