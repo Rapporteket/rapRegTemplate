@@ -121,8 +121,16 @@ test_that("azure_prep creates the environment and SQLite database files", {
 
   env_vars <- c(
     "DB_TYPE",
+    "FALK_EXTENDED_USER_RIGHTS",
+    "FALK_APP_ID",
+    "MYSQL_DB_LOG",
     "MYSQL_DB_AUTOREPORT",
-    "MYSQL_DB_LOG"
+    "MYSQL_DB_DATA",
+    "SHINYPROXY_USERNAME",
+    "SHINYPROXY_APPID",
+    "FALK_USER_FULLNAME",
+    "FALK_USER_EMAIL",
+    "FALK_USER_PHONE"
   )
 
   old_values <- Sys.getenv(env_vars, unset = NA_character_)
