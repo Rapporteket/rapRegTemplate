@@ -37,10 +37,7 @@ plotSPC <- function(data, title = NULL, subtitle = NULL) {
       teller = as.numeric(.data$var) * as.numeric(.data$denominator),
       nevner = as.numeric(.data$denominator),
       prosent = as.numeric(.data$var)
-    )
-
-
-  indikator_data <- indikator_data |>
+    ) |>
     dplyr::filter(!is.na(.data$aar), !is.na(.data$teller), !is.na(.data$nevner), .data$nevner > 0) |>
     dplyr::group_by(.data$aar) |>
     dplyr::summarize(
