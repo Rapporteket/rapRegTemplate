@@ -7,7 +7,7 @@
 plotSPC(data, title = NULL, subtitle = NULL)
 }
 \arguments{
-\item{data}{Dataramme med kolonnene \code{year}, \code{orgnr}, \code{var},
+\item{data}{Dataramme med kolonnene \code{year}, \code{unitName}, \code{var},
 \code{denominator} og \code{ind_id}. Metadata som \code{title} og
 \code{short_description} brukes dersom de finnes.}
 

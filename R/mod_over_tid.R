@@ -12,7 +12,7 @@ mod_over_tid_ui <- function(id) {
       shiny::sidebarPanel(
         width = 4,
         shiny::uiOutput(outputId = ns("ind_ids")),
-        shiny::uiOutput(outputId = ns("orgnr"))
+        shiny::uiOutput(outputId = ns("unitName"))
       ),
 
       shiny::mainPanel(
@@ -43,7 +43,7 @@ mod_over_tid_ui <- function(id) {
 #'
 #'@export
 
-mod_over_tid_server <- function(id, data, indicator_meta) {
+mod_over_tid_server <- function(id, data, indicator_meta, user) {
   shiny::moduleServer(
     id,
     function(input, output, session) {
@@ -52,21 +52,25 @@ mod_over_tid_server <- function(id, data, indicator_meta) {
       })
 
       valid_spc_data_reactive <- shiny::reactive({
-        shiny::req(data_reactive())
-        data_reactive() |>
+        shiny::req(data_reactive(), user$role())
+        filtered_data <- data_reactive()
+        if (user$role() != "SC") {
+          filtered_data <- dplyr::filter(filtered_data, as.character(.data$orgnr) == as.character(user$org()))
+        }
+
+        filtered_data |>
           dplyr::filter(
             !is.na(.data$var),
             !is.na(.data$denominator),
-            .data$var != 0,
-            .data$denominator != 0
+            .data$denominator > 0
           ) |>
-          dplyr::mutate(orgnr = as.character(.data$orgnr))
+          dplyr::mutate(unitName = as.character(.data$unitName))
       })
 
       selected_spc_data_reactive <- shiny::reactive({
-        shiny::req(input$ind_id, input$orgnr)
+        shiny::req(input$ind_id, input$unitName)
         valid_spc_data_reactive() |>
-          dplyr::filter(.data$orgnr == input$orgnr, .data$ind_id == input$ind_id)
+          dplyr::filter(.data$unitName == input$unitName, .data$ind_id == input$ind_id)
       })
 
       output$ind_ids <- shiny::renderUI({
@@ -81,36 +85,45 @@ mod_over_tid_server <- function(id, data, indicator_meta) {
         )
       })
 
-      output$orgnr <- shiny::renderUI({
-        shiny::req(input$ind_id)
-        org_choices <- valid_spc_data_reactive() |>
-          dplyr::filter(.data$ind_id == input$ind_id) |>
-          dplyr::pull(.data$orgnr) |>
-          as.character() |>
-          unique() |>
-          sort()
+      output$unitName <- shiny::renderUI({
+        shiny::req(input$ind_id, user$role())
+        if (user$role() == "SC") {
+          org_choices <- valid_spc_data_reactive() |>
+            dplyr::filter(.data$ind_id == input$ind_id) |>
+            dplyr::pull(.data$unitName) |>
+            as.character() |>
+            unique() |>
+            sort()
+        } else {
+          org_choices <- valid_spc_data_reactive() |>
+            dplyr::filter(.data$ind_id == input$ind_id, .data$orgnr == user$org()) |>
+            dplyr::pull(.data$unitName) |>
+            as.character() |>
+            unique() |>
+            sort()
+        }
 
         choices <- stats::setNames(
           org_choices,
           org_choices
         )
 
-        selected_orgnr <- if (!is.null(input$orgnr) && input$orgnr %in% org_choices) {
-          input$orgnr
+        selectedUnitName <- if (!is.null(input$unitName) && input$unitName %in% org_choices) {
+          input$unitName
         } else {
           org_choices[[1]]
         }
 
         shiny::selectInput(
-          inputId = session$ns("orgnr"),
+          inputId = session$ns("unitName"),
           label = "Sykehus:",
           choices = choices,
-          selected = selected_orgnr,
+          selected = selectedUnitName,
         )
       })
 
       plot_over_tid_reactive <- shiny::reactive({
-        shiny::req(input$orgnr, input$ind_id, cancelOutput = TRUE)
+        shiny::req(input$unitName, input$ind_id, cancelOutput = TRUE)
         shiny::req(nrow(selected_spc_data_reactive()) > 0, cancelOutput = TRUE)
         selected_indicator <- indicator_meta[indicator_meta$ind_id == input$ind_id, , drop = FALSE]
         plotSPC(
@@ -121,7 +134,7 @@ mod_over_tid_server <- function(id, data, indicator_meta) {
       })
 
       output$over_tid_plot <- shiny::renderPlot({
-        shiny::req(input$orgnr, input$ind_id, cancelOutput = TRUE)
+        shiny::req(input$unitName, input$ind_id, cancelOutput = TRUE)
         shiny::req(nrow(selected_spc_data_reactive()) > 0, cancelOutput = TRUE)
         plot_over_tid_reactive()
       })
