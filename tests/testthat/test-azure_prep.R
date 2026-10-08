@@ -155,6 +155,14 @@ test_that("azure_prep creates the environment and SQLite database files", {
   Sys.unsetenv("MYSQL_DB_AUTOREPORT")
   Sys.unsetenv("MYSQL_DB_LOG")
 
+  tmp_dir <- tempfile("azure_prep_work_")
+  dir.create(tmp_dir)
+  old_wd <- setwd(tmp_dir)
+  on.exit({
+    setwd(old_wd)
+    unlink(tmp_dir, recursive = TRUE, force = TRUE)
+  }, add = TRUE, after = TRUE)
+
   rapRegTemplate:::azure_prep()
 
   expect_equal(Sys.getenv("DB_TYPE"), "sqlite")
