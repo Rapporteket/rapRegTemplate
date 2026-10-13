@@ -7,7 +7,7 @@
 #' @param registryShortname Kort navn på registret som skal hentes, for eksempel "hjertestans".
 #' @param indicator_id Valgfri indikator-ID som brukes til å filtrere data før flattening.
 #' @return En liste med to data.frames: \code{data} (én rad per registrering,
-#' med kolonnene year, orgnr, var, denominator, ind_id, context, title,
+#' med kolonnene year, orgnr, unitName, var, denominator, ind_id, context, title,
 #' short_description, levelDirection og kvalIndgrenser) og
 #' \code{indicator_meta} (unik metadata per indikator med kolonnene ind_id,
 #' title, short_description, kvalIndgrenser og levelDirection). Hvis ingen
