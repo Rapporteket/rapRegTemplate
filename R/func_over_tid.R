@@ -5,7 +5,7 @@
 #' \code{qicharts2} basert på indikatorverdier filtrert på valgt sykehus
 #' og indikator.
 #'
-#' @param data Dataramme med kolonnene \code{year}, \code{orgnr}, \code{var},
+#' @param data Dataramme med kolonnene \code{year}, \code{unitName}, \code{var},
 #'   \code{denominator} og \code{ind_id}. Metadata som \code{title} og
 #'   \code{short_description} brukes dersom de finnes.
 #' @param title Valgfri tittel for diagrammet. Hvis ikke spesifisert, brukes
@@ -16,7 +16,7 @@
 #' @return Et ggplot-objekt med SPC-diagram for valgt indikator.
 plotSPC <- function(data, title = NULL, subtitle = NULL) {
 
-  required_columns <- c("year", "orgnr", "var", "denominator", "ind_id")
+  required_columns <- c("year", "unitName", "var", "denominator", "ind_id")
   missing_columns <- setdiff(required_columns, names(data))
 
   if (length(missing_columns) > 0L) {
@@ -33,7 +33,7 @@ plotSPC <- function(data, title = NULL, subtitle = NULL) {
   indikator_data <- data |>
     dplyr::mutate(
       aar = as.integer(.data$year),
-      sykehusnavn = as.character(.data$orgnr),
+      sykehusnavn = as.character(.data$unitName),
       teller = as.numeric(.data$var) * as.numeric(.data$denominator),
       nevner = as.numeric(.data$denominator),
       prosent = as.numeric(.data$var)

@@ -77,7 +77,7 @@ mod_andeler_server <- function(id, data, indicator_meta) {
       height = function() {
         shiny::req(input$ind_id)
         selected_data <- data_reactive()[data_reactive()$ind_id == input$ind_id, , drop = FALSE]
-        n_bins <- length(unique(selected_data$orgnr))
+        n_bins <- length(unique(selected_data$unitName))
         min(700, n_bins * 30)
       }
       )

@@ -3,7 +3,7 @@ test_that("plotSPC builds a p-chart for filtered indicator data", {
 
   data <- data.frame(
     year = c(2021L, 2022L, 2023L, 2021L),
-    orgnr = c("Hospital A", "Hospital A", "Hospital A", "Hospital B"),
+    unitName = c("Hospital A", "Hospital A", "Hospital A", "Hospital B"),
     var = c(0.20, 0.25, 0.30, 0.10),
     denominator = c(100, 120, 150, 80),
     ind_id = c("ind-1", "ind-1", "ind-1", "ind-2"),
@@ -26,7 +26,7 @@ test_that("plotSPC uses default title when title and subtitle are not provided",
 
   data <- data.frame(
     year = c(2021L, 2022L, 2023L),
-    orgnr = c("Hospital A", "Hospital A", "Hospital A"),
+    unitName = c("Hospital A", "Hospital A", "Hospital A"),
     var = c(0.20, 0.25, 0.30),
     denominator = c(100, 120, 150),
     ind_id = c("ind-1", "ind-1", "ind-1"),
@@ -42,21 +42,21 @@ test_that("plotSPC uses default title when title and subtitle are not provided",
 test_that("plotSPC fails when required columns are missing", {
   data <- data.frame(
     year = c(2021L, 2022L),
-    orgnr = c("Hospital A", "Hospital B"),
+    unitName = c("Hospital A", "Hospital B"),
     var = c(0.20, 0.25),
     stringsAsFactors = FALSE
   )
 
   expect_error(
     rapRegTemplate:::plotSPC(data),
-    "requires columns: year, orgnr, var, denominator, ind_id\\. Missing: denominator, ind_id"
+    "requires columns: year, unitName, var, denominator, ind_id\\. Missing: denominator, ind_id"
   )
 })
 
 test_that("plotSPC fails when filters remove all observations", {
   data <- data.frame(
     year = 2021L,
-    orgnr = "Hospital A",
+    unitName = "Hospital A",
     var = 0.20,
     denominator = 0,
     ind_id = "ind-1",

@@ -4,7 +4,7 @@
 \alias{mod_over_tid_server}
 \title{Server fordeling}
 \usage{
-mod_over_tid_server(id, data, indicator_meta)
+mod_over_tid_server(id, data, indicator_meta, user)
 }
 \arguments{
 \item{id}{Character string module namespace}
@@ -12,6 +12,11 @@ mod_over_tid_server(id, data, indicator_meta)
 \item{data}{Data frame containing the data to be plotted.}
 
 \item{indicator_meta}{Data frame containing metadata for the indicators.}
+
+\item{user}{Shiny user object, defined by the Shiny module
+rapbase::navbarWidgetServer2. This contains information about the logged-in
+user and can be used to tailor the app's content based on the user's
+role or organization.}
 }
 \description{
 Server fordeling

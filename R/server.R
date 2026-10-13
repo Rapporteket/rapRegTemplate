@@ -9,10 +9,15 @@
 
 app_server <- function(input, output, session) {
 
+
+  APIdata <- fetchSkdeIndicatorData()
+
+  orgData <- dplyr::distinct(APIdata$data, .data$unitName, .data$orgnr)
+
   # data.frame som mapper ReshID og sykehusnavn
   map_orgname <- data.frame(
-    UnitId = c(111, 222, 333),
-    orgname = c("Sykehus 1", "Sykehus 2", "Sykehus 3")
+    UnitId = orgData$orgnr,
+    orgname = orgData$unitName
   )
   user <- rapbase::navbarWidgetServer2(
     "navbar-widget",
@@ -23,11 +28,11 @@ app_server <- function(input, output, session) {
 
   data_licorice_gargle <- licorice_gargle
 
-  APIdata <- fetchSkdeIndicatorData()
+
   info_server("info", user = user)
   samlerapport_server("samlerapport")
   mod_fordeling_plot_server("fordeling", data = data_licorice_gargle)
-  mod_over_tid_server("over_tid", data = APIdata$data, indicator_meta = APIdata$indicator_meta)
+  mod_over_tid_server("over_tid", data = APIdata$data, indicator_meta = APIdata$indicator_meta, user = user)
   mod_andeler_server("andeler", data = APIdata$data, indicator_meta = APIdata$indicator_meta)
 
   #################
