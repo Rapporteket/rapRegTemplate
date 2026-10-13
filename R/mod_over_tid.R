@@ -36,8 +36,13 @@ mod_over_tid_ui <- function(id) {
 
 
 #' @param id Character string module namespace
+#'
 #' @param data Data frame containing the data to be plotted.
 #' @param indicator_meta Data frame containing metadata for the indicators.
+#' @param user Shiny user object, defined by the Shiny module
+#' rapbase::navbarWidgetServer2. This contains information about the logged-in
+#' user and can be used to tailor the app's content based on the user's
+#' role or organization.
 #'
 #'@title Server fordeling
 #'
