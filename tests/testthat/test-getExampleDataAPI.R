@@ -8,7 +8,7 @@ test_that("fetchSkdeIndicatorData returns a data frame with the expected schema"
 
   expect_s3_class(result$data, "data.frame")
   expect_true(all(c(
-    "year", "unitName", "var", "denominator", "ind_id", "context",
+    "year", "orgnr", "unitName", "var", "denominator", "ind_id", "context",
     "title", "short_description", "levelDirection", "kvalIndgrenser"
   ) %in% names(result$data)))
 
