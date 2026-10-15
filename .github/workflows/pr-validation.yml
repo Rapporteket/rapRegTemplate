@@ -10,4 +10,4 @@ on:
 
 jobs:
   validate:
-    uses: rapporteket/.github/.github/workflows/pr-validation.yml@reusable_wf
+    uses: rapporteket/.github/.github/workflows/pr-validation.yml@v1

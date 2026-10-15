@@ -10,4 +10,4 @@ name: lintr
 
 jobs:
   lint:
-    uses: rapporteket/.github/.github/workflows/lint.yml@reusable_wf
+    uses: rapporteket/.github/.github/workflows/lint.yml@v1

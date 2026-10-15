@@ -10,6 +10,6 @@ name: test-coverage
 
 jobs:
   test-coverage:
-    uses: rapporteket/.github/.github/workflows/coverage.yml@reusable_wf
+    uses: rapporteket/.github/.github/workflows/coverage.yml@v1
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

@@ -10,4 +10,4 @@ name: R-CMD-check
 
 jobs:
   R-CMD-check:
-    uses: rapporteket/.github/.github/workflows/R-CMD-check.yml@reusable_wf
+    uses: rapporteket/.github/.github/workflows/R-CMD-check.yml@v1
