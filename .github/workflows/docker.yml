@@ -7,7 +7,7 @@ on:
   pull_request:
     branches: [ "main" ]
   schedule:
-    - cron: '0 21 * * 6' # run every Saturday at 21
+    - cron: '0 20 * * 6' # run every Saturday at 20
 
 jobs:
   push_to_registries:
