@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    uses: rapporteket/.github/.github/workflows/harbor.yml@reusable_wf
+    uses: rapporteket/.github/.github/workflows/harbor.yml@v1
     secrets:
       HARBOR_PASSWORD: ${{ secrets.HARBOR_PASSWORD }}
       HARBOR_USERNAME: ${{ secrets.HARBOR_USERNAME }}
