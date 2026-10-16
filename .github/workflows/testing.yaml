@@ -6,9 +6,15 @@ on:
     branches:
       - main
 
-name: test-coverage
+name: Testing
 
 jobs:
+  lint:
+    uses: rapporteket/.github/.github/workflows/lint.yml@v1
+
+  R-CMD-check:
+    uses: rapporteket/.github/.github/workflows/R-CMD-check.yml@v1
+
   test-coverage:
     uses: rapporteket/.github/.github/workflows/coverage.yml@v1
     secrets:
