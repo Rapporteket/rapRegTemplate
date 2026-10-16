@@ -1,0 +1,21 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+name: Testing
+
+jobs:
+  lint:
+    uses: rapporteket/.github/.github/workflows/lint.yml@v1
+
+  R-CMD-check:
+    uses: rapporteket/.github/.github/workflows/R-CMD-check.yml@v1
+
+  test-coverage:
+    uses: rapporteket/.github/.github/workflows/coverage.yml@v1
+    secrets:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
