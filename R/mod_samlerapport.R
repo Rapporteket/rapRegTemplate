@@ -15,7 +15,7 @@ samlerapport_ui <- function(id) {
         shiny::selectInput(
           inputId = ns("varS"),
           label = "Variabel:",
-          c("mpg", "disp", "hp", "drat", "wt")
+          c("mpg", "disp", "hp", "drat", "wt", "qsec")
         ),
         shiny::sliderInput(
           inputId = ns("binsS"),
