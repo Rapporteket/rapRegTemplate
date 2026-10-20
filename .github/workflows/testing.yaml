@@ -15,9 +15,9 @@ jobs:
       error-on-lint: true # this is the default value
 
   R-CMD-check:
-    uses: rapporteket/.github/.github/workflows/R-CMD-check.yml@v1.2.0
+    uses: rapporteket/.github/.github/workflows/R-CMD-check.yml@v1
     with:
-      error_on: '"note"' # this is the default value. Other possible values are '"warning"' and '"error"'
+      error-on: '"note"' # this is the default value. Other possible values are '"warning"' and '"error"'
 
   test-coverage:
     uses: rapporteket/.github/.github/workflows/coverage.yml@v1
