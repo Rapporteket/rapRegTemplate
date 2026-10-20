@@ -1,8 +1,8 @@
 ---
 params:
-  type: pdf
-  var: mpg
-  bins: 5
+  data: !r data.frame()
+  indicator_meta: !r data.frame()
+  orgnr: ""
 title: Samlerapport
 subtitle: en eksempelrapport fra rapRegTemplate
 author: Rapporteket
@@ -15,37 +15,167 @@ abstract: Om rapporten trenger et sammendrag kan det settes inn her
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 11,
+  fig.height = 6
+)
+
+required_data_cols <- c("year", "orgnr", "unitName", "var", "denominator", "ind_id")
+required_meta_cols <- c("ind_id", "title", "short_description", "kvalIndgrenser", "levelDirection")
+
+if (!is.data.frame(params$data)) {
+  stop("params$data must be a data.frame", call. = FALSE)
+}
+
+if (!is.data.frame(params$indicator_meta)) {
+  stop("params$indicator_meta must be a data.frame", call. = FALSE)
+}
+
+missing_data_cols <- setdiff(required_data_cols, names(params$data))
+if (length(missing_data_cols) > 0L) {
+  stop(
+    "params$data is missing columns: ",
+    paste(missing_data_cols, collapse = ", "),
+    call. = FALSE
+  )
+}
+
+missing_meta_cols <- setdiff(required_meta_cols, names(params$indicator_meta))
+if (length(missing_meta_cols) > 0L) {
+  stop(
+    "params$indicator_meta is missing columns: ",
+    paste(missing_meta_cols, collapse = ", "),
+    call. = FALSE
+  )
+}
+
+selected_orgnr <- as.character(params$orgnr)
+if (length(selected_orgnr) != 1L || is.na(selected_orgnr) || selected_orgnr == "") {
+  stop("params$orgnr must be a non-empty character value", call. = FALSE)
+}
+
+valid_data <- params$data |>
+  dplyr::mutate(
+    year = as.integer(.data$year),
+    orgnr = as.character(.data$orgnr),
+    unitName = as.character(.data$unitName),
+    ind_id = as.character(.data$ind_id),
+    var = as.numeric(.data$var),
+    denominator = as.numeric(.data$denominator)
+  ) |>
+  dplyr::filter(
+    !is.na(.data$year),
+    !is.na(.data$orgnr),
+    !is.na(.data$unitName),
+    !is.na(.data$ind_id),
+    !is.na(.data$var),
+    !is.na(.data$denominator),
+    .data$denominator > 0
+  )
+
+org_data <- valid_data |>
+  dplyr::filter(.data$orgnr == selected_orgnr)
+
+available_ids <- unique(org_data$ind_id)
+meta_ids <- unique(as.character(params$indicator_meta$ind_id))
+candidate_ids <- sort(intersect(available_ids, meta_ids))
+
+if (length(candidate_ids) == 0L) {
+  stop(
+    "No indicators with valid data found for orgnr '",
+    selected_orgnr,
+    "'.",
+    call. = FALSE
+  )
+}
+
+n_selected <- min(2L, length(candidate_ids))
+
+# Deterministic random draw per orgnr.
+set.seed(sum(utf8ToInt(selected_orgnr)))
+selected_ids <- sample(candidate_ids, size = n_selected, replace = FALSE)
+
+selected_meta <- params$indicator_meta |>
+  dplyr::mutate(ind_id = as.character(.data$ind_id)) |>
+  dplyr::filter(.data$ind_id %in% selected_ids)
+
+selected_meta <- selected_meta[match(selected_ids, selected_meta$ind_id), , drop = FALSE]
 ```
 
+Rapporten viser to tilfeldig valgte indikatorer med gyldige data for valgt orgnr (`r selected_orgnr`).
 
-# Samlerapport
-Dette er eksempel på en samlerapport som er egnet til å kombinere presentasjon
-av dynamisk tekst, tabeller og figurer. Samlerapporter kan vises i selve
-Rapporeket, lastes ned eller sendes (rutinemessig) per epost til de som ønsker
-det.
+Valgte indikator-IDer: `r paste(selected_ids, collapse = ", ")`
 
+```{r indikator-plots, results='asis'}
+for (ind in selected_ids) {
+  meta_row <- selected_meta[selected_meta$ind_id == ind, , drop = FALSE]
 
-## Eksempel på dynamisk tekst
-Idag, `r format(Sys.Date(), "%A %d. %b %Y")` er det
-`r as.numeric(format(Sys.Date(), "%j"))` dager siden nyttår.
+  indicator_title <- if (nrow(meta_row) > 0L && !is.na(meta_row$title[[1]]) && nzchar(meta_row$title[[1]])) {
+    meta_row$title[[1]]
+  } else {
+    paste("Indikator", ind)
+  }
 
+  indicator_subtitle <- if (nrow(meta_row) > 0L && !is.na(meta_row$short_description[[1]]) && nzchar(meta_row$short_description[[1]])) {
+    meta_row$short_description[[1]]
+  } else {
+    NULL
+  }
 
-## Eksempel på tabell
-Tabell \@ref(tab:eksTab) under er fin, og illustrerer poenget.
+  level_direction <- if (nrow(meta_row) > 0L) meta_row$levelDirection[[1]] else NA_real_
+  kval_ind_grenser <- if (nrow(meta_row) > 0L) meta_row$kvalIndgrenser[[1]] else NULL
+  if (length(kval_ind_grenser) == 0L || all(is.na(kval_ind_grenser))) {
+    kval_ind_grenser <- NULL
+  }
 
-```{r eksTab}
-dt <- mtcars[1:6, ][params$var]
-cap <- paste("Eksempeltabell som viser variabelen", params$var, "fra mtcars.")
+  andel_data <- valid_data |>
+    dplyr::filter(.data$ind_id == ind)
 
-rapbase::mst(tab = dt, type = params$type, cap = cap)
+  spc_data <- org_data |>
+    dplyr::filter(.data$ind_id == ind)
 
+  cat("## ", indicator_title, " \n\n", sep = "")
+  cat("Indikator-ID: ", ind, " \n\n", sep = "")
+
+  if (!is.null(indicator_subtitle)) {
+    cat(indicator_subtitle, "\n\n")
+  }
+
+  cat("### Andelplot \n\n")
+
+  if (nrow(andel_data) > 0L) {
+    print(
+      rapFigurer::plotIndikator(
+        andel_data,
+        title = indicator_title,
+        shortDescription = indicator_subtitle,
+        showYear = max(andel_data$year, na.rm = TRUE),
+        kvalIndgrenser = kval_ind_grenser,
+        levelDirection = level_direction
+      )
+    )
+  } else {
+    cat("Ingen gyldige data for andelplot.\n\n")
+  }
+
+  cat("### SPC-plot for valgt orgn \n\n")
+
+  if (nrow(spc_data) > 0L) {
+    print(
+      rapRegTemplate:::plotSPC(
+        spc_data,
+        title = indicator_title,
+        subtitle = indicator_subtitle
+      )
+    )
+  } else {
+    cat("Ingen gyldige data for SPC-plot for valgt orgnr.\n\n")
+  }
+
+  cat("\n")
+}
 ```
 
-
-## Eksempel på figur
-Samlerapporter kan også inneholde figurer basert på data slik som vist i Figur \@ref(fig:eksFig).
-
-```{r eksFig, echo=FALSE, out.width="80%", fig.cap=paste("Eksempelfigur som viser frekvensfordelingen av", params$var, "fra mtcars.")}
-f <- rapRegTemplate::makeSimpleHist(df = mtcars, var = params$var, bins = params$bins, makeTable = FALSE)
-```

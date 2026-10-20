@@ -5,15 +5,15 @@
 #'
 #' @param report The type of report to generate. Currently only "local_monthly" is supported.
 #' @param outputType The format of the output file. Can be "html", "html_fragment", or "pdf".
-#' @param var The variable to be used in the report.
-#' @param bins The number of bins to use for the report.
+#' @param orgnr The organization number for which the report is generated.
 #'
 #' @return A character string with a path to where the produced file is located.
 #' @export
 reportProcessor <- function(report,
                             outputType = "pdf",
-                            var = "mpg",
-                            bins = 10) {
+                            data,
+                            indicator_meta,
+                            orgnr = NULL) {
   stopifnot(report %in% c("local_monthly"))
   stopifnot(outputType %in% c("html", "html_fragment", "pdf"))
 
@@ -28,9 +28,9 @@ reportProcessor <- function(report,
     filename <- rapbase::renderRmd(
       system.file("samlerapport.Rmd", package = "rapRegTemplate"),
       outputType = outputType,
-      params = list(type = type,
-                    var = var,
-                    bins = bins)
+      params = list(data = data,
+                    indicator_meta = indicator_meta,
+                    orgnr = orgnr)
     )
   }
   filename

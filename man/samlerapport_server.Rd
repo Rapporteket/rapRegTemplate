@@ -4,7 +4,7 @@
 \alias{samlerapport_server}
 \title{Server logic for samlerapport}
 \usage{
-samlerapport_server(id)
+samlerapport_server(id, data, indicator_meta, user)
 }
 \arguments{
 \item{id}{Character string module namespace}

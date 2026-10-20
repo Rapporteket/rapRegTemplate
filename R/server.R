@@ -10,7 +10,7 @@
 app_server <- function(input, output, session) {
 
 
-  APIdata <- fetchSkdeIndicatorData()
+  APIdata <- fetchSkdeIndicatorData("kvarus")
 
   orgData <- dplyr::distinct(APIdata$data, .data$unitName, .data$orgnr)
 
@@ -30,7 +30,7 @@ app_server <- function(input, output, session) {
 
 
   info_server("info", user = user)
-  samlerapport_server("samlerapport")
+  samlerapport_server("samlerapport", data = APIdata$data, indicator_meta = APIdata$indicator_meta, user = user)
   mod_fordeling_plot_server("fordeling", data = data_licorice_gargle)
   mod_over_tid_server("over_tid", data = APIdata$data, indicator_meta = APIdata$indicator_meta, user = user)
   mod_andeler_server("andeler", data = APIdata$data, indicator_meta = APIdata$indicator_meta)
