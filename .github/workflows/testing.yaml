@@ -11,9 +11,13 @@ name: Testing
 jobs:
   lint:
     uses: rapporteket/.github/.github/workflows/lint.yml@v1
+    with:
+      error-on-lint: true # this is the default value
 
   R-CMD-check:
     uses: rapporteket/.github/.github/workflows/R-CMD-check.yml@v1
+    with:
+      error_on: '"note"' # this is the default value. Other possible values are '"warning"' and '"error"'
 
   test-coverage:
     uses: rapporteket/.github/.github/workflows/coverage.yml@v1
