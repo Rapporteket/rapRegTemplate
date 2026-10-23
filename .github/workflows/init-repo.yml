@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
 
     steps:
       - name: Checkout Code
@@ -57,10 +58,22 @@ jobs:
           # Delete this workflow file so it doesn't run again
           rm .github/workflows/init-repo.yml
 
-      - name: Commit and Push Changes
+      - name: Create Branch and Open Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          BRANCH_NAME="chore/init-repo-${{ github.run_id }}"
+          BASE_BRANCH="${{ github.event.repository.default_branch }}"
+
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+          git checkout -b "$BRANCH_NAME"
           git add .
           git commit -m "Initialize repository with template variables"
-          git push
+          git push --set-upstream origin "$BRANCH_NAME"
+
+          gh pr create \
+            --base "$BASE_BRANCH" \
+            --head "$BRANCH_NAME" \
+            --title "Initialize repository from template" \
+            --body "This PR applies the repository-specific values and removes template-only setup files."
