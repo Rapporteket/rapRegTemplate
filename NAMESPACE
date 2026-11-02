@@ -2,6 +2,7 @@
 
 export(app_server)
 export(app_ui)
+export(create_sqlite_db)
 export(fetchSkdeIndicatorData)
 export(forbered_data_fordeling)
 export(getFakeRegData)
