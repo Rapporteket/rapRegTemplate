@@ -8,6 +8,10 @@ samlerapport_server(id, data, indicator_meta, user)
 }
 \arguments{
 \item{id}{Character string module namespace}
+
+\item{data}{Data frame with indicator data}
+
+\item{indicator_meta}{Data frame with indicator metadata}
 }
 \value{
 A Shiny app server object

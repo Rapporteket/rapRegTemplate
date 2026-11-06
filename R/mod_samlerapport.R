@@ -33,6 +33,8 @@ samlerapport_ui <- function(id) {
 #' Server logic for samlerapport
 #'
 #' @param id Character string module namespace
+#' @param data Data frame with indicator data
+#' @param indicator_meta Data frame with indicator metadata
 #'
 #' @return A Shiny app server object
 #' @export
