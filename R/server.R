@@ -30,7 +30,7 @@ app_server <- function(input, output, session) {
 
 
   info_server("info", user = user)
-  samlerapport_server("samlerapport")
+  samlerapport_server("samlerapport", data = APIdata$data, indicator_meta = APIdata$indicator_meta, user = user)
   mod_fordeling_plot_server("fordeling", data = data_licorice_gargle)
   mod_over_tid_server("over_tid", data = APIdata$data, indicator_meta = APIdata$indicator_meta, user = user)
   mod_andeler_server("andeler", data = APIdata$data, indicator_meta = APIdata$indicator_meta)
@@ -39,7 +39,17 @@ app_server <- function(input, output, session) {
   # Subscriptions #
   #################
 
-  subParamNames <- shiny::reactive(c("reshID"))
+  autoReports <- list(
+    `Automatisk samlerapport` = list(
+      synopsis = "Automatisk samlerapport som inneholder spennende statistikk
+        om indikatorer for valgt sykehus",
+      fun = "reportProcessor",
+      paramNames = c("report", "orgnr", "outputType"),
+      paramValues = c("local_monthly", "", "html_fragment")
+    )
+  )
+
+  subParamNames <- shiny::reactive(c("orgnr"))
   subParamValues <- shiny::reactive(user$org())
 
   rapbase::autoReportServer(
@@ -48,24 +58,7 @@ app_server <- function(input, output, session) {
     type = "subscription",
     paramNames = subParamNames,
     paramValues = subParamValues,
-    reports = list(
-      `Automatisk samlerapport1` = list(
-        synopsis = "
-        Automatisk samlerapport1 som inneholder spennende statistikk
-        om pasienter og operasjoner",
-        fun = "samlerapport1Fun",
-        paramNames = c("p1", "p2", "reshID"),
-        paramValues = c("Alder", 1, 999999)
-      ),
-      `Automatisk samlerapport2` = list(
-        synopsis = "Automatisk samlerapport2 som inneholder
-        enda mer spennende statistikk
-        om pasienter og operasjoner, i tillegg til BMI",
-        fun = "samlerapport2Fun",
-        paramNames = c("p1", "p2", "reshID"),
-        paramValues = c("BMI", 1, 999999)
-      )
-    ),
+    reports = autoReports,
     freq = "quarter",
     user = user
   )
@@ -123,14 +116,11 @@ app_server <- function(input, output, session) {
   # Dispatchments #
   #################
 
-  orgs <- list(
-    OrgOne = 100082,
-    OrgTwo = 102966
-  )
+  orgs <- stats::setNames(orgData$orgnr, orgData$unitName)
 
   org <- rapbase::autoReportOrgServer("dispatchment", orgs)
 
-  disParamNames <- shiny::reactive(c("reshID"))
+  disParamNames <- shiny::reactive(c("orgnr"))
   disParamValues <- shiny::reactive(c(org$value()))
 
   rapbase::autoReportServer(
@@ -140,24 +130,7 @@ app_server <- function(input, output, session) {
     org = org$value,
     paramNames = disParamNames,
     paramValues = disParamValues,
-    reports = list(
-      `Automatisk samlerapport1` = list(
-        synopsis = "
-        Automatisk samlerapport1 som inneholder spennende statistikk
-        om pasienter og operasjoner",
-        fun = "samlerapport1Fun",
-        paramNames = c("p1", "p2", "reshID"),
-        paramValues = c("Alder", 1, 999999)
-      ),
-      `Automatisk samlerapport2` = list(
-        synopsis = "Automatisk samlerapport2 som inneholder
-        enda mer spennende statistikk
-        om pasienter og operasjoner, i tillegg til BMI",
-        fun = "samlerapport2Fun",
-        paramNames = c("p1", "p2", "reshID"),
-        paramValues = c("BMI", 1, 999999)
-      )
-    ),
+    reports = autoReports,
     orgs = orgs,
     user = user,
     runAutoReportButton = TRUE

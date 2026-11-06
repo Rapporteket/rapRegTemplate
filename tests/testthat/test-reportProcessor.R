@@ -1,3 +1,31 @@
+make_report_data <- function() {
+  grid <- expand.grid(
+    year = 2022:2023,
+    orgnr = c("111", "222"),
+    ind_id = c("ind_1", "ind_2"),
+    stringsAsFactors = FALSE
+  )
+  grid$unitName <- ifelse(grid$orgnr == "111", "Sykehus A", "Sykehus B")
+  grid$var <- seq(0.4, 0.8, length.out = nrow(grid))
+  grid$denominator <- 100
+  grid$context <- "caregiver"
+  grid$title <- ifelse(grid$ind_id == "ind_1", "Indikator A", "Indikator B")
+  grid$short_description <- "Kort tekst"
+  grid$levelDirection <- 1
+  grid$kvalIndgrenser <- I(rep(list(c(0.5, 0.7)), nrow(grid)))
+  grid
+}
+
+make_report_meta <- function() {
+  data.frame(
+    ind_id = c("ind_1", "ind_2"),
+    title = c("Indikator A", "Indikator B"),
+    short_description = "Kort tekst",
+    kvalIndgrenser = I(rep(list(c(0.5, 0.7)), 2)),
+    levelDirection = 1,
+    stringsAsFactors = FALSE
+  )
+}
 
 test_that("invalid report throws error", {
   expect_error(
@@ -14,28 +42,59 @@ test_that("invalid outputType throws error", {
   )
 })
 
-test_that("renderRmd is called with correct arguments for html", {
+test_that("data are fetched from the API when not provided", {
+  fetched <- FALSE
+  local_mocked_bindings(
+    fetchSkdeIndicatorData = function(...) {
+      fetched <<- TRUE
+      list(data = make_report_data(), indicator_meta = make_report_meta())
+    }
+  )
 
   result <- reportProcessor(
     report = "local_monthly",
     outputType = "html",
-    var = "hp",
-    bins = 20
+    orgnr = "111"
   )
 
-  expect_match(result, ".html")
-
+  expect_true(fetched)
+  expect_match(result, "\\.html$")
 })
 
+test_that("html report is rendered with provided data", {
+  result <- reportProcessor(
+    report = "local_monthly",
+    outputType = "html",
+    data = make_report_data(),
+    indicator_meta = make_report_meta(),
+    orgnr = "111"
+  )
 
-test_that("renderRmd is called with correct arguments for html_fragment", {
+  expect_match(result, "\\.html$")
+  expect_true(file.exists(result))
+})
 
+test_that("html_fragment report contains indicator titles", {
   result <- reportProcessor(
     report = "local_monthly",
     outputType = "html_fragment",
-    var = "wt",
-    bins = 20
+    data = make_report_data(),
+    indicator_meta = make_report_meta(),
+    orgnr = "111"
   )
-  expect_match(result, "Mazda RX4 Wag")
 
+  expect_match(result, "Indikator A")
+  expect_match(result, "Indikator B")
+})
+
+test_that("report fails without a valid orgnr", {
+  expect_error(
+    reportProcessor(
+      report = "local_monthly",
+      outputType = "html",
+      data = make_report_data(),
+      indicator_meta = make_report_meta(),
+      orgnr = NULL
+    )
+  )
 })
