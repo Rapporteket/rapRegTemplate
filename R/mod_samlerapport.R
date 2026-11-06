@@ -57,10 +57,16 @@ samlerapport_server <- function(id, data, indicator_meta, user) {
           dplyr::filter(
             !is.na(.data$orgnr),
             !is.na(.data$unitName),
+            !is.na(as.integer(.data$year)),
+            !is.na(.data$ind_id),
+            .data$ind_id %in% as.character(indicator_meta$ind_id),
             !is.na(.data$var),
             !is.na(.data$denominator),
             .data$denominator > 0
           ) |>
+          dplyr::group_by(.data$orgnr) |>
+          dplyr::filter(dplyr::n_distinct(.data$ind_id) >= 2L) |>
+          dplyr::ungroup() |>
           dplyr::distinct(.data$orgnr, .data$unitName) |>
           dplyr::arrange(.data$unitName)
 
