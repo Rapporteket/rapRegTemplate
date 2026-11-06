@@ -4,12 +4,24 @@
 \alias{reportProcessor}
 \title{Common report processor for rapRegTemplate}
 \usage{
-reportProcessor(report, outputType = "pdf", data, indicator_meta, orgnr = NULL)
+reportProcessor(
+  report,
+  outputType = "pdf",
+  data = NULL,
+  indicator_meta = NULL,
+  orgnr = NULL
+)
 }
 \arguments{
 \item{report}{The type of report to generate. Currently only "local_monthly" is supported.}
 
 \item{outputType}{The format of the output file. Can be "html", "html_fragment", or "pdf".}
+
+\item{data}{Data frame with indicator data. If NULL, data are fetched with
+[fetchSkdeIndicatorData()].}
+
+\item{indicator_meta}{Data frame with indicator metadata. If NULL, metadata
+are fetched with [fetchSkdeIndicatorData()].}
 
 \item{orgnr}{The organization number for which the report is generated.}
 }

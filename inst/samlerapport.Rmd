@@ -92,90 +92,126 @@ if (length(candidate_ids) == 0L) {
   )
 }
 
-n_selected <- min(2L, length(candidate_ids))
+if (length(candidate_ids) < 2L) {
+  stop(
+    "At least two indicators with valid data are required for orgnr '",
+    selected_orgnr,
+    "'.",
+    call. = FALSE
+  )
+}
 
 # Deterministic random draw per orgnr.
 set.seed(sum(utf8ToInt(selected_orgnr)))
-selected_ids <- sample(candidate_ids, size = n_selected, replace = FALSE)
+selected_ids <- sample(candidate_ids, size = 2L, replace = FALSE)
 
-selected_meta <- params$indicator_meta |>
-  dplyr::mutate(ind_id = as.character(.data$ind_id)) |>
-  dplyr::filter(.data$ind_id %in% selected_ids)
+get_indicator <- function(ind, indicator_meta, valid_data, org_data) {
+  meta_row <- indicator_meta |>
+    dplyr::mutate(ind_id = as.character(.data$ind_id)) |>
+    dplyr::filter(.data$ind_id == ind)
 
-selected_meta <- selected_meta[match(selected_ids, selected_meta$ind_id), , drop = FALSE]
+  title <- if (nrow(meta_row) > 0L && !is.na(meta_row$title[[1]])
+               && nzchar(meta_row$title[[1]])) {
+    meta_row$title[[1]]
+  } else {
+    paste("Indikator", ind)
+  }
+
+  subtitle <- if (nrow(meta_row) > 0L && !is.na(meta_row$short_description[[1]])
+                  && nzchar(meta_row$short_description[[1]])) {
+    meta_row$short_description[[1]]
+  } else {
+    NULL
+  }
+
+  kval_ind_grenser <- if (nrow(meta_row) > 0L) meta_row$kvalIndgrenser[[1]] else NULL
+  if (length(kval_ind_grenser) == 0L || all(is.na(kval_ind_grenser))) {
+    kval_ind_grenser <- NULL
+  }
+
+  list(
+    id = ind,
+    title = title,
+    subtitle = subtitle,
+    level_direction = if (nrow(meta_row) > 0L) meta_row$levelDirection[[1]] else NA_real_,
+    kval_ind_grenser = kval_ind_grenser,
+    andel_data = dplyr::filter(valid_data, .data$ind_id == ind),
+    spc_data = dplyr::filter(org_data, .data$ind_id == ind)
+  )
+}
+
+wrap_subtitle <- function(x, width = 70L) {
+  if (is.null(x)) {
+    return(NULL)
+  }
+  paste(strwrap(x, width = width), collapse = "\n")
+}
+
+plot_andel <- function(x) {
+  rapFigurer::plotIndikator(
+    x$andel_data,
+    title = x$title,
+    shortDescription = wrap_subtitle(x$subtitle),
+    showYear = max(x$andel_data$year, na.rm = TRUE),
+    kvalIndgrenser = x$kval_ind_grenser,
+    levelDirection = x$level_direction
+  )
+}
+
+andel_height <- function(x, per_unit = 0.12, base = 2.5, min_height = 6) {
+  n_units <- length(unique(x$andel_data$unitName))
+  max(min_height, base + n_units * per_unit)
+}
+
+plot_spc <- function(x) {
+  rapRegTemplate:::plotSPC(
+    x$spc_data,
+    title = x$title,
+    subtitle = wrap_subtitle(x$subtitle)
+  )
+}
+
+ind1 <- get_indicator(selected_ids[[1]], params$indicator_meta, valid_data, org_data)
+ind2 <- get_indicator(selected_ids[[2]], params$indicator_meta, valid_data, org_data)
 ```
 
 Rapporten viser to tilfeldig valgte indikatorer med gyldige data for valgt orgnr (`r selected_orgnr`).
 
 Valgte indikator-IDer: `r paste(selected_ids, collapse = ", ")`
 
-```{r indikator-plots, results='asis'}
-for (ind in selected_ids) {
-  meta_row <- selected_meta[selected_meta$ind_id == ind, , drop = FALSE]
+## `r ind1$title`
 
-  indicator_title <- if (nrow(meta_row) > 0L && !is.na(meta_row$title[[1]]) && nzchar(meta_row$title[[1]])) {
-    meta_row$title[[1]]
-  } else {
-    paste("Indikator", ind)
-  }
+Indikator-ID: `r ind1$id`
 
-  indicator_subtitle <- if (nrow(meta_row) > 0L && !is.na(meta_row$short_description[[1]]) && nzchar(meta_row$short_description[[1]])) {
-    meta_row$short_description[[1]]
-  } else {
-    NULL
-  }
+`r ind1$subtitle`
 
-  level_direction <- if (nrow(meta_row) > 0L) meta_row$levelDirection[[1]] else NA_real_
-  kval_ind_grenser <- if (nrow(meta_row) > 0L) meta_row$kvalIndgrenser[[1]] else NULL
-  if (length(kval_ind_grenser) == 0L || all(is.na(kval_ind_grenser))) {
-    kval_ind_grenser <- NULL
-  }
+### Andelplot
 
-  andel_data <- valid_data |>
-    dplyr::filter(.data$ind_id == ind)
+```{r andel-ind1, fig.height = andel_height(ind1)}
+plot_andel(ind1)
+```
 
-  spc_data <- org_data |>
-    dplyr::filter(.data$ind_id == ind)
+### SPC-plot for valgt orgnr
 
-  cat("## ", indicator_title, " \n\n", sep = "")
-  cat("Indikator-ID: ", ind, " \n\n", sep = "")
+```{r spc-ind1}
+plot_spc(ind1)
+```
 
-  if (!is.null(indicator_subtitle)) {
-    cat(indicator_subtitle, "\n\n")
-  }
+## `r ind2$title`
 
-  cat("### Andelplot \n\n")
+Indikator-ID: `r ind2$id`
 
-  if (nrow(andel_data) > 0L) {
-    print(
-      rapFigurer::plotIndikator(
-        andel_data,
-        title = indicator_title,
-        shortDescription = indicator_subtitle,
-        showYear = max(andel_data$year, na.rm = TRUE),
-        kvalIndgrenser = kval_ind_grenser,
-        levelDirection = level_direction
-      )
-    )
-  } else {
-    cat("Ingen gyldige data for andelplot.\n\n")
-  }
+`r ind2$subtitle`
 
-  cat("### SPC-plot for valgt orgn \n\n")
+### Andelplot
 
-  if (nrow(spc_data) > 0L) {
-    print(
-      rapRegTemplate:::plotSPC(
-        spc_data,
-        title = indicator_title,
-        subtitle = indicator_subtitle
-      )
-    )
-  } else {
-    cat("Ingen gyldige data for SPC-plot for valgt orgnr.\n\n")
-  }
+```{r andel-ind2, fig.height = andel_height(ind2)}
+plot_andel(ind2)
+```
 
-  cat("\n")
-}
+### SPC-plot for valgt orgnr
+
+```{r spc-ind2}
+plot_spc(ind2)
 ```
 
