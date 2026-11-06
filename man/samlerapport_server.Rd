@@ -12,6 +12,8 @@ samlerapport_server(id, data, indicator_meta, user)
 \item{data}{Data frame with indicator data}
 
 \item{indicator_meta}{Data frame with indicator metadata}
+
+\item{user}{A reactive object with user information}
 }
 \value{
 A Shiny app server object

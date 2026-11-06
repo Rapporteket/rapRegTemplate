@@ -35,6 +35,7 @@ samlerapport_ui <- function(id) {
 #' @param id Character string module namespace
 #' @param data Data frame with indicator data
 #' @param indicator_meta Data frame with indicator metadata
+#' @param user A reactive object with user information
 #'
 #' @return A Shiny app server object
 #' @export
