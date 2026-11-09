@@ -22,7 +22,7 @@ reportProcessor <- function(report,
   stopifnot(outputType %in% c("html", "html_fragment", "pdf"))
 
   if (is.null(data) || is.null(indicator_meta)) {
-    api_data <- fetchSkdeIndicatorData()
+    api_data <- getSkdeIndicatorData()
     if (is.null(data)) {
       data <- api_data$data
     }

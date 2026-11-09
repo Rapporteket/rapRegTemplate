@@ -44,6 +44,8 @@ test_that("invalid outputType throws error", {
 
 test_that("data are fetched from the API when not provided", {
   fetched <- FALSE
+  rm(list = ls(rapRegTemplate:::.skde_cache), envir = rapRegTemplate:::.skde_cache)
+  withr::defer(rm(list = ls(rapRegTemplate:::.skde_cache), envir = rapRegTemplate:::.skde_cache))
   local_mocked_bindings(
     fetchSkdeIndicatorData = function(...) {
       fetched <<- TRUE

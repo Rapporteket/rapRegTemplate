@@ -132,3 +132,28 @@ fetchSkdeIndicatorData <- function(
   )
   return(list(data = data, indicator_meta = indicator_meta))
 }
+
+
+# Cache for SKDE-indikatordata. Dataene hentes én gang per R-prosess og
+# gjenbrukes resten av prosessens levetid.
+.skde_cache <- new.env(parent = emptyenv())
+
+#' Hent SKDE-indikatordata med cache
+#'
+#' Wrapper rundt [fetchSkdeIndicatorData()] som kun kaller API-et første gang
+#' for en gitt kombinasjon av argumenter.
+#'
+#' @inheritParams fetchSkdeIndicatorData
+#' @return Samme som [fetchSkdeIndicatorData()].
+#' @noRd
+getSkdeIndicatorData <- function(registryShortname = "hjertestans",
+                                 indicator_id = NULL) {
+  key <- paste(registryShortname, indicator_id, sep = "|")
+  if (is.null(.skde_cache[[key]])) {
+    .skde_cache[[key]] <- fetchSkdeIndicatorData(
+      registryShortname = registryShortname,
+      indicator_id = indicator_id
+    )
+  }
+  .skde_cache[[key]]
+}

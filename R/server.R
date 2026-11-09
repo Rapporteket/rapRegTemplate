@@ -10,7 +10,7 @@
 app_server <- function(input, output, session) {
 
 
-  APIdata <- fetchSkdeIndicatorData()
+  APIdata <- getSkdeIndicatorData()
 
   orgData <- dplyr::distinct(APIdata$data, .data$unitName, .data$orgnr)
 
