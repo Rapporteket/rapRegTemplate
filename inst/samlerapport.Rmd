@@ -8,6 +8,8 @@ subtitle: en eksempelrapport fra rapRegTemplate
 author: Rapporteket
 userFullName: Tore Tester
 registryName: SKDE
+reglogo: '`r system.file("logo.png", package = "rapRegTemplate")`'
+regtext: '`r readLines(system.file("shortDescription.txt", package = "rapRegTemplate"))`'
 date: '`r format(Sys.time(), "%d. %B %Y")`'
 abstract: Om rapporten trenger et sammendrag kan det settes inn her
 ---
@@ -18,7 +20,8 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE,
   fig.width = 11,
-  fig.height = 6
+  fig.height = 6,
+  out.width = "100%"
 )
 
 required_data_cols <- c("year", "orgnr", "unitName", "var", "denominator", "ind_id")
@@ -177,25 +180,25 @@ Rapporten viser to tilfeldig valgte indikatorer med gyldige data for valgt orgnr
 
 Valgte indikator-IDer: `r paste(selected_ids, collapse = ", ")`
 
-## `r ind1$title`
+# `r ind1$title`
 
 Indikator-ID: `r ind1$id`
 
 `r ind1$subtitle`
 
-### Andelplot
+## Andelplot
 
 ```{r andel-ind1, fig.height = andel_height(ind1)}
 plot_andel(ind1)
 ```
 
-### SPC-plot for valgt orgnr
+## SPC-plot for valgt orgnr
 
 ```{r spc-ind1}
 plot_spc(ind1)
 ```
 
-## `r ind2$title`
+# `r ind2$title`
 
 Indikator-ID: `r ind2$id`
 
@@ -207,7 +210,7 @@ Indikator-ID: `r ind2$id`
 plot_andel(ind2)
 ```
 
-### SPC-plot for valgt orgnr
+## SPC-plot for valgt orgnr
 
 ```{r spc-ind2}
 plot_spc(ind2)
