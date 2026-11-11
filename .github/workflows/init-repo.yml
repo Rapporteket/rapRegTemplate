@@ -95,8 +95,32 @@ jobs:
           git commit -m "Initialize repository with template variables"
           git push --set-upstream origin "$BRANCH_NAME"
 
+          # Build the PR body. The checklist required by the PR validation is appended,
+          # unticked, from the first of: a PR template in this repository, the
+          # organization's default template, or the fallback list below.
+          BODY_FILE="$RUNNER_TEMP/pr-body.md"
+          ORG_TEMPLATE="$RUNNER_TEMP/org-pr-template.md"
+          echo "This PR applies the repository-specific values and removes template-only setup files." > "$BODY_FILE"
+          echo "" >> "$BODY_FILE"
+          TEMPLATE=$(find . .github docs -maxdepth 1 -iname 'pull_request_template.md' 2> /dev/null | head -n 1)
+          if [ -n "$TEMPLATE" ]; then
+            cat "$TEMPLATE" >> "$BODY_FILE"
+          elif gh api -H "Accept: application/vnd.github.raw" \
+            "repos/${{ github.repository_owner }}/.github/contents/pull_request_template.md" \
+            > "$ORG_TEMPLATE" 2> /dev/null && [ -s "$ORG_TEMPLATE" ]; then
+            cat "$ORG_TEMPLATE" >> "$BODY_FILE"
+          else
+            # Keep in sync with pr-validation.yml in the organization's .github repository
+            {
+              echo "- [ ] Jeg har vurdert sikkerhetskonsekvensene av endringen"
+              echo "- [ ] Ingen sensitive data er lagt inn i kode, tester eller logger"
+              echo "- [ ] All nedlasting av sensitive data logges"
+              echo "- [ ] Nødvendige tester er gjennomført"
+            } >> "$BODY_FILE"
+          fi
+
           gh pr create \
             --base "$BASE_BRANCH" \
             --head "$BRANCH_NAME" \
             --title "Initialize repository from template" \
-            --body "This PR applies the repository-specific values and removes template-only setup files."
+            --body-file "$BODY_FILE"
