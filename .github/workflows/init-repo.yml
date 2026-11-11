@@ -1,12 +1,20 @@
 name: Initialize New Repository
 
-# Trigger only on the initial creation of the repository
+# Runs on push, but the job below only does anything on the default branch
+# of a repository created from the template, and only until it is initialized
 on: [push]
+
+# Never run two initializations at the same time
+concurrency:
+  group: init-repo
 
 jobs:
   setup-template-variables:
-    # Ensure this runs on the newly created repository, not the template itself
-    if: github.event.repository.name != 'rapRegTemplate'
+    # Ensure this runs on the newly created repository, not the template itself,
+    # and only for pushes to the default branch
+    if: >-
+      github.event.repository.name != 'rapRegTemplate' &&
+      github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     permissions:
       contents: write
