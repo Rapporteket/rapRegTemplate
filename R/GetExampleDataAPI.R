@@ -18,6 +18,20 @@ fetchSkdeIndicatorData <- function(
   indicator_id = NULL
 ) {
 
+  scalar_chr <- function(x) {
+    if (is.null(x) || length(x) == 0L) {
+      return(NA_character_)
+    }
+    as.character(x[[1]])
+  }
+
+  scalar_num <- function(x) {
+    if (is.null(x) || length(x) == 0L) {
+      return(NA_real_)
+    }
+    as.numeric(x[[1]])
+  }
+
   empty_data <- data.frame(
     year = integer(),
     orgnr = character(),
@@ -52,7 +66,8 @@ fetchSkdeIndicatorData <- function(
 
   rows <- do.call(rbind, lapply(payload, function(register) {
     do.call(rbind, lapply(register$indicatorData, function(indicator) {
-      if (!is.null(indicator_id) && !is.null(indicator$indicatorID) && indicator$indicatorID != indicator_id) {
+      indicator_id_value <- scalar_chr(indicator$indicatorID)
+      if (!is.null(indicator_id) && (is.na(indicator_id_value) || indicator_id_value != as.character(indicator_id))) {
         return(NULL)
       }
 
@@ -62,10 +77,10 @@ fetchSkdeIndicatorData <- function(
       }
 
       indicator_meta <- data.frame(
-        ind_id = as.character(indicator$indicatorID),
-        title = as.character(indicator$indicatorTitle),
-        short_description = as.character(indicator$shortDescription),
-        levelDirection = if (is.null(indicator$levelDirection)) NA_real_ else as.numeric(indicator$levelDirection),
+        ind_id = indicator_id_value,
+        title = scalar_chr(indicator$indicatorTitle),
+        short_description = scalar_chr(indicator$shortDescription),
+        levelDirection = scalar_num(indicator$levelDirection),
         kvalIndgrenser = I(list(kval_values)),
         stringsAsFactors = FALSE
       )
@@ -87,7 +102,7 @@ fetchSkdeIndicatorData <- function(
           unitName = unitName,
           var = as.numeric(row$var),
           denominator = as.numeric(row$denominator),
-          ind_id = as.character(indicator$indicatorID),
+          ind_id = indicator_id_value,
           context = as.character(row$context),
           stringsAsFactors = FALSE
         )
@@ -116,4 +131,29 @@ fetchSkdeIndicatorData <- function(
     ]
   )
   return(list(data = data, indicator_meta = indicator_meta))
+}
+
+
+# Cache for SKDE-indikatordata. Dataene hentes én gang per R-prosess og
+# gjenbrukes resten av prosessens levetid.
+.skde_cache <- new.env(parent = emptyenv())
+
+#' Hent SKDE-indikatordata med cache
+#'
+#' Wrapper rundt [fetchSkdeIndicatorData()] som kun kaller API-et første gang
+#' for en gitt kombinasjon av argumenter.
+#'
+#' @inheritParams fetchSkdeIndicatorData
+#' @return Samme som [fetchSkdeIndicatorData()].
+#' @noRd
+getSkdeIndicatorData <- function(registryShortname = "hjertestans",
+                                 indicator_id = NULL) {
+  key <- paste(registryShortname, indicator_id, sep = "|")
+  if (is.null(.skde_cache[[key]])) {
+    .skde_cache[[key]] <- fetchSkdeIndicatorData(
+      registryShortname = registryShortname,
+      indicator_id = indicator_id
+    )
+  }
+  .skde_cache[[key]]
 }

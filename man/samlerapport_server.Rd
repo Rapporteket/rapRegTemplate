@@ -4,10 +4,16 @@
 \alias{samlerapport_server}
 \title{Server logic for samlerapport}
 \usage{
-samlerapport_server(id)
+samlerapport_server(id, data, indicator_meta, user)
 }
 \arguments{
 \item{id}{Character string module namespace}
+
+\item{data}{Data frame with indicator data}
+
+\item{indicator_meta}{Data frame with indicator metadata}
+
+\item{user}{A reactive object with user information}
 }
 \value{
 A Shiny app server object

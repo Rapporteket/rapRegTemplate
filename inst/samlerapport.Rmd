@@ -1,8 +1,8 @@
 ---
 params:
-  type: pdf
-  var: mpg
-  bins: 5
+  data: !r data.frame()
+  indicator_meta: !r data.frame()
+  orgnr: ""
 title: Samlerapport
 subtitle: en eksempelrapport fra rapRegTemplate
 author: Rapporteket
@@ -15,37 +15,204 @@ abstract: Om rapporten trenger et sammendrag kan det settes inn her
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE,
+  fig.width = 11,
+  fig.height = 6,
+  out.width = "100%"
+)
+
+required_data_cols <- c("year", "orgnr", "unitName", "var", "denominator", "ind_id")
+required_meta_cols <- c("ind_id", "title", "short_description", "kvalIndgrenser", "levelDirection")
+
+if (!is.data.frame(params$data)) {
+  stop("params$data must be a data.frame", call. = FALSE)
+}
+
+if (!is.data.frame(params$indicator_meta)) {
+  stop("params$indicator_meta must be a data.frame", call. = FALSE)
+}
+
+missing_data_cols <- setdiff(required_data_cols, names(params$data))
+if (length(missing_data_cols) > 0L) {
+  stop(
+    "params$data is missing columns: ",
+    paste(missing_data_cols, collapse = ", "),
+    call. = FALSE
+  )
+}
+
+missing_meta_cols <- setdiff(required_meta_cols, names(params$indicator_meta))
+if (length(missing_meta_cols) > 0L) {
+  stop(
+    "params$indicator_meta is missing columns: ",
+    paste(missing_meta_cols, collapse = ", "),
+    call. = FALSE
+  )
+}
+
+selected_orgnr <- as.character(params$orgnr)
+if (length(selected_orgnr) != 1L || is.na(selected_orgnr) || selected_orgnr == "") {
+  stop("params$orgnr must be a non-empty character value", call. = FALSE)
+}
+
+valid_data <- params$data |>
+  dplyr::mutate(
+    year = as.integer(.data$year),
+    orgnr = as.character(.data$orgnr),
+    unitName = as.character(.data$unitName),
+    ind_id = as.character(.data$ind_id),
+    var = as.numeric(.data$var),
+    denominator = as.numeric(.data$denominator)
+  ) |>
+  dplyr::filter(
+    !is.na(.data$year),
+    !is.na(.data$orgnr),
+    !is.na(.data$unitName),
+    !is.na(.data$ind_id),
+    !is.na(.data$var),
+    !is.na(.data$denominator),
+    .data$denominator > 0
+  )
+
+org_data <- valid_data |>
+  dplyr::filter(.data$orgnr == selected_orgnr)
+
+available_ids <- unique(org_data$ind_id)
+meta_ids <- unique(as.character(params$indicator_meta$ind_id))
+candidate_ids <- sort(intersect(available_ids, meta_ids))
+
+if (length(candidate_ids) == 0L) {
+  stop(
+    "No indicators with valid data found for orgnr '",
+    selected_orgnr,
+    "'.",
+    call. = FALSE
+  )
+}
+
+if (length(candidate_ids) < 2L) {
+  stop(
+    "At least two indicators with valid data are required for orgnr '",
+    selected_orgnr,
+    "'.",
+    call. = FALSE
+  )
+}
+
+# Deterministic random draw per orgnr.
+set.seed(sum(utf8ToInt(selected_orgnr)))
+selected_ids <- sample(candidate_ids, size = 2L, replace = FALSE)
+
+get_indicator <- function(ind, indicator_meta, valid_data, org_data) {
+  meta_row <- indicator_meta |>
+    dplyr::mutate(ind_id = as.character(.data$ind_id)) |>
+    dplyr::filter(.data$ind_id == ind)
+
+  title <- if (nrow(meta_row) > 0L && !is.na(meta_row$title[[1]])
+               && nzchar(meta_row$title[[1]])) {
+    meta_row$title[[1]]
+  } else {
+    paste("Indikator", ind)
+  }
+
+  subtitle <- if (nrow(meta_row) > 0L && !is.na(meta_row$short_description[[1]])
+                  && nzchar(meta_row$short_description[[1]])) {
+    meta_row$short_description[[1]]
+  } else {
+    NULL
+  }
+
+  kval_ind_grenser <- if (nrow(meta_row) > 0L) meta_row$kvalIndgrenser[[1]] else NULL
+  if (length(kval_ind_grenser) == 0L || all(is.na(kval_ind_grenser))) {
+    kval_ind_grenser <- NULL
+  }
+
+  list(
+    id = ind,
+    title = title,
+    subtitle = subtitle,
+    level_direction = if (nrow(meta_row) > 0L) meta_row$levelDirection[[1]] else NA_real_,
+    kval_ind_grenser = kval_ind_grenser,
+    andel_data = dplyr::filter(valid_data, .data$ind_id == ind),
+    spc_data = dplyr::filter(org_data, .data$ind_id == ind)
+  )
+}
+
+wrap_subtitle <- function(x, width = 70L) {
+  if (is.null(x)) {
+    return(NULL)
+  }
+  paste(strwrap(x, width = width), collapse = "\n")
+}
+
+plot_andel <- function(x) {
+  rapFigurer::plotIndikator(
+    x$andel_data,
+    title = x$title,
+    shortDescription = wrap_subtitle(x$subtitle),
+    showYear = max(x$andel_data$year, na.rm = TRUE),
+    kvalIndgrenser = x$kval_ind_grenser,
+    levelDirection = x$level_direction
+  )
+}
+
+andel_height <- function(x, per_unit = 0.12, base = 2.5, min_height = 6) {
+  n_units <- length(unique(x$andel_data$unitName))
+  max(min_height, base + n_units * per_unit)
+}
+
+plot_spc <- function(x) {
+  rapRegTemplate:::plotSPC(
+    x$spc_data,
+    title = x$title,
+    subtitle = wrap_subtitle(x$subtitle)
+  )
+}
+
+ind1 <- get_indicator(selected_ids[[1]], params$indicator_meta, valid_data, org_data)
+ind2 <- get_indicator(selected_ids[[2]], params$indicator_meta, valid_data, org_data)
 ```
 
+Rapporten viser to tilfeldig valgte indikatorer med gyldige data for valgt orgnr (`r selected_orgnr`).
 
-# Samlerapport
-Dette er eksempel på en samlerapport som er egnet til å kombinere presentasjon
-av dynamisk tekst, tabeller og figurer. Samlerapporter kan vises i selve
-Rapporeket, lastes ned eller sendes (rutinemessig) per epost til de som ønsker
-det.
+Valgte indikator-IDer: `r paste(selected_ids, collapse = ", ")`
 
+# `r ind1$title`
 
-## Eksempel på dynamisk tekst
-Idag, `r format(Sys.Date(), "%A %d. %b %Y")` er det
-`r as.numeric(format(Sys.Date(), "%j"))` dager siden nyttår.
+Indikator-ID: `r ind1$id`
 
+`r ind1$subtitle`
 
-## Eksempel på tabell
-Tabell \@ref(tab:eksTab) under er fin, og illustrerer poenget.
+## Andelplot
 
-```{r eksTab}
-dt <- mtcars[1:6, ][params$var]
-cap <- paste("Eksempeltabell som viser variabelen", params$var, "fra mtcars.")
-
-rapbase::mst(tab = dt, type = params$type, cap = cap)
-
+```{r andel-ind1, fig.height = andel_height(ind1)}
+plot_andel(ind1)
 ```
 
+## SPC-plot for valgt orgnr
 
-## Eksempel på figur
-Samlerapporter kan også inneholde figurer basert på data slik som vist i Figur \@ref(fig:eksFig).
-
-```{r eksFig, echo=FALSE, out.width="80%", fig.cap=paste("Eksempelfigur som viser frekvensfordelingen av", params$var, "fra mtcars.")}
-f <- rapRegTemplate::makeSimpleHist(df = mtcars, var = params$var, bins = params$bins, makeTable = FALSE)
+```{r spc-ind1}
+plot_spc(ind1)
 ```
+
+# `r ind2$title`
+
+Indikator-ID: `r ind2$id`
+
+`r ind2$subtitle`
+
+### Andelplot
+
+```{r andel-ind2, fig.height = andel_height(ind2)}
+plot_andel(ind2)
+```
+
+## SPC-plot for valgt orgnr
+
+```{r spc-ind2}
+plot_spc(ind2)
+```
+
