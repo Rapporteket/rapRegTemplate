@@ -1,21 +1,43 @@
 name: Initialize New Repository
 
-# Trigger only on the initial creation of the repository
+# Runs on push, but the job below only does anything on the default branch
+# of a repository created from the template, and only until it is initialized
 on: [push]
+
+# Never run two initializations at the same time
+concurrency:
+  group: init-repo
 
 jobs:
   setup-template-variables:
-    # Ensure this runs on the newly created repository, not the template itself
-    if: github.event.repository.name != 'rapRegTemplate'
+    # Ensure this runs on the newly created repository, not the template itself,
+    # and only for pushes to the default branch
+    if: >-
+      github.event.repository.name != 'rapRegTemplate' &&
+      github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      pull-requests: write
+    env:
+      # Fixed branch name, so an initialization already under way can be detected
+      INIT_BRANCH: chore/init-repo
 
     steps:
       - name: Checkout Code
         uses: actions/checkout@v7
 
+      - name: Check For Existing Initialization Branch
+        id: guard
+        run: |
+          # Skip the rest if the branch exists, i.e. a PR is already waiting
+          if git ls-remote --exit-code --heads origin "$INIT_BRANCH" > /dev/null; then
+            echo "Branch $INIT_BRANCH already exists, nothing to do."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Replace Placeholder Variables
+        if: steps.guard.outputs.skip != 'true'
         run: |
           # Define some variables from GitHub context
           REPO_NAME="${{ github.event.repository.name }}"
@@ -53,14 +75,65 @@ jobs:
           rm .github/workflows/docker.yml
 
       - name: Clean Up This Workflow File
+        if: steps.guard.outputs.skip != 'true'
         run: |
           # Delete this workflow file so it doesn't run again
           rm .github/workflows/init-repo.yml
 
-      - name: Commit and Push Changes
+      - name: Create Branch and Open Pull Request
+        if: steps.guard.outputs.skip != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BASE_BRANCH: ${{ github.event.repository.default_branch }}
         run: |
+          BRANCH_NAME="$INIT_BRANCH"
+
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
+          git checkout -b "$BRANCH_NAME"
           git add .
           git commit -m "Initialize repository with template variables"
-          git push
+          git push --set-upstream origin "$BRANCH_NAME"
+
+          # Build the PR body. The checklist required by the PR validation is appended,
+          # unticked, from the first of: a PR template in this repository, the
+          # organization's default template, or the fallback list below.
+          BODY_FILE="$RUNNER_TEMP/pr-body.md"
+          ORG_TEMPLATE="$RUNNER_TEMP/org-pr-template.md"
+          echo "This PR applies the repository-specific values and removes template-only setup files." > "$BODY_FILE"
+          echo "" >> "$BODY_FILE"
+          TEMPLATE=$(find . .github docs -maxdepth 1 -iname 'pull_request_template.md' 2> /dev/null | head -n 1)
+          if [ -n "$TEMPLATE" ]; then
+            cat "$TEMPLATE" >> "$BODY_FILE"
+          elif gh api -H "Accept: application/vnd.github.raw" \
+            "repos/${{ github.repository_owner }}/.github/contents/pull_request_template.md" \
+            > "$ORG_TEMPLATE" 2> /dev/null && [ -s "$ORG_TEMPLATE" ]; then
+            cat "$ORG_TEMPLATE" >> "$BODY_FILE"
+          else
+            # Keep in sync with pr-validation.yml in the organization's .github repository
+            {
+              echo "- [ ] Jeg har vurdert sikkerhetskonsekvensene av endringen"
+              echo "- [ ] Ingen sensitive data er lagt inn i kode, tester eller logger"
+              echo "- [ ] All nedlasting av sensitive data logges"
+              echo "- [ ] Nødvendige tester er gjennomført"
+            } >> "$BODY_FILE"
+          fi
+
+          if ! gh pr create \
+            --base "$BASE_BRANCH" \
+            --head "$BRANCH_NAME" \
+            --title "Initialize repository from template" \
+            --body-file "$BODY_FILE"; then
+            # Typically because "Allow GitHub Actions to create and approve pull
+            # requests" is turned off. The branch is pushed, so the PR can be opened by hand.
+            COMPARE_URL="${{ github.server_url }}/${{ github.repository }}/compare/${BASE_BRANCH}...${BRANCH_NAME}?expand=1"
+            echo "::error::Could not open the pull request. Open it manually: $COMPARE_URL"
+            {
+              echo "### Could not open the pull request"
+              echo ""
+              echo "The branch \`$BRANCH_NAME\` was pushed, but GitHub Actions was not allowed to open the PR."
+              echo "[Open the pull request manually]($COMPARE_URL), or turn on"
+              echo "*Allow GitHub Actions to create and approve pull requests* under Settings > Actions > General."
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
