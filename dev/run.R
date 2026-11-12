@@ -3,8 +3,9 @@ devtools::install(".", upgrade = FALSE, dependencies = FALSE)
 devtools::install("../rapbase", upgrade = FALSE, dependencies = FALSE)
 devtools::install("../rapFigurer", upgrade = FALSE, dependencies = FALSE)
 
+library("rapRegTemplate")
 source("dev/renv.R")
-source("../../!Sikker lagring/renv.R")
+source("../../felles/renv.R")
 
 # For lokal testing (vil kjøre uten databaser)
 # Sys.setenv(R_RAP_INSTANCE = "azure")

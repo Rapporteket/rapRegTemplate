@@ -4,16 +4,26 @@
 \alias{reportProcessor}
 \title{Common report processor for rapRegTemplate}
 \usage{
-reportProcessor(report, outputType = "pdf", var = "mpg", bins = 10)
+reportProcessor(
+  report,
+  outputType = "pdf",
+  data = NULL,
+  indicator_meta = NULL,
+  orgnr = NULL
+)
 }
 \arguments{
 \item{report}{The type of report to generate. Currently only "local_monthly" is supported.}
 
 \item{outputType}{The format of the output file. Can be "html", "html_fragment", or "pdf".}
 
-\item{var}{The variable to be used in the report.}
+\item{data}{Data frame with indicator data. If NULL, data are fetched with
+[fetchSkdeIndicatorData()].}
 
-\item{bins}{The number of bins to use for the report.}
+\item{indicator_meta}{Data frame with indicator metadata. If NULL, metadata
+are fetched with [fetchSkdeIndicatorData()].}
+
+\item{orgnr}{The organization number for which the report is generated.}
 }
 \value{
 A character string with a path to where the produced file is located.
