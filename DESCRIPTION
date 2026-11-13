@@ -36,7 +36,6 @@ Depends:
 Imports:
     dplyr,
     DBI,
-    DT,
     ggplot2,
     httr,
     jsonlite,
