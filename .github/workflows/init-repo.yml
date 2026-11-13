@@ -73,6 +73,9 @@ jobs:
           rm -rf dev/db
           rm -rf dev/mssql
           rm -rf .github/workflows/docker.yml
+          rm -rf R/azure_prep.R
+          sed -i '/^  if (Sys\.getenv("R_RAP_INSTANCE") == "azure") {/,/^  }/d' R/run_app.R
+          rm -rf tests/testthat/test-azure_prep.R
 
       - name: Clean Up This Workflow File
         if: steps.guard.outputs.skip != 'true'

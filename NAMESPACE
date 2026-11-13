@@ -2,7 +2,6 @@
 
 export(app_server)
 export(app_ui)
-export(create_sqlite_db)
 export(fetchSkdeIndicatorData)
 export(getRegData)
 export(info_server)
