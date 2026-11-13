@@ -72,7 +72,7 @@ jobs:
           rm -rf docker-compose.yml
           rm -rf dev/db
           rm -rf dev/mssql
-          rm .github/workflows/docker.yml
+          rm -rf .github/workflows/docker.yml
 
       - name: Clean Up This Workflow File
         if: steps.guard.outputs.skip != 'true'
