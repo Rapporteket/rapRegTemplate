@@ -7,6 +7,7 @@
 #' @return No return value, called for side effects
 #' (sets environment variables and creates SQLite databases)
 #' @keywords internal
+#' @noRd
 #'
 azure_prep <- function() {
 
@@ -22,6 +23,7 @@ azure_prep <- function() {
 #'
 #' @return No return value, called for side effects (sets environment variables)
 #' @keywords internal
+#' @noRd
 #'
 define_azure_env <- function() {
   Sys.setenv(DB_TYPE = "sqlite")
@@ -59,7 +61,8 @@ define_azure_env <- function() {
 #'
 #' @return No return value, called for side effects
 #' (creates SQLite database files and tables)
-#' @export
+#' @keywords internal
+#' @noRd
 create_sqlite_db <- function() {
   if (!requireNamespace("RSQLite", quietly = TRUE)) {
     stop("Missing RSQLite package! Please install.packages('RSQLite').")

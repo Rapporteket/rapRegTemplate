@@ -73,6 +73,8 @@ jobs:
           rm -rf dev/db
           rm -rf dev/mssql
           rm .github/workflows/docker.yml
+          rm R/azure_prep.R
+          rm tests/testthat/test-azure_prep.R
 
       - name: Clean Up This Workflow File
         if: steps.guard.outputs.skip != 'true'
