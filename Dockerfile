@@ -2,10 +2,15 @@ FROM rapporteket/base-r-alpine-latex:main
 
 WORKDIR /app/R
 
+# Keep the compilers (-c) and font headers (-a) until remotes has finished,
+# since it may build updated CRAN dependencies from source. The build tools
+# are removed before the final load check, so that check also covers the
+# runtime libraries.
 RUN --mount=type=secret,id=github_pat,env=GITHUB_PAT \
     --mount=type=bind,source=.,target=/app/R/pkg \
-    installr -d RSQLite && \
-    R -e "remotes::install_local(path = './pkg')" \
+    installr -c -a "fontconfig-dev freetype-dev" RSQLite && \
+    R -e "remotes::install_local(path = './pkg')" && \
+    apk del gcc g++ musl-dev fontconfig-dev freetype-dev && \
     R -e "library(rapRegTemplate)"
 
 EXPOSE 3838
