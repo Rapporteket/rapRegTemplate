@@ -6,7 +6,9 @@
 #
 #   bash .github/scripts/init-repo.sh <repo-name> <author-name> <author-email>
 #
-# Used by .github/workflows/init-repo.yml in new repositories.
+# Used by .github/workflows/init-repo.yml in new repositories,
+# and by .github/workflows/check-init-repo.yml in the template,
+# which runs R CMD check on the result.
 
 set -euo pipefail
 

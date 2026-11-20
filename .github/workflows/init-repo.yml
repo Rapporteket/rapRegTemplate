@@ -57,6 +57,8 @@ jobs:
           rm .github/workflows/init-repo.yml
           # Delete the init script, which only the template needs
           rm .github/scripts/init-repo.sh
+          # Delete the workflow that tests the init script in the template
+          rm .github/workflows/check-init-repo.yml
 
       - name: Create Branch and Open Pull Request
         if: steps.guard.outputs.skip != 'true'
