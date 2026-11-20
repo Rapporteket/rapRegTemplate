@@ -41,8 +41,8 @@ jobs:
         run: |
           # Define some variables from GitHub context
           REPO_NAME="${{ github.event.repository.name }}"
-          name=`git log --reverse --pretty=format:"%an" | head -n 1`
-          email=`git log --reverse --pretty=format:"%ae" | head -n 1`
+          name=$(git log --reverse --pretty=format:"%an" | head -n 1)
+          email=$(git log --reverse --pretty=format:"%ae" | head -n 1)
           last="${name##* }"
           first="${name% *}"
           
