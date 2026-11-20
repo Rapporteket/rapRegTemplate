@@ -77,6 +77,9 @@ jobs:
           sed -i '/^  if (Sys\.getenv("R_RAP_INSTANCE") == "azure") {/,/^  }/d' R/run_app.R
           rm -rf tests/testthat/test-azure_prep.R
 
+          # Drop Imports that were only used by R/azure_prep.R
+          sed -i '/^    DBI,$/d; /^    RSQLite,$/d' DESCRIPTION
+
       - name: Clean Up This Workflow File
         if: steps.guard.outputs.skip != 'true'
         run: |
