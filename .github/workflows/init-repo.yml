@@ -45,48 +45,18 @@ jobs:
           # In a new repository, that is the single commit created from the template.
           name=$(git log --reverse --pretty=format:"%an" | head -n 1)
           email=$(git log --reverse --pretty=format:"%ae" | head -n 1)
-          last="${name##* }"
-          first="${name% *}"
-          
-          # Use sed to search and replace template placeholders with GitHub metadata
-          find . -type f -not -path '*/.git/*' -exec sed -i "s/rapRegTemplate/$REPO_NAME/g" {} +
-          # Rename the R project file to match the new repository name
-          mv rapRegTemplate.Rproj "${REPO_NAME}.Rproj"
 
-          # Update DESCRIPTION file with repository-specific information
-          sed -i "s/Version.*/Version: 0.1.0/g" DESCRIPTION
-          sed -i "s/Title:.*/Title: Rapporteket application for $REPO_NAME/g" DESCRIPTION
-          sed -i "/Author/,/Maintainer/c\
-          Authors@R: c(\n\
-              person(given = \"${first}\",\n\
-                     family = \"${last}\",\n\
-                     role = c(\"aut\", \"cre\"),\n\
-                     email = \"${email}\"))\n\
-          Maintainer: ${name} <${email}>" DESCRIPTION
+          # The replacements and removals are in a script, so that they
+          # can be tested in the template
+          bash .github/scripts/init-repo.sh "$REPO_NAME" "$name" "$email"
 
-          # Delete stuff from README.md
-          sed -i '/<!-- badges: end -->/q' README.md
-          echo "" >> README.md
-          echo "# Rapportek for ${REPO_NAME}" >> README.md
-          echo "" >> README.md
-
-          # Remove unnecessary files and directories
-          rm -rf docker-compose.yml
-          rm -rf dev/db
-          rm -rf dev/mssql
-          rm -rf .github/workflows/docker.yml
-          rm -rf R/azure_prep.R
-          sed -i '/^  if (Sys\.getenv("R_RAP_INSTANCE") == "azure") {/,/^  }/d' R/run_app.R
-          rm -rf tests/testthat/test-azure_prep.R
-
-          # Drop Imports that were only used by R/azure_prep.R
-          sed -i '/^    DBI,$/d; /^    RSQLite,$/d' DESCRIPTION
-
-      - name: Clean Up This Workflow File
+      - name: Clean Up Template-Only Files
         if: steps.guard.outputs.skip != 'true'
         run: |
           # Delete this workflow file so it doesn't run again
           rm .github/workflows/init-repo.yml
+          # Delete the init script, which only the template needs
+          rm .github/scripts/init-repo.sh
 
       - name: Create Branch and Open Pull Request
         if: steps.guard.outputs.skip != 'true'
