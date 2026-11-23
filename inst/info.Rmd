@@ -20,7 +20,8 @@ Filstruktur, filnavn og variabelnavn er også kun eksempler.
 1. Opprett et nytt repositorium fra malen og gi pakken nytt navn samt erstatt referanser til `rapRegTemplate` med eget navn (`DESCRIPTION`,
    `NAMESPACE`, `Dockerfile`). Det opprettes en pull request som gjør dette dersom du oppretter repoet ditt fra `rapRegTemplate`.
 2. Tilpass `getRegData()` i `R/GetRegData.R` slik at den henter data fra ditt
-   registers database.
+   registers database. Bytt også ut eksempeldatahentingen via `getSkdeIndicatorData()` i
+   `R/server.R` og `R/reportProcessor.R`, og tilpass modulene og rapportmalene til registerets datastruktur.
 3. Bygg egne moduler (UI og server) for figurer og tabeller, og legg dem inn i
    `R/ui.R` og `R/server.R`.
 4. For automatiske tester, skriv tester i `tests/testthat/` og kjør `devtools::test()`.
