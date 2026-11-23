@@ -23,7 +23,7 @@ jobs:
   R-CMD-check-initialized:
     # Only in the template itself. init-repo.yml deletes this file in new repositories.
     if: github.event.repository.name == 'rapRegTemplate'
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       GITHUB_PAT: ${{ github.token }}
