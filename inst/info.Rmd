@@ -65,7 +65,7 @@ Et eksempel på nyttig forsideinformasjon.
 ```{r registreringer, echo=FALSE}
 
 reg <- data.frame(
-  aar = 2018:2024,
+  aar = 2020:2026,
   n = c(120, 135, 98, 142, 160, 171, 185)
 )
 

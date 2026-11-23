@@ -2,13 +2,25 @@
 % Please edit documentation in R/GetRegData.R
 \name{getRegData}
 \alias{getRegData}
-\title{Provides a dataframe containing data from a registry}
+\title{Load registry data}
 \usage{
 getRegData()
 }
 \value{
-regData data frame
+A data frame containing the rows and columns returned by the SQL
+  query.
 }
 \description{
-Provides a dataframe containing data from a registry
+Fetches the data used by the registry application by running a SQL query
+through `rapbase`. This function is a template; replace
+`YOUR_REGISTRY_TABLE` with the name of the table for the registry and
+adjust the query to select the variables needed by the application.
+}
+\details{
+The database connection and configuration are handled by
+`rapbase::loadRegData()`. The returned object is therefore dependent on
+the active registry and database environment.
+}
+\seealso{
+[rapbase::loadRegData()] for loading registry data
 }
