@@ -9,21 +9,73 @@ output:
 
 
 
-Dette er en enkel informasjonsside med masse spennende informasjon om pakken.
+`rapRegTemplate` er en mal for å bygge et nytt rapportek i Rapporteket.  
+Denne siden beskriver hva som skal til, hvordan pakken er bygget opp og hva de ulike fanene viser.  
+**Fanene er kun eksempler, ikke krav.** Fjern, endre eller legg
+til faner etter behov for ditt register.  
+Filstruktur, filnavn og variabelnavn er også kun eksempler.
 
-Denne kan også vise noen figurer og tabeller lagd i R.
+### Slik bygger du et rapportek
 
-### Eksempel på figur
+1. Opprett et nytt repositorium fra malen og gi pakken nytt navn samt erstatt referanser til `rapRegTemplate` med eget navn (`DESCRIPTION`,
+   `NAMESPACE`, `Dockerfile`). Det opprettes en pull request som gjør dette dersom du oppretter repoet ditt fra `rapRegTemplate`.
+2. Tilpass `getRegData()` i `R/GetRegData.R` slik at den henter data fra ditt
+   registers database. Bytt også ut eksempeldatahentingen via `getSkdeIndicatorData()` i
+   `R/server.R` og `R/reportProcessor.R`, og tilpass modulene og rapportmalene til registerets datastruktur.
+3. Bygg egne moduler (UI og server) for figurer og tabeller, og legg dem inn i
+   `R/ui.R` og `R/server.R`.
+4. For automatiske tester, skriv tester i `tests/testthat/` og kjør `devtools::test()`.
+5. Start appen ved å sette de nødvendige miljøvariablene og kjør med `rapRegTemplate::run_app()`.
 
-```{r pressure, echo=FALSE}
+### Filene i pakken
 
-pressure |>
-  ggplot2::ggplot(ggplot2::aes(x = temperature, y = pressure)) +
-  ggplot2::geom_point(colour = "#003087", size = 3) +
-  ggplot2::geom_point(colour = "#6CACE4", size = 1.5) +
-  ggplot2::ylab("Trykk") +
-  ggplot2::xlab("Temperatur") +
-  ggplot2::ggtitle("Relasjon damptrykk og temperatur, kvikksølv") +
+| Fil eller mappe | Innhold |
+|:--|:--------|
+| `R/run_app.R` | Starter Shiny-appen |
+| `R/ui.R` | Brukergrensesnittet, med definisjon av faner |
+| `R/server.R` | Serverlogikk som kobler modulene sammen |
+| `R/mod_*.R` | Shiny-moduler, én per fane er en ryddig måte å strukturere på |
+| `R/func_*.R` | Hjelpefunksjoner for figurer, tabeller og utsendinger |
+| `R/GetRegData.R` | Henter data fra registerets database |
+| `R/GetExampleDataAPI.R` | Henter eksempeldata fra SKDEs API for Behandlingskvalitet. Dette er i hovedsak for å ha eksempeldata til denne malen |
+| `R/reportProcessor.R` | Lager rapporter til abonnement og utsendinger |
+| `inst/*.Rmd` | R Markdown-maler, blant annet denne siden og samlerapporten |
+| `tests/testthat/` | Automatiske tester |
+| `dev/` | Oppsett for lokal utvikling |
+| `DESCRIPTION`, `NAMESPACE` | Pakkemetadata og avhengigheter. I `DESCRIPTION` fører man opp `R`-pakker som brukes i ditt Rapportek |
+| `Dockerfile` | Bygger image for pakken |
+
+### Eksempelfanene i denne appen
+#### For alle:
+- **Informasjon**: Denne siden, med informasjon om utvikling av Rapporteket.
+Her er det ofte vanlig med en generell beskrivelse av Rapporteket samt en enkel oversikt over registerets innhold.
+- **Over tid**: Utviklingen av indikatorer over tid.
+- **Andeler**: Sammenligning av andeler mellom enheter.
+- **Samlerapport**: Rapport med figurer og tabeller.
+- **Abonnement**: Bestilling av rapporter på e-post.  
+
+#### For superbrukere:
+- **Utsending**: Administrasjon av rapportutsendinger til relevante mottakere.
+- **Eksport**: Eksport av data fra databasen.
+
+### Eksempel: antall nye registreringer per år
+
+Et eksempel på nyttig forsideinformasjon.
+
+```{r registreringer, echo=FALSE}
+
+reg <- data.frame(
+  aar = 2020:2026,
+  n = c(120, 135, 98, 142, 160, 171, 185)
+)
+
+reg |>
+  ggplot2::ggplot(ggplot2::aes(x = aar, y = n)) +
+  ggplot2::geom_col(fill = "#003087") +
+  ggplot2::scale_x_continuous(breaks = reg$aar) +
+  ggplot2::ylab("Antall registreringer") +
+  ggplot2::xlab("År") +
+  ggplot2::ggtitle("Nye registreringer per år (simulerte data)") +
   ggplot2::theme_minimal() +
   ggplot2::theme(
     plot.title = ggplot2::element_text(size = 14, hjust = .1, vjust = 2.5),
@@ -33,13 +85,11 @@ pressure |>
 
 ```
 
-### Eksempel på tabell
-
-```{r cars, echo=FALSE}
-table <- head(pressure) |>
+```{r tabell, echo=FALSE}
+table <- reg |>
   dplyr::rename(
-    temperatur = temperature,
-    trykk = pressure
+    `År` = aar,
+    `Antall registreringer` = n
   ) |>
   kableExtra::kbl() |>
   kableExtra::kable_styling(c("striped", "hover")) |>
@@ -47,3 +97,11 @@ table <- head(pressure) |>
   kableExtra::column_spec(2, border_right = TRUE, width = "15em")
 table
 ```
+
+### Kontakt
+
+Trenger du hjelp med å bygge et rapportek? Ta kontakt med:
+
+**Arnfinn Hykkerud Steindal**  
+E-post: Arnfinn.Hykkerud.Steindal@helse-nord.no  
+Telefon: +47 404 54 079
