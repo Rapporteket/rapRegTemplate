@@ -4,10 +4,12 @@
 \alias{info_ui}
 \title{Shiny module providing GUI and server logic for the intro tab}
 \usage{
-info_ui(id)
+info_ui(id, selected = "hjertestans")
 }
 \arguments{
 \item{id}{Character string module namespace}
+
+\item{selected}{Character string, registry selected in the select input}
 }
 \value{
 An shiny app ui object

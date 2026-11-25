@@ -4,7 +4,10 @@
 \alias{app_ui}
 \title{Client (ui) for the rapRegTemplate app}
 \usage{
-app_ui()
+app_ui(request = NULL)
+}
+\arguments{
+\item{request}{Shiny request object, used to read the registry from the URL}
 }
 \value{
 An shiny app ui object

@@ -157,3 +157,18 @@ getSkdeIndicatorData <- function(registryShortname = "hjertestans",
   }
   .skde_cache[[key]]
 }
+
+#' Hent registernavn fra SKDE-API-et
+#'
+#' Henter alle registre fra \code{https://prod-api.skde.org/info/names}.
+#'
+#' @return Sortert character-vektor med verdiene i feltet \code{registry_name}.
+#' @noRd
+fetchSkdeRegistryNames <- function() {
+  response <- httr::GET("https://prod-api.skde.org/info/names")
+  httr::stop_for_status(response)
+  payload <- jsonlite::fromJSON(
+    httr::content(response, as = "text", encoding = "UTF-8")
+  )
+  sort(unique(as.character(payload$registry_name)))
+}

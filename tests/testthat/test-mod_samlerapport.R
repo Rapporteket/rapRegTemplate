@@ -53,8 +53,8 @@ test_that("unitName lists only organisations with at least two indicators (SC)",
     samlerapport_server,
     args = list(
       id = "test",
-      data = make_samler_data(),
-      indicator_meta = make_samler_meta(),
+      data = shiny::reactive(make_samler_data()),
+      indicator_meta = shiny::reactive(make_samler_meta()),
       user = make_samler_user("SC")
     ),
     {
@@ -75,8 +75,8 @@ test_that("data_reactive is filtered on org for non-SC users", {
     samlerapport_server,
     args = list(
       id = "test",
-      data = make_samler_data(),
-      indicator_meta = make_samler_meta(),
+      data = shiny::reactive(make_samler_data()),
+      indicator_meta = shiny::reactive(make_samler_meta()),
       user = make_samler_user("LU", "222")
     ),
     {
@@ -95,8 +95,8 @@ test_that("data_reactive returns all data for SC users", {
     samlerapport_server,
     args = list(
       id = "test",
-      data = d,
-      indicator_meta = make_samler_meta(),
+      data = shiny::reactive(d),
+      indicator_meta = shiny::reactive(make_samler_meta()),
       user = make_samler_user("SC")
     ),
     {
@@ -110,8 +110,8 @@ test_that("unitName keeps a valid current selection", {
     samlerapport_server,
     args = list(
       id = "test",
-      data = make_samler_data(),
-      indicator_meta = make_samler_meta(),
+      data = shiny::reactive(make_samler_data()),
+      indicator_meta = shiny::reactive(make_samler_meta()),
       user = make_samler_user("SC")
     ),
     {
@@ -127,8 +127,8 @@ test_that("unitName falls back to first choice on invalid selection", {
     samlerapport_server,
     args = list(
       id = "test",
-      data = make_samler_data(),
-      indicator_meta = make_samler_meta(),
+      data = shiny::reactive(make_samler_data()),
+      indicator_meta = shiny::reactive(make_samler_meta()),
       user = make_samler_user("SC")
     ),
     {
@@ -146,8 +146,8 @@ test_that("unitName stops silently when no organisation qualifies", {
     samlerapport_server,
     args = list(
       id = "test",
-      data = d,
-      indicator_meta = make_samler_meta(),
+      data = shiny::reactive(d),
+      indicator_meta = shiny::reactive(make_samler_meta()),
       user = make_samler_user("SC")
     ),
     {
@@ -169,8 +169,8 @@ test_that("samlerapport output calls reportProcessor with correct arguments", {
     samlerapport_server,
     args = list(
       id = "test",
-      data = make_samler_data(),
-      indicator_meta = make_samler_meta(),
+      data = shiny::reactive(make_samler_data()),
+      indicator_meta = shiny::reactive(make_samler_meta()),
       user = make_samler_user("SC")
     ),
     {
@@ -196,8 +196,8 @@ test_that("samlerapport output requires a selected unit", {
     samlerapport_server,
     args = list(
       id = "test",
-      data = make_samler_data(),
-      indicator_meta = make_samler_meta(),
+      data = shiny::reactive(make_samler_data()),
+      indicator_meta = shiny::reactive(make_samler_meta()),
       user = make_samler_user("SC")
     ),
     {
@@ -221,8 +221,8 @@ test_that("download handler renders the report in the chosen format", {
     samlerapport_server,
     args = list(
       id = "test",
-      data = make_samler_data(),
-      indicator_meta = make_samler_meta(),
+      data = shiny::reactive(make_samler_data()),
+      indicator_meta = shiny::reactive(make_samler_meta()),
       user = make_samler_user("SC")
     ),
     {
@@ -253,8 +253,8 @@ test_that("download handler filename uses the chosen format", {
     samlerapport_server,
     args = list(
       id = "test",
-      data = make_samler_data(),
-      indicator_meta = make_samler_meta(),
+      data = shiny::reactive(make_samler_data()),
+      indicator_meta = shiny::reactive(make_samler_meta()),
       user = make_samler_user("SC")
     ),
     {

@@ -4,6 +4,8 @@ test_that("info_ui creates the expected UI structure", {
 
   expect_match(ui_text, "Informasjon om Rapporteket")
   expect_match(ui_text, "test-info")
+  expect_match(ui_text, "test-registry")
+  expect_match(ui_text, "test-load")
 })
 
 test_that("info_server renders the information R Markdown", {
@@ -14,6 +16,9 @@ test_that("info_server renders the information R Markdown", {
       shiny::HTML("<p>Informasjon om rapporteket</p>")
     },
     .package = "rapbase"
+  )
+  local_mocked_bindings(
+    fetchSkdeRegistryNames = function() c("hjertestans", "hjerneslag")
   )
 
   shiny::testServer(info_server, args = list(id = "test", user = list()), {

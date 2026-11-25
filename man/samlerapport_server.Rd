@@ -9,9 +9,9 @@ samlerapport_server(id, data, indicator_meta, user)
 \arguments{
 \item{id}{Character string module namespace}
 
-\item{data}{Data frame with indicator data}
+\item{data}{Reactive returning a data frame with indicator data}
 
-\item{indicator_meta}{Data frame with indicator metadata}
+\item{indicator_meta}{Reactive returning a data frame with indicator metadata}
 
 \item{user}{A reactive object with user information}
 }

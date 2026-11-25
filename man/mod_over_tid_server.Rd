@@ -9,9 +9,9 @@ mod_over_tid_server(id, data, indicator_meta, user)
 \arguments{
 \item{id}{Character string module namespace}
 
-\item{data}{Data frame containing the data to be plotted.}
+\item{data}{Reactive returning a data frame containing the data to be plotted.}
 
-\item{indicator_meta}{Data frame containing metadata for the indicators.}
+\item{indicator_meta}{Reactive returning a data frame containing metadata for the indicators.}
 
 \item{user}{Shiny user object, defined by the Shiny module
 rapbase::navbarWidgetServer2. This contains information about the logged-in
