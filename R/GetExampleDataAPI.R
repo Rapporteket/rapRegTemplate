@@ -43,7 +43,7 @@ fetchSkdeIndicatorData <- function(
     title = character(),
     short_description = character(),
     levelDirection = numeric(),
-    kvalIndgrenser = list(),
+    kvalIndgrenser = I(list()),
     stringsAsFactors = FALSE
   )
 
@@ -51,7 +51,7 @@ fetchSkdeIndicatorData <- function(
     ind_id = character(),
     title = character(),
     short_description = character(),
-    kvalIndgrenser = list(),
+    kvalIndgrenser = I(list()),
     levelDirection = numeric(),
     stringsAsFactors = FALSE
   )
