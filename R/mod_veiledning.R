@@ -14,22 +14,11 @@ info_ui <- function(id, selected = "hjertestans") {
     shiny::fluidRow(
       shiny::column(
         width = 4,
-        shiny::div(
-          style = "display:flex; align-items:flex-end; gap:8px;",
-          shiny::div(
-            style = "flex:1; min-width:0;",
-            shiny::selectInput(
-              inputId = ns("registry"),
-              label = "Registernavn i SKDE-API:",
-              choices = selected,
-              selected = selected
-            )
-          ),
-          shiny::actionButton(
-            inputId = ns("load"),
-            label = "Hent data",
-            style = "margin-bottom:15px;"
-          )
+        shiny::selectInput(
+          inputId = ns("registry"),
+          label = "Registernavn i SKDE-API:",
+          choices = selected,
+          selected = selected
         )
       )
     ),
@@ -77,8 +66,12 @@ info_server <- function(id, user) {
       # Oppdaterer URL-en med valgt register, og laster appen på nytt
       # Ikke nødvendig i ekte Rapportek, kun funksjon for at registre
       # kan få demonstrert hvordan Rapporteket fungerer
-      shiny::observeEvent(input$load, {
-        shiny::req(input$registry)
+      shiny::observeEvent(input$registry, {
+        current <- shiny::isolate(
+          shiny::parseQueryString(session$clientData$url_search)$registry
+        )
+        # Unngår omlasting når URL-en allerede matcher valget
+        if (identical(current, input$registry)) return()
         shiny::updateQueryString(
           paste0("?registry=", input$registry),
           mode = "push",

@@ -5,7 +5,7 @@ test_that("info_ui creates the expected UI structure", {
   expect_match(ui_text, "Informasjon om Rapporteket")
   expect_match(ui_text, "test-info")
   expect_match(ui_text, "test-registry")
-  expect_match(ui_text, "test-load")
+  expect_no_match(ui_text, "test-load")
 })
 
 test_that("info_server renders the information R Markdown", {
@@ -90,7 +90,7 @@ test_that("info_server leaves the select unchanged when the names API fails", {
   expect_null(captured)
 })
 
-test_that("info_server pushes the chosen registry to the URL and reloads", {
+test_that("info_server pushes the chosen registry to the URL and reloads on selection", {
   captured <- NULL
   local_mocked_bindings(
     fetchSkdeRegistryNames = function() c("hjertestans", "hjerneslag")
@@ -103,8 +103,9 @@ test_that("info_server pushes the chosen registry to the URL and reloads", {
   )
 
   shiny::testServer(info_server, args = list(id = "test", user = list()), {
+    # Forste verdi er initiell (ignoreInit), andre verdi er brukerens valg
+    session$setInputs(registry = "hjertestans")
     session$setInputs(registry = "hjerneslag")
-    session$setInputs(load = 1)
   })
 
   expect_equal(captured$queryString, "?registry=hjerneslag")
