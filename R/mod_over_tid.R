@@ -16,17 +16,21 @@ mod_over_tid_ui <- function(id) {
       ),
 
       shiny::mainPanel(
-        shiny::tabsetPanel(
-          id = ns("tab"),
-          shiny::tabPanel(
-            "Figur",
-            value = "Fig",
-            shiny::plotOutput(outputId = ns("over_tid_plot")),
-            shiny::downloadButton(
-              ns("nedlastning_over_tid_plot"),
-              "Last ned figur"
-            )
-          )
+        shiny::h2("Over tid"),
+        shiny::p(
+          "Figuren viser utviklingen i andelen for valgt indikator og sykehus år for år, som et p-diagram (SPC).",
+          shiny::br(),
+          "Den midterste linjen er gjennomsnittet for alle år, og de stiplede linjene er kontrollgrenser.",
+          shiny::br(),
+          "Punkter utenfor kontrollgrensene kan tyde på en reell endring, ",
+          "mens variasjon innenfor grensene som regel skyldes tilfeldige svingninger.",
+          shiny::br(),
+          "Velg indikator og sykehus i menyen til venstre."
+        ),
+        shiny::plotOutput(outputId = ns("over_tid_plot")),
+        shiny::downloadButton(
+          ns("nedlastning_over_tid_plot"),
+          "Last ned figur"
         )
       )
     )
