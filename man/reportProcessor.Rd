@@ -9,7 +9,8 @@ reportProcessor(
   outputType = "pdf",
   data = NULL,
   indicator_meta = NULL,
-  orgnr = NULL
+  orgnr = NULL,
+  registry = "hjertestans"
 )
 }
 \arguments{
@@ -24,6 +25,9 @@ reportProcessor(
 are fetched with [fetchSkdeIndicatorData()].}
 
 \item{orgnr}{The organization number for which the report is generated.}
+
+\item{registry}{Short name of the registry used when data are fetched with
+[fetchSkdeIndicatorData()]. Defaults to "hjertestans".}
 }
 \value{
 A character string with a path to where the produced file is located.

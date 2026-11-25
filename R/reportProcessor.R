@@ -10,6 +10,8 @@
 #' @param indicator_meta Data frame with indicator metadata. If NULL, metadata
 #' are fetched with [fetchSkdeIndicatorData()].
 #' @param orgnr The organization number for which the report is generated.
+#' @param registry Short name of the registry used when data are fetched with
+#' [fetchSkdeIndicatorData()]. Defaults to "hjertestans".
 #'
 #' @return A character string with a path to where the produced file is located.
 #' @export
@@ -17,12 +19,13 @@ reportProcessor <- function(report,
                             outputType = "pdf",
                             data = NULL,
                             indicator_meta = NULL,
-                            orgnr = NULL) {
+                            orgnr = NULL,
+                            registry = "hjertestans") {
   stopifnot(report %in% c("local_monthly"))
   stopifnot(outputType %in% c("html", "html_fragment", "pdf"))
 
   if (is.null(data) || is.null(indicator_meta)) {
-    api_data <- getSkdeIndicatorData()
+    api_data <- getSkdeIndicatorData(registryShortname = registry)
     if (is.null(data)) {
       data <- api_data$data
     }
