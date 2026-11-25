@@ -14,6 +14,9 @@ app_server <- function(input, output, session) {
   registry <- shiny::isolate(
     shiny::parseQueryString(session$clientData$url_search)$registry
   )
+  if (is.null(registry) || !nzchar(registry)) {
+    registry <- "hjertestans"
+  }
 
   APIdata <- shiny::reactive({
     getSkdeIndicatorData(registryShortname = registry)
