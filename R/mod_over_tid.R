@@ -37,8 +37,8 @@ mod_over_tid_ui <- function(id) {
 
 #' @param id Character string module namespace
 #'
-#' @param data Data frame containing the data to be plotted.
-#' @param indicator_meta Data frame containing metadata for the indicators.
+#' @param data Reactive returning a data frame containing the data to be plotted.
+#' @param indicator_meta Reactive returning a data frame containing metadata for the indicators.
 #' @param user Shiny user object, defined by the Shiny module
 #' rapbase::navbarWidgetServer2. This contains information about the logged-in
 #' user and can be used to tailor the app's content based on the user's
@@ -53,7 +53,7 @@ mod_over_tid_server <- function(id, data, indicator_meta, user) {
     id,
     function(input, output, session) {
       data_reactive <- shiny::reactive({
-        data
+        data()
       })
 
       valid_spc_data_reactive <- shiny::reactive({
@@ -79,9 +79,10 @@ mod_over_tid_server <- function(id, data, indicator_meta, user) {
       })
 
       output$ind_ids <- shiny::renderUI({
+        meta <- indicator_meta()
         choices <- stats::setNames(
-          indicator_meta$ind_id,
-          indicator_meta$title
+          meta$ind_id,
+          meta$title
         )
         shiny::selectInput(
           inputId = session$ns("ind_id"),
@@ -130,7 +131,8 @@ mod_over_tid_server <- function(id, data, indicator_meta, user) {
       plot_over_tid_reactive <- shiny::reactive({
         shiny::req(input$unitName, input$ind_id, cancelOutput = TRUE)
         shiny::req(nrow(selected_spc_data_reactive()) > 0, cancelOutput = TRUE)
-        selected_indicator <- indicator_meta[indicator_meta$ind_id == input$ind_id, , drop = FALSE]
+        meta <- indicator_meta()
+        selected_indicator <- meta[meta$ind_id == input$ind_id, , drop = FALSE]
         plotSPC(
           selected_spc_data_reactive(),
           title = selected_indicator$title,

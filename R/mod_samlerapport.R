@@ -33,8 +33,8 @@ samlerapport_ui <- function(id) {
 #' Server logic for samlerapport
 #'
 #' @param id Character string module namespace
-#' @param data Data frame with indicator data
-#' @param indicator_meta Data frame with indicator metadata
+#' @param data Reactive returning a data frame with indicator data
+#' @param indicator_meta Reactive returning a data frame with indicator metadata
 #' @param user A reactive object with user information
 #'
 #' @return A Shiny app server object
@@ -46,11 +46,11 @@ samlerapport_server <- function(id, data, indicator_meta, user) {
     function(input, output, session) {
 
       data_reactive <- shiny::reactive({
-        shiny::req(data, user$role())
+        shiny::req(data(), user$role())
         if (user$role() == "SC") {
-          data
+          data()
         } else {
-          dplyr::filter(data, as.character(.data$orgnr) == as.character(user$org()))
+          dplyr::filter(data(), as.character(.data$orgnr) == as.character(user$org()))
         }
       })
 
@@ -62,7 +62,7 @@ samlerapport_server <- function(id, data, indicator_meta, user) {
             !is.na(.data$unitName),
             !is.na(as.integer(.data$year)),
             !is.na(.data$ind_id),
-            .data$ind_id %in% as.character(indicator_meta$ind_id),
+            .data$ind_id %in% as.character(indicator_meta()$ind_id),
             !is.na(.data$var),
             !is.na(.data$denominator),
             .data$denominator > 0
@@ -101,7 +101,7 @@ samlerapport_server <- function(id, data, indicator_meta, user) {
           report = "local_monthly",
           outputType = "html_fragment",
           data = data_reactive(),
-          indicator_meta = indicator_meta,
+          indicator_meta = indicator_meta(),
           orgnr = input$unitName
         )
       })
@@ -119,7 +119,7 @@ samlerapport_server <- function(id, data, indicator_meta, user) {
             report = "local_monthly",
             outputType = input$formatS,
             data = data_reactive(),
-            indicator_meta = indicator_meta,
+            indicator_meta = indicator_meta(),
             orgnr = input$unitName
           )
           file.rename(fn, file)

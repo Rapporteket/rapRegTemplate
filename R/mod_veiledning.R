@@ -1,15 +1,27 @@
 #' Shiny module providing GUI and server logic for the intro tab
 #'
 #' @param id Character string module namespace
+#' @param selected Character string, registry selected in the select input
 #' @return An shiny app ui object
 #' @export
 
-info_ui <- function(id) {
+info_ui <- function(id, selected = "hjertestans") {
   ns <- shiny::NS(id)
 
   shiny::mainPanel(
     width = 12,
     shiny::h2("Informasjon om Rapporteket"),
+    shiny::fluidRow(
+      shiny::column(
+        width = 4,
+        shiny::selectInput(
+          inputId = ns("registry"),
+          label = "Registernavn i SKDE-API:",
+          choices = selected,
+          selected = selected
+        )
+      )
+    ),
     shiny::uiOutput(ns("info"), inline = TRUE)
   )
 }
@@ -37,6 +49,36 @@ info_server <- function(id, user) {
           outputType = "html_fragment"
         )
       })
+
+      # Fyller valglisten med registernavn fra SKDE-API-et, og velger registeret fra URL-en
+      shiny::observe({
+        regNames <- tryCatch(fetchSkdeRegistryNames(), error = function(e) character(0))
+        if (length(regNames) == 0L) return()
+        current <- shiny::isolate(
+          shiny::parseQueryString(session$clientData$url_search)$registry
+        )
+        if (is.null(current) || !current %in% regNames) {
+          current <- if ("hjertestans" %in% regNames) "hjertestans" else regNames[1]
+        }
+        shiny::updateSelectInput(session, "registry", choices = regNames, selected = current)
+      })
+
+      # Oppdaterer URL-en med valgt register, og laster appen på nytt
+      # Ikke nødvendig i ekte Rapportek, kun funksjon for at registre
+      # kan få demonstrert hvordan Rapporteket fungerer
+      shiny::observeEvent(input$registry, {
+        current <- shiny::isolate(
+          shiny::parseQueryString(session$clientData$url_search)$registry
+        )
+        # Unngår omlasting når URL-en allerede matcher valget
+        if (identical(current, input$registry)) return()
+        shiny::updateQueryString(
+          paste0("?registry=", input$registry),
+          mode = "push",
+          session = session
+        )
+        session$reload()
+      }, ignoreInit = TRUE)
     }
   )
 }

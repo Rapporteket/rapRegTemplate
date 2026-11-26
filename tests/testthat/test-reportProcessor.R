@@ -63,6 +63,27 @@ test_that("data are fetched from the API when not provided", {
   expect_match(result, "\\.html$")
 })
 
+test_that("data are fetched for the registry passed in", {
+  fetched_registry <- NULL
+  rm(list = ls(rapRegTemplate:::.skde_cache), envir = rapRegTemplate:::.skde_cache)
+  withr::defer(rm(list = ls(rapRegTemplate:::.skde_cache), envir = rapRegTemplate:::.skde_cache))
+  local_mocked_bindings(
+    fetchSkdeIndicatorData = function(registryShortname, ...) {
+      fetched_registry <<- registryShortname
+      list(data = make_report_data(), indicator_meta = make_report_meta())
+    }
+  )
+
+  reportProcessor(
+    report = "local_monthly",
+    outputType = "html",
+    orgnr = "111",
+    registry = "annenregister"
+  )
+
+  expect_equal(fetched_registry, "annenregister")
+})
+
 test_that("html report is rendered with provided data", {
   result <- reportProcessor(
     report = "local_monthly",

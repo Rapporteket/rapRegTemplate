@@ -9,10 +9,23 @@
 
 app_server <- function(input, output, session) {
 
+  # Registeret velges via URL (?registry=...). Nytt register lastes ved at appen laster på nytt.
+  # Dette er kun for å demonstrere hvordan Rapporteket fungerer, og ikke nødvendig i ekte Rapportek.
+  registry <- shiny::isolate(
+    shiny::parseQueryString(session$clientData$url_search)$registry
+  )
+  if (is.null(registry) || !nzchar(registry)) {
+    registry <- "hjertestans"
+  }
 
-  APIdata <- getSkdeIndicatorData()
+  APIdata <- shiny::reactive({
+    getSkdeIndicatorData(registryShortname = registry)
+  })
+  indicatorData <- shiny::reactive(APIdata()$data)
+  indicatorMeta <- shiny::reactive(APIdata()$indicator_meta)
 
-  orgData <- dplyr::distinct(APIdata$data, .data$unitName, .data$orgnr)
+  # rapbase-funksjoner tar imot verdier ved oppstart, og oppdateres ved omlasting
+  orgData <- shiny::isolate(dplyr::distinct(APIdata()$data, .data$unitName, .data$orgnr))
 
   # data.frame som mapper ReshID og sykehusnavn
   map_orgname <- data.frame(
@@ -29,9 +42,9 @@ app_server <- function(input, output, session) {
 
 
   info_server("info", user = user)
-  samlerapport_server("samlerapport", data = APIdata$data, indicator_meta = APIdata$indicator_meta, user = user)
-  mod_over_tid_server("over_tid", data = APIdata$data, indicator_meta = APIdata$indicator_meta, user = user)
-  mod_andeler_server("andeler", data = APIdata$data, indicator_meta = APIdata$indicator_meta)
+  samlerapport_server("samlerapport", data = indicatorData, indicator_meta = indicatorMeta, user = user)
+  mod_over_tid_server("over_tid", data = indicatorData, indicator_meta = indicatorMeta, user = user)
+  mod_andeler_server("andeler", data = indicatorData, indicator_meta = indicatorMeta)
 
   #################
   # Subscriptions #
@@ -47,8 +60,8 @@ app_server <- function(input, output, session) {
     )
   )
 
-  subParamNames <- shiny::reactive(c("orgnr"))
-  subParamValues <- shiny::reactive(user$org())
+  subParamNames <- shiny::reactive(c("orgnr", "registry"))
+  subParamValues <- shiny::reactive(c(user$org(), registry))
 
   rapbase::autoReportServer(
     id = "subscription",
@@ -118,8 +131,8 @@ app_server <- function(input, output, session) {
 
   org <- rapbase::autoReportOrgServer("dispatchment", orgs)
 
-  disParamNames <- shiny::reactive(c("orgnr"))
-  disParamValues <- shiny::reactive(c(org$value()))
+  disParamNames <- shiny::reactive(c("orgnr", "registry"))
+  disParamValues <- shiny::reactive(c(org$value(), registry))
 
   rapbase::autoReportServer(
     id = "dispatchment",

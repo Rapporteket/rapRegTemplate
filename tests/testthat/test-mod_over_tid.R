@@ -39,7 +39,7 @@ test_that("mod_over_tid_server renders controls and plot output", {
     }
   )
 
-  shiny::testServer(mod_over_tid_server, args = list(id = "test", data = test_data, indicator_meta = indicator_meta, user = test_user), {
+  shiny::testServer(mod_over_tid_server, args = list(id = "test", data = shiny::reactive(test_data), indicator_meta = shiny::reactive(indicator_meta), user = test_user), {
     session$setInputs(ind_id = "ind_1")
     session$flushReact()
 

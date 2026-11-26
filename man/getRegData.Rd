@@ -22,5 +22,5 @@ The database connection and configuration are handled by
 the active registry and database environment.
 }
 \seealso{
-[rapbase::loadRegData()] for loading registry data
+[?rapbase::loadRegData()] for loading registry data
 }

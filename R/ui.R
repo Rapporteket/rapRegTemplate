@@ -1,11 +1,15 @@
 #' Client (ui) for the rapRegTemplate app
 #'
+#' @param request Shiny request object, used to read the registry from the URL
 #' @return An shiny app ui object
 #' @export
 
-app_ui <- function() {
+app_ui <- function(request = NULL) {
 
   regTitle <- "rapRegTemplate"
+
+  # Henter registernavn fra SKDE-API-et
+  registry <- shiny::parseQueryString(request$QUERY_STRING)$registry
 
   shiny::tagList(
     shiny::navbarPage(
@@ -15,7 +19,7 @@ app_ui <- function() {
       id = "tabs",
       shiny::tabPanel(
         "Informasjon",
-        info_ui("info"),
+        info_ui("info", selected = registry),
         rapbase::navbarWidgetInput("navbar-widget", selectOrganization = TRUE)
       ),
       shiny::tabPanel(
