@@ -7,7 +7,6 @@
 mod_andeler_ui <- function(id) {
   ns <- shiny::NS(id)
   shiny::tagList(
-    "Andel basert på variabel og grenser",
     shiny::sidebarLayout(
       shiny::sidebarPanel(
         width = 3,
@@ -18,6 +17,15 @@ mod_andeler_ui <- function(id) {
         )
       ),
       shiny::mainPanel(
+        shiny::h2("Andel basert på variabel og grenser"),
+        shiny::p(
+          "Figuren viser andelen for hvert sykehus for siste år, for valgt indikator, ",
+          "sammenlignet med kvalitetsgrensene for indikatoren.",
+          shiny::br(),
+          "Velg indikator i menyen til venstre.",
+          shiny::br(),
+          "Figuren kan lastes ned som PDF."
+        ),
         shiny::plotOutput(outputId = shiny::NS(id, "andelPlot"))
       )
     )
